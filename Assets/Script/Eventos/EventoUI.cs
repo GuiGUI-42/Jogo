@@ -38,6 +38,16 @@ public class EventoUI : MonoBehaviour
 
     // Removidos: campos de respawn/reabrir ícone (origem no mundo, prefab e snapshots)
 
+    [Header("Reabrir")]
+    [Tooltip("Atraso (segundos) para mostrar o ícone de reabrir após aceitar.")]
+    public float delayReabrirSeg = 3f;
+
+    // Dados capturados da origem (ícone inicial) para respawn do ícone de reabrir
+    GameObject ultimoRespawnPrefab;
+    Transform ultimoRespawnParent;
+    Vector3 ultimoRespawnPos;
+    Quaternion ultimoRespawnRot = Quaternion.identity;
+
     void Awake()
     {
         Instance = this;
@@ -403,21 +413,16 @@ public class EventoUI : MonoBehaviour
                 Debug.LogWarning("[EventoUI] Necessário selecionar um herói antes de aceitar (IntroFiltrada).");
                 return;
             }
-            Debug.Log($"[EventoUI] Aceite na IntroFiltrada. Herói='{heroiSelecionado.name}'. Indo direto para Opcoes.");
+            Debug.Log($"[EventoUI] Aceite na IntroFiltrada. Herói='{heroiSelecionado.name}'. Fechando painel e programando reabrir em {delayReabrirSeg:0.##}s (via dados do spawner).");
             if (botaoAceite != null)
             {
                 botaoAceite.interactable = false;
                 botaoAceite.gameObject.SetActive(false);
             }
-            faseAtual = FaseVisualEvento.Opcoes;
-            if (painelEvento != null)
-            {
-                SetPainelEventoVisivel(true);
-                RestaurarLayoutEvento();
-            }
-            SelecionarHeroi(heroiSelecionado);
-            GerarBotoesDeOpcoes();
-            DebugChildrenEstado();
+            // Fecha a primeira tela do evento
+            Fechar();
+            // Agenda o aparecimento do ícone de reabrir após o atraso
+            StartCoroutine(ReabrirAposDelay());
             return;
         }
 
@@ -431,10 +436,66 @@ public class EventoUI : MonoBehaviour
     // Removidos: campos e lógica de spawn do ícone de reabrir
 
     // Permite que o spawner/ícone informe de onde veio o primeiro ícone
-    // Método mantido por compatibilidade; sem efeito após remoção do respawn
     public void DefinirUltimaOrigemIcone(Transform origem, GameObject prefabMundo, Evento evento)
     {
-        Debug.Log("[EventoUI] DefinirUltimaOrigemIcone chamado, mas respawn foi removido. Ignorando.");
+        // Tenta obter dados de respawn anexados ao ícone original
+        ultimoRespawnPrefab = null;
+        ultimoRespawnParent = null;
+        ultimoRespawnPos = Vector3.zero;
+        ultimoRespawnRot = Quaternion.identity;
+
+        if (origem != null)
+        {
+            var data = origem.GetComponent<EventoIconeRespawnData>();
+            if (data != null && data.respawnPrefab != null)
+            {
+                ultimoRespawnPrefab = data.respawnPrefab;
+                ultimoRespawnParent = data.parent;
+                ultimoRespawnPos = data.worldPosition;
+                ultimoRespawnRot = data.worldRotation;
+                Debug.Log($"[EventoUI] Origem registrada via EventoIconeRespawnData. Prefab='{ultimoRespawnPrefab.name}', parent='{ultimoRespawnParent?.name}', pos={ultimoRespawnPos}.");
+                return;
+            }
+        }
+
+        // Fallback: usa o próprio ícone/origem quando não há EventoIconeRespawnData
+        if (prefabMundo != null)
+        {
+            ultimoRespawnPrefab = prefabMundo;
+            ultimoRespawnParent = origem != null ? origem.parent : null;
+            ultimoRespawnPos = origem != null ? origem.position : Vector3.zero;
+            ultimoRespawnRot = origem != null ? origem.rotation : Quaternion.identity;
+            Debug.Log($"[EventoUI] Origem registrada (fallback). Prefab='{ultimoRespawnPrefab.name}', parent='{ultimoRespawnParent?.name}', pos={ultimoRespawnPos}.");
+        }
+        else
+        {
+            Debug.LogWarning("[EventoUI] DefinirUltimaOrigemIcone: sem dados de respawn e sem prefab de fallback.");
+        }
+    }
+
+    // Aguarda o atraso e instancia o ícone de reabrir (usando dados fornecidos pelo spawner/ícone)
+    IEnumerator ReabrirAposDelay()
+    {
+        if (delayReabrirSeg > 0f)
+            yield return new WaitForSeconds(delayReabrirSeg);
+
+        if (ultimoRespawnPrefab == null)
+        {
+            Debug.LogWarning("[EventoUI] ReabrirAposDelay: não há prefab registrado para reabrir. Chame DefinirUltimaOrigemIcone ao abrir o evento.");
+            yield break;
+        }
+
+        var go = Instantiate(ultimoRespawnPrefab, ultimoRespawnPos, ultimoRespawnRot, ultimoRespawnParent);
+        Debug.Log($"[EventoUI] Ícone de reabrir instanciado: '{go.name}' em {ultimoRespawnPos} (parent='{ultimoRespawnParent?.name ?? "<none>"}')");
+
+        // Garantir que seja clicável
+        if (go.GetComponent<Collider2D>() == null)
+            go.AddComponent<BoxCollider2D>();
+        var reabrirCmp = go.GetComponent<EventoReabrirIcon>();
+        if (reabrirCmp == null)
+            reabrirCmp = go.AddComponent<EventoReabrirIcon>();
+        if (reabrirCmp != null)
+            reabrirCmp.Configurar(this);
     }
 
     public void AbrirOpcoesFromIcon(GameObject icon)

@@ -16,6 +16,15 @@ public class EventoReabrirIcon : MonoBehaviour, IPointerClickHandler
         AtualizarPreview();
     }
 
+    void Awake()
+    {
+        if (eventoUI == null)
+        {
+            eventoUI = EventoUI.EnsureInstance();
+            AtualizarPreview();
+        }
+    }
+
     void AtualizarPreview()
     {
         if (eventoUI == null) return;
@@ -37,6 +46,7 @@ public class EventoReabrirIcon : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (eventoUI == null) eventoUI = EventoUI.EnsureInstance();
         if (eventoUI == null) { Debug.LogWarning("[EventoReabrirIcon] eventoUI nulo ao clicar."); return; }
         Debug.Log("[EventoReabrirIcon] Clique recebido. Solicitando reabertura em Opcoes.");
         eventoUI.AbrirOpcoesFromIcon(gameObject);
@@ -45,6 +55,7 @@ public class EventoReabrirIcon : MonoBehaviour, IPointerClickHandler
     void OnMouseDown()
     {
         // Suporte a ícones de mundo (SpriteRenderer + Collider2D), sem UI
+        if (eventoUI == null) eventoUI = EventoUI.EnsureInstance();
         if (eventoUI == null) { Debug.LogWarning("[EventoReabrirIcon] eventoUI nulo no OnMouseDown."); return; }
         Debug.Log("[EventoReabrirIcon] OnMouseDown recebido (mundo). Reabrindo.");
         eventoUI.AbrirOpcoesFromIcon(gameObject);
