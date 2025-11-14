@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e8c3e566152c940b23bc1da4798553, type: 3}
+  m_Name: Evento_Incendio
+  m_EditorClassIdentifier: Assembly-CSharp::Evento
+  nomeEvento: Incendio
+  iconeEvento: {fileID: 0}
+  descricaoEvento: Incedio no predio
+  local: 0
+  monstro: {fileID: 11400000, guid: 056c1b942afdc824fba8030d18b07701, type: 2}
+  monstroPrefab: {fileID: 2062277851170540446, guid: 5c768997ac6dae34283663a8815c3ce3, type: 3}
+  opcoesDecisao:
+  - nomeOpcao: Combate
+    descricao: 
+    icone: {fileID: 0}
+    usarIconeDaOpcao: 0
+    tipo: 0
+    efeitosPassivos: []
+    drops:
+    - item: {fileID: 11400000, guid: ff48772bbd819d34d8eccf8f2b443d0f, type: 2}
+      quantidadeMin: 1
+      quantidadeMax: 1
+      chance: 1

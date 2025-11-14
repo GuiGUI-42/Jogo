@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0891315c3cb9dcd4eb39c569eb3c28a8, type: 3}
+  m_Name: Ombreira
+  m_EditorClassIdentifier: Assembly-CSharp::ItemCombate
+  nomeItem: Ombreira
+  iconeItem: {fileID: 21300000, guid: 6fc27c9d7fc2d9448af6851bf935e6d2, type: 3}
+  descricaoItem: 
+  tipoDano: 0
+  elemento: 0
+  porcentagemFisico:
+    forca: 21.5
+    carisma: 0
+    sabedoria: 0
+    inteligencia: 0
+    vitalidade: 0
+    destreza: 0
+  porcentagemElemental:
+    forca: 0
+    carisma: 0
+    sabedoria: 0
+    inteligencia: 0
+    vitalidade: 0
+    destreza: 0
+  danoBaseFisico: 5
+  danoBaseElemental: 0
+  cooldownSegundos: 2
+  curaBase: 0
+  curaPercentualVitalidade: 0

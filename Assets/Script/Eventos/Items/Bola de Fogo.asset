@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0891315c3cb9dcd4eb39c569eb3c28a8, type: 3}
+  m_Name: Bola de Fogo
+  m_EditorClassIdentifier: Assembly-CSharp::ItemCombate
+  nomeItem: Bola de Fogo
+  iconeItem: {fileID: 1025001663, guid: 8545dbd233994d4418fd8edd1dbe11f3, type: 3}
+  descricaoItem: 
+  tipoDano: 1
+  elemento: 1
+  porcentagemFisico:
+    forca: 0
+    carisma: 0
+    sabedoria: 0
+    inteligencia: 0
+    vitalidade: 0
+    destreza: 0
+  porcentagemElemental:
+    forca: 0
+    carisma: 0
+    sabedoria: 0
+    inteligencia: 80
+    vitalidade: 0
+    destreza: 0
+  danoBaseFisico: 5
+  danoBaseElemental: 10
+  cooldownSegundos: 3
