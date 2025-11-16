@@ -88,15 +88,32 @@ public class CombateSistema : MonoBehaviour
             vidaMax = Mathf.Max(1, baseH.vitalidade) * 10f,
         };
         c.vidaAtual = c.vidaMax;
-        c.itens = at.itensIniciais ?? new ItemCombate[0];
+        // Coleta itens de combate tanto dos itens iniciais quanto dos slotsInventario atuais
+        c.itens = ColetarItensCombate(at);
         c.ultimoUso.Clear();
-        // Primeiro disparo acontece após o cooldown; portanto ultimoUso = Time.time
         foreach (var item in c.itens)
         {
             if (!item) continue;
+            // Registra último uso para respeitar cooldown inicial (espera o primeiro intervalo)
             c.ultimoUso[item] = Time.time;
         }
         return c;
+    }
+
+    ItemCombate[] ColetarItensCombate(HeroiAtributos at)
+    {
+        if (!at) return new ItemCombate[0];
+        var lista = new List<ItemCombate>();
+        // Apenas slots atuais do herói
+        if (at.slotsInventario != null)
+        {
+            foreach (var so in at.slotsInventario)
+            {
+                if (!so) continue;
+                if (so is ItemCombate ic && !lista.Contains(ic)) lista.Add(ic);
+            }
+        }
+        return lista.ToArray();
     }
 
     IEnumerator RotinaCombate()

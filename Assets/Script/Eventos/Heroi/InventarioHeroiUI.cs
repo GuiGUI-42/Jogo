@@ -12,9 +12,17 @@ public class InventarioHeroiUI : MonoBehaviour
     {
         heroiAtributosAtual = heroiAtributos;
         Debug.Log("Abrindo inventário do herói: " + heroiAtributosAtual.name);
-        Debug.Log("Itens iniciais: " + heroiAtributosAtual.itensIniciais.Length);
         AtualizarInventario();
         gameObject.SetActive(true);
+        // Garante alvo de drop no ícone do herói (para receber da Bag ou de outro herói)
+        if (iconeHeroi && iconeHeroi.GetComponent<HeroInventoryDropTarget>() == null)
+            iconeHeroi.gameObject.AddComponent<HeroInventoryDropTarget>().heroiAtributos = heroiAtributosAtual;
+        if (heroiAtributosAtual != null)
+        {
+            heroiAtributosAtual.OnInventarioAlterado -= OnHeroInventarioAlterado;
+            heroiAtributosAtual.OnInventarioAlterado += OnHeroInventarioAlterado;
+            Debug.Log("[InventarioHeroiUI] Subscrito evento inventário do herói " + heroiAtributosAtual.name + " (AbrirInventario)");
+        }
     }
 
     public void AtualizarInventario()
@@ -31,18 +39,70 @@ public class InventarioHeroiUI : MonoBehaviour
         {
             var slot = molduraItens.GetChild(i);
             var img = slot.GetComponentInChildren<Image>();
+            if (img)
+            {
+                var cg = img.GetComponent<CanvasGroup>();
+                if (cg && cg.blocksRaycasts == false)
+                {
+                    cg.blocksRaycasts = true;
+                    Debug.Log("[InventarioHeroiUI] Reativando blocksRaycasts slot=" + i);
+                }
+                // Sempre garantir raycast para permitir drop em slots vazios
+                img.raycastTarget = true;
+            }
+            // Garante drop target no objeto que realmente recebe raycast (imagem do slot)
+            var targetGO = img ? img.gameObject : slot.gameObject;
+            var dropTarget = targetGO.GetComponent<InventorySlotDropTarget>();
+            if (!dropTarget)
+            {
+                dropTarget = targetGO.AddComponent<InventorySlotDropTarget>();
+            }
+            dropTarget.slotTipo = InventorySlotDropTarget.SlotTipo.Hero;
+            dropTarget.heroAtributos = heroiAtributosAtual;
+            dropTarget.slotIndex = i;
             if (!img) continue;
             if (slots != null && i < slots.Length && slots[i] != null)
             {
                 var spr = ExtrairSprite(slots[i]);
                 img.sprite = spr;
                 img.enabled = spr != null;
+                if (!img.enabled) img.enabled = true; // mantém imagem ativa para drop
+                img.color = spr ? Color.white : new Color(1,1,1,0.05f);
+                // Configura drag para este slot (inventário maior)
+                var drag = img.GetComponent<DraggableHeroInventarioSlot>();
+                if (!drag) drag = img.gameObject.AddComponent<DraggableHeroInventarioSlot>();
+                drag.heroiAtributos = heroiAtributosAtual;
+                drag.asset = slots[i];
+                drag.item = slots[i] as Item;
+                drag.quantidade = 1;
+                drag.inventoryIndex = i;
+                drag.sourceImage = img;
             }
             else
             {
+                // Slot vazio: manter habilitado para aceitar drop
                 img.sprite = null;
-                img.enabled = false;
+                img.enabled = true;
+                img.color = new Color(1,1,1,0.05f);
+                img.raycastTarget = true;
+                var drag = img.GetComponent<DraggableHeroInventarioSlot>();
+                if (drag) Destroy(drag);
             }
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (heroiAtributosAtual != null)
+            heroiAtributosAtual.OnInventarioAlterado -= OnHeroInventarioAlterado;
+    }
+
+    void OnHeroInventarioAlterado(HeroiAtributos h)
+    {
+        if (h == heroiAtributosAtual)
+        {
+            Debug.Log("[InventarioHeroiUI] Evento inventário alterado recebido para herói " + h.name);
+            AtualizarInventario();
         }
     }
 

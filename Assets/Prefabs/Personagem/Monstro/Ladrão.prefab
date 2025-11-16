@@ -144,8 +144,16 @@ MonoBehaviour:
   inteligenciaAtual: 0
   vitalidadeAtual: 0
   destrezaAtual: 0
-  itensIniciais:
+  slotsInventario:
   - {fileID: 11400000, guid: 6fd512341acc28d49b46142bd66ec39e, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &8465086539250968957
 GameObject:
   m_ObjectHideFlags: 0

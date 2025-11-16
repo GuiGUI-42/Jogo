@@ -38,4 +38,12 @@ MonoBehaviour:
     efeitosPassivos:
     - atributo: 0
       valor: 2
-    drops: []
+    drops:
+    - item: {fileID: 11400000, guid: 1940717bd09e00f42b20e7175b06745b, type: 2}
+      quantidadeMin: 1
+      quantidadeMax: 1
+      chance: 1
+    - item: {fileID: 11400000, guid: ff48772bbd819d34d8eccf8f2b443d0f, type: 2}
+      quantidadeMin: 1
+      quantidadeMax: 1
+      chance: 1

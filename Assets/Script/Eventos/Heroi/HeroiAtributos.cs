@@ -13,12 +13,12 @@ public class HeroiAtributos : MonoBehaviour, IAtributos
     public int vitalidadeAtual;
     public int destrezaAtual;
 
-    [Header("Itens Iniciais")]
-    public ItemCombate[] itensIniciais;
-
     [Header("Inventário Dinâmico (slots)")]
     [Tooltip("Slots atuais do inventário do herói (podem incluir itens iniciais).")]
     public ScriptableObject[] slotsInventario = new ScriptableObject[9];
+
+    // Evento disparado sempre que o inventário (slotsInventario) é alterado
+    public System.Action<HeroiAtributos> OnInventarioAlterado;
 
     void Awake()
     {
@@ -41,13 +41,6 @@ public class HeroiAtributos : MonoBehaviour, IAtributos
     {
         if (slotsInventario == null || slotsInventario.Length == 0)
             slotsInventario = new ScriptableObject[9];
-        if (itensIniciais != null)
-        {
-            for (int i = 0; i < itensIniciais.Length && i < slotsInventario.Length; i++)
-            {
-                slotsInventario[i] = itensIniciais[i];
-            }
-        }
     }
 
     public bool TentarAdicionarAsset(ScriptableObject asset)
@@ -58,10 +51,38 @@ public class HeroiAtributos : MonoBehaviour, IAtributos
             if (slotsInventario[i] == null)
             {
                 slotsInventario[i] = asset;
+                Debug.Log("[HeroiAtributos] Adicionado asset '" + asset.name + "' no slot " + i + " do herói " + name);
+                OnInventarioAlterado?.Invoke(this);
                 return true;
             }
         }
         return false; // sem espaço
+    }
+
+    public bool RemoverAssetNoIndice(int index)
+    {
+        if (index < 0 || index >= slotsInventario.Length) return false;
+        if (slotsInventario[index] == null) return false;
+        Debug.Log("[HeroiAtributos] Removendo asset '" + slotsInventario[index].name + "' do slot " + index + " (herói " + name + ")");
+        slotsInventario[index] = null;
+        OnInventarioAlterado?.Invoke(this);
+        return true;
+    }
+
+    public bool RemoverAsset(ScriptableObject asset)
+    {
+        if (!asset) return false;
+        for (int i = 0; i < slotsInventario.Length; i++)
+        {
+            if (slotsInventario[i] == asset)
+            {
+                slotsInventario[i] = null;
+                Debug.Log("[HeroiAtributos] Removendo asset '" + asset.name + "' (busca por referência) do herói " + name);
+                OnInventarioAlterado?.Invoke(this);
+                return true;
+            }
+        }
+        return false;
     }
 
     // Implementação da interface IAtributos

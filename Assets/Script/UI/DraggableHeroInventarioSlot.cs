@@ -2,8 +2,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class DraggableBagSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class DraggableHeroInventarioSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    public HeroiAtributos heroiAtributos; // origem
     public ScriptableObject asset;
     public Item item; // se também for Item
     public int quantidade = 1;
@@ -22,8 +23,8 @@ public class DraggableBagSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         canvas = GetComponentInParent<Canvas>();
         if (!canvas)
         {
-            var c = UnityEngine.Object.FindFirstObjectByType<Canvas>();
-            if (!c) c = UnityEngine.Object.FindAnyObjectByType<Canvas>();
+            var c = Object.FindFirstObjectByType<Canvas>();
+            if (!c) c = Object.FindAnyObjectByType<Canvas>();
             canvas = c;
         }
     }
@@ -31,17 +32,15 @@ public class DraggableBagSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (!sourceImage || !canvas) return;
-        // Sempre consulta a fonte de verdade: InventoryManager
-        if (inventoryIndex < 0 || InventoryManager.Instance == null) return;
-        var entries = InventoryManager.Instance.itens;
-        if (inventoryIndex >= entries.Count) return;
-        var atual = entries[inventoryIndex].asset;
+        // Sempre consulta a fonte de verdade: slots do herói
+        if (heroiAtributos == null || inventoryIndex < 0 || inventoryIndex >= heroiAtributos.slotsInventario.Length)
+            return;
+        var atual = heroiAtributos.slotsInventario[inventoryIndex];
         if (atual == null) return;
         asset = atual;
         item = atual as Item;
-        quantidade = entries[inventoryIndex].quantidade;
-        Debug.Log("[DragBagSlot] BeginDrag index=" + inventoryIndex + " asset=" + asset?.name + " qtd=" + quantidade);
-        dragIcon = new GameObject("DragIcon_Bag", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+        Debug.Log("[DragHeroSlot] BeginDrag hero=" + heroiAtributos?.name + " index=" + inventoryIndex + " asset=" + asset?.name);
+        dragIcon = new GameObject("DragIcon_Hero", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
         dragIcon.transform.SetParent(canvas.transform, false);
         var img = dragIcon.GetComponent<Image>();
         img.sprite = sourceImage.sprite;
@@ -49,7 +48,7 @@ public class DraggableBagSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         img.raycastTarget = false;
         (dragIcon.transform as RectTransform).sizeDelta = (sourceImage.transform as RectTransform).rect.size;
         cg.alpha = 0.6f;
-        cg.blocksRaycasts = false; // permite que alvo receba o drop
+        cg.blocksRaycasts = false;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -61,7 +60,7 @@ public class DraggableBagSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     {
         if (dragIcon) Destroy(dragIcon);
         cg.alpha = 1f;
-        cg.blocksRaycasts = true; // restaura raycasts
-        Debug.Log("[DragBagSlot] EndDrag index=" + inventoryIndex);
+        cg.blocksRaycasts = true;
+        Debug.Log("[DragHeroSlot] EndDrag hero=" + heroiAtributos?.name + " index=" + inventoryIndex);
     }
 }

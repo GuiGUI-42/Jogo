@@ -45,6 +45,12 @@ public class InventoryManager : MonoBehaviour
 
     public event Action OnInventoryChanged;
 
+    // Método público para disparar atualização manual do inventário (ex: reorder externo)
+    public void RaiseInventoryChanged()
+    {
+        OnInventoryChanged?.Invoke();
+    }
+
     public void Add(Item item, int quantidade = 1)
     {
         if (item == null) return;

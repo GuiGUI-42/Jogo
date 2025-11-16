@@ -165,28 +165,8 @@ public class EventoCombateUI : MonoBehaviour
             }
         }
 
-        // Itens do componente
-        var itensSprites = new List<Sprite>();
-        if (atributos.itensIniciais != null)
-        {
-            Debug.Log($"[CombateUI] itensIniciais count: {atributos.itensIniciais.Length}");
-            for (int i = 0; i < atributos.itensIniciais.Length; i++)
-            {
-                var item = atributos.itensIniciais[i];
-                if (!item)
-                {
-                    Debug.LogWarning($"[CombateUI] Item {i} nulo");
-                    continue;
-                }
-                var spr = ExtrairSpriteDoItem(item);
-                Debug.Log($"[CombateUI] Item {i}: {item.name}, sprite={(spr ? spr.name : "null")}");
-                if (spr) itensSprites.Add(spr);
-            }
-        }
-        else
-        {
-            Debug.LogWarning("[CombateUI] Nenhum item inicial encontrado no prefab.");
-        }
+        // Coleta sprites de itens iniciais + slotsInventario dinâmicos (únicos)
+        var itensSprites = ColetarSpritesInventario(atributos);
 
         if (painelCombate) painelCombate.SetActive(true);
         RestaurarLayoutCombate();
@@ -249,17 +229,8 @@ public class EventoCombateUI : MonoBehaviour
         if (baseHeroi && baseHeroi.iconeHeroi)
             icone = baseHeroi.iconeHeroi;
 
-        // Itens do herói
-        var itensSprites = new List<Sprite>();
-        if (atributos.itensIniciais != null)
-        {
-            foreach (var item in atributos.itensIniciais)
-            {
-                if (!item) continue;
-                var spr = ExtrairSpriteDoItem(item);
-                if (spr) itensSprites.Add(spr);
-            }
-        }
+        // Itens do herói (iniciais + slotsInventario) usando coleta unificada
+        var itensSprites = ColetarSpritesInventario(atributos);
 
         // Exibe no painel
         if (painelCombate) painelCombate.SetActive(true);
@@ -396,6 +367,24 @@ public class EventoCombateUI : MonoBehaviour
         if (p != null && p.PropertyType == typeof(Sprite)) return p.GetValue(item, null) as Sprite;
 
         return null;
+    }
+
+    // Coleta sprites únicos somente dos slotsInventario atuais
+    List<Sprite> ColetarSpritesInventario(HeroiAtributos atributos)
+    {
+        var lista = new List<Sprite>();
+        if (!atributos) return lista;
+        System.Action<Object> tentarAdd = (obj) =>
+        {
+            if (!obj) return;
+            var spr = ExtrairSpriteDoItem(obj);
+            if (spr != null && !lista.Contains(spr)) lista.Add(spr);
+        };
+        if (atributos.slotsInventario != null)
+        {
+            foreach (var so in atributos.slotsInventario) tentarAdd(so);
+        }
+        return lista;
     }
 
     public void Fechar()

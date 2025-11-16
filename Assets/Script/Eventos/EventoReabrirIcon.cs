@@ -6,6 +6,10 @@ using UnityEngine.UI;
 public class EventoReabrirIcon : MonoBehaviour, IPointerClickHandler
 {
     EventoUI eventoUI;
+    // Dados da instância do evento à qual este ícone pertence
+    public string instanceId;
+    public Evento evento;
+    public HeroiSelecionavel heroi;
 
     public Image heroSlotPreview; // opcional: mostrar retrato do herói
     public TMPro.TMP_Text tituloPreview; // opcional: mostrar título do evento
@@ -49,7 +53,10 @@ public class EventoReabrirIcon : MonoBehaviour, IPointerClickHandler
         if (eventoUI == null) eventoUI = EventoUI.EnsureInstance();
         if (eventoUI == null) { Debug.LogWarning("[EventoReabrirIcon] eventoUI nulo ao clicar."); return; }
         Debug.Log("[EventoReabrirIcon] Clique recebido. Solicitando reabertura em Opcoes.");
-        eventoUI.AbrirOpcoesFromIcon(gameObject);
+        if (evento != null)
+            eventoUI.AbrirOpcoesFromRespawn(instanceId, evento, heroi, gameObject);
+        else
+            eventoUI.AbrirOpcoesFromIcon(gameObject);
     }
 
     void OnMouseDown()
@@ -58,6 +65,15 @@ public class EventoReabrirIcon : MonoBehaviour, IPointerClickHandler
         if (eventoUI == null) eventoUI = EventoUI.EnsureInstance();
         if (eventoUI == null) { Debug.LogWarning("[EventoReabrirIcon] eventoUI nulo no OnMouseDown."); return; }
         Debug.Log("[EventoReabrirIcon] OnMouseDown recebido (mundo). Reabrindo.");
-        eventoUI.AbrirOpcoesFromIcon(gameObject);
+        if (evento != null)
+            eventoUI.AbrirOpcoesFromRespawn(instanceId, evento, heroi, gameObject);
+        else
+            eventoUI.AbrirOpcoesFromIcon(gameObject);
+    }
+
+    public void Configurar(EventoUI ui, string id, Evento ev, HeroiSelecionavel heroiSel)
+    {
+        eventoUI = ui; instanceId = id; evento = ev; heroi = heroiSel;
+        AtualizarPreview();
     }
 }

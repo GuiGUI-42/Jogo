@@ -21,6 +21,12 @@ public class HeroiInventarioUI : MonoBehaviour
         // Garante alvo de drop no ícone do herói para mover itens da Bag
         if (iconeHeroi && iconeHeroi.GetComponent<HeroInventoryDropTarget>() == null)
             iconeHeroi.gameObject.AddComponent<HeroInventoryDropTarget>().heroiAtributos = heroiAtributos;
+        if (heroiAtributos != null)
+        {
+            heroiAtributos.OnInventarioAlterado -= OnHeroInventarioAlterado; // evita duplicado
+            heroiAtributos.OnInventarioAlterado += OnHeroInventarioAlterado;
+            Debug.Log("[HeroiInventarioUI] Subscrito evento inventário do herói " + heroiAtributos.name + " (Start)");
+        }
     }
 
     public void AbrirInventario()
@@ -29,6 +35,12 @@ public class HeroiInventarioUI : MonoBehaviour
         gameObject.SetActive(true);
         if (iconeHeroi && iconeHeroi.GetComponent<HeroInventoryDropTarget>() == null)
             iconeHeroi.gameObject.AddComponent<HeroInventoryDropTarget>().heroiAtributos = heroiAtributos;
+        if (heroiAtributos != null)
+        {
+            heroiAtributos.OnInventarioAlterado -= OnHeroInventarioAlterado;
+            heroiAtributos.OnInventarioAlterado += OnHeroInventarioAlterado;
+            Debug.Log("[HeroiInventarioUI] Re-subscrito evento inventário (AbrirInventario) herói=" + heroiAtributos.name);
+        }
     }
 
     public void AtualizarInventario()
@@ -44,17 +56,94 @@ public class HeroiInventarioUI : MonoBehaviour
         {
             var slot = molduraItens.GetChild(i);
             var img = slot.GetComponentInChildren<Image>();
+            // Reativa blocksRaycasts se algum drag anterior deixou false e foi destruído antes do EndDrag
+            if (img)
+            {
+                var cg = img.GetComponent<CanvasGroup>();
+                if (cg && cg.blocksRaycasts == false)
+                {
+                    cg.blocksRaycasts = true;
+                    Debug.Log("[HeroiInventarioUI] Reativando blocksRaycasts slot=" + i);
+                }
+                img.raycastTarget = true; // garante drop em slot vazio
+            }
+            // Garante um overlay de drop quando o slot estiver vazio
+            GameObject overlay = null;
+            var existingOverlay = slot.Find("DropTarget");
+            if (existingOverlay == null)
+            {
+                overlay = new GameObject("DropTarget", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+                overlay.transform.SetParent(slot, false);
+                var rt = overlay.GetComponent<RectTransform>();
+                rt.anchorMin = Vector2.zero;
+                rt.anchorMax = Vector2.one;
+                rt.offsetMin = Vector2.zero;
+                rt.offsetMax = Vector2.zero;
+                var ovImg = overlay.GetComponent<Image>();
+                ovImg.color = new Color(1,1,1,0f); // totalmente transparente
+                ovImg.raycastTarget = true;
+            }
+            else overlay = existingOverlay.gameObject;
             if (!img) continue;
             if (slots != null && i < slots.Length && slots[i] != null)
             {
                 img.sprite = ExtrairSprite(slots[i]);
-                img.enabled = img.sprite != null;
+                if (!img.enabled) img.enabled = true; // mantém ativo
+                // Remove highlight branco: não força cor branca, mantém cor atual do Image
+                // Drop target no próprio Image quando há item (para permitir swap)
+                var dropTarget = img.GetComponent<InventorySlotDropTarget>();
+                if (!dropTarget) dropTarget = img.gameObject.AddComponent<InventorySlotDropTarget>();
+                dropTarget.slotTipo = InventorySlotDropTarget.SlotTipo.Hero;
+                dropTarget.heroAtributos = heroiAtributos;
+                dropTarget.slotIndex = i;
+                // Impede overlay de interceptar raycasts quando há item (permite drag)
+                var ovImg = overlay.GetComponent<Image>();
+                if (ovImg) ovImg.raycastTarget = false;
+                overlay.SetActive(false);
+                // Overlay continua existindo, mas como o Image está acima, não interceptará drag
+                // Configura drag para este slot
+                var drag = img.GetComponent<DraggableHeroInventarioSlot>();
+                if (!drag) drag = img.gameObject.AddComponent<DraggableHeroInventarioSlot>();
+                drag.heroiAtributos = heroiAtributos;
+                drag.asset = slots[i];
+                drag.item = slots[i] as Item; // se também for Item
+                drag.quantidade = 1;
+                drag.inventoryIndex = i;
+                drag.sourceImage = img;
             }
             else
             {
                 img.sprite = null;
-                img.enabled = false;
+                img.enabled = false; // não exibe branco; drop vai para overlay
+                img.raycastTarget = false;
+                // Drop target no overlay (vazio)
+                var ovDrop = overlay.GetComponent<InventorySlotDropTarget>();
+                if (!ovDrop) ovDrop = overlay.AddComponent<InventorySlotDropTarget>();
+                ovDrop.slotTipo = InventorySlotDropTarget.SlotTipo.Hero;
+                ovDrop.heroAtributos = heroiAtributos;
+                ovDrop.slotIndex = i;
+                // Ativa overlay e garante raycast quando vazio
+                overlay.SetActive(true);
+                var ovImg2 = overlay.GetComponent<Image>();
+                if (ovImg2) ovImg2.raycastTarget = true;
+                var drag = img.GetComponent<DraggableHeroInventarioSlot>();
+                if (drag) Destroy(drag);
             }
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (heroiAtributos != null)
+            heroiAtributos.OnInventarioAlterado -= OnHeroInventarioAlterado;
+    }
+
+    void OnHeroInventarioAlterado(HeroiAtributos h)
+    {
+        if (h == heroiAtributos)
+        {
+            Debug.Log("[HeroiInventarioUI] Evento inventário alterado recebido para herói " + h.name);
+            AtualizarInventario();
         }
     }
 

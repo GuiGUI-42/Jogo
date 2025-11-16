@@ -65,15 +65,13 @@ public class EventoIconeClick : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        Debug.Log("[IconeClick] Chamando EventoUI.Abrir(evento)");
-        ui.Abrir(evento);
-        Debug.Log("[IconeClick] EventoUI.Abrir concluído");
+        Debug.Log("[IconeClick] Chamando EventoUI.AbrirDoIcone(evento, thisIcon)");
+        ui.AbrirDoIcone(evento, gameObject);
+        Debug.Log("[IconeClick] EventoUI.AbrirDoIcone concluído");
 
+        // Não desativa de imediato se queremos mostrar Intro filtrada mantendo ícone (esconderAoAbrir controla comportamento antigo)
         if (esconderAoAbrir)
             gameObject.SetActive(false);
-
-        // Oculta todos os outros ícones depois de abrir o evento
-        OcultarTodosIcones();
     }
 
     public static void OcultarTodosIcones()

@@ -1,4 +1,5 @@
 using System.Collections;
+using System; // Guid
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,6 +48,10 @@ public class EventoUI : MonoBehaviour
     Transform ultimoRespawnParent;
     Vector3 ultimoRespawnPos;
     Quaternion ultimoRespawnRot = Quaternion.identity;
+    // ID único por instância de evento aberto via ícone
+    string eventoInstanceId;
+    // Referência ao ícone original desta instância
+    GameObject origemIconeAtual;
 
     void Awake()
     {
@@ -104,6 +109,20 @@ public class EventoUI : MonoBehaviour
         AbrirIntroFiltrada(evento);
     }
 
+    // Abre o evento vindo de um ícone específico, gerando ID e registrando origem
+    public void AbrirDoIcone(Evento evento, GameObject origemIcone)
+    {
+        eventoInstanceId = Guid.NewGuid().ToString("N");
+        origemIconeAtual = origemIcone;
+        if (origemIcone != null)
+        {
+            // Registra dados de respawn a partir do componente existente
+            DefinirUltimaOrigemIcone(origemIcone.transform, origemIcone, evento);
+        }
+        Debug.Log($"[EventoUI] AbrirDoIcone ID={eventoInstanceId} origem='{origemIcone?.name}' evento='{evento?.name}'");
+        Abrir(evento);
+    }
+
     void AbrirIntroFiltrada(Evento evento)
     {
         faseAtual = FaseVisualEvento.IntroFiltrada;
@@ -111,6 +130,9 @@ public class EventoUI : MonoBehaviour
         opcaoSelecionada = null;
         if (painelEvento != null)
         {
+            // Se o root foi desativado por ESC, reativa antes de aplicar visibilidade interna
+            if (painelEvento == this.gameObject && !gameObject.activeSelf)
+                gameObject.SetActive(true);
             SetPainelEventoVisivel(true);
             FiltrarLayoutIntro();
         }
@@ -118,7 +140,11 @@ public class EventoUI : MonoBehaviour
         if (descricaoEventoText != null) descricaoEventoText.text = evento != null ? evento.descricaoEvento : "";
 
         LimparBotoes();
-        if (botaoAceite != null) botaoAceite.gameObject.SetActive(true);
+        if (botaoAceite != null)
+        {
+            botaoAceite.gameObject.SetActive(true);
+            botaoAceite.interactable = true; // reset independente por evento
+        }
         DebugChildrenEstado();
     }
 
@@ -130,6 +156,8 @@ public class EventoUI : MonoBehaviour
         opcaoSelecionada = null;
         if (painelEvento != null)
         {
+            if (painelEvento == this.gameObject && !gameObject.activeSelf)
+                gameObject.SetActive(true);
             SetPainelEventoVisivel(true);
             RestaurarLayoutEvento();
         }
@@ -140,7 +168,11 @@ public class EventoUI : MonoBehaviour
         LimparBotoes();
 
         // Mostrar botão de aceite para avançar
-        if (botaoAceite != null) botaoAceite.gameObject.SetActive(true);
+        if (botaoAceite != null)
+        {
+            botaoAceite.gameObject.SetActive(true);
+            botaoAceite.interactable = true; // reset independente
+        }
 
         DebugChildrenEstado();
     }
@@ -413,16 +445,30 @@ public class EventoUI : MonoBehaviour
                 Debug.LogWarning("[EventoUI] Necessário selecionar um herói antes de aceitar (IntroFiltrada).");
                 return;
             }
-            Debug.Log($"[EventoUI] Aceite na IntroFiltrada. Herói='{heroiSelecionado.name}'. Fechando painel e programando reabrir em {delayReabrirSeg:0.##}s (via dados do spawner).");
+            Debug.Log($"[EventoUI] Aceite (ID={eventoInstanceId ?? "<null>"}) na IntroFiltrada. Herói='{heroiSelecionado.name}'. Fechando painel e programando reabrir em {delayReabrirSeg:0.##}s.");
             if (botaoAceite != null)
             {
                 botaoAceite.interactable = false;
                 botaoAceite.gameObject.SetActive(false);
             }
+            // Snapshot dos dados atuais para este evento (evita sobrescrita se outro evento abrir antes do delay)
+            var snapPrefab = ultimoRespawnPrefab;
+            var snapParent = ultimoRespawnParent;
+            var snapPos = ultimoRespawnPos;
+            var snapRot = ultimoRespawnRot;
+            // Novos snapshots específicos do evento e herói para garantir independência entre múltiplos eventos aceitos em sequência
+            var snapEvento = eventoAtual;      // armazena o Evento desta instância
+            var snapHeroi = heroiSelecionado;  // armazena o herói selecionado no momento do aceite
+            // Desativa/destroi ícone original agora (caso ainda esteja visível porque esconderAoAbrir=false)
+            if (origemIconeAtual != null && origemIconeAtual.activeSelf)
+            {
+                origemIconeAtual.SetActive(false);
+                Debug.Log($"[EventoUI] Ícone original desativado no aceite (ID={eventoInstanceId}).");
+            }
             // Fecha a primeira tela do evento
             Fechar();
-            // Agenda o aparecimento do ícone de reabrir após o atraso
-            StartCoroutine(ReabrirAposDelay());
+            // Agenda usando TODOS os snapshots (inclui evento/herói para não serem trocados por outro evento aberto antes do delay)
+            StartCoroutine(ReabrirAposDelaySnapshot(eventoInstanceId, snapPrefab, snapParent, snapPos, snapRot, snapEvento, snapHeroi));
             return;
         }
 
@@ -473,29 +519,43 @@ public class EventoUI : MonoBehaviour
         }
     }
 
-    // Aguarda o atraso e instancia o ícone de reabrir (usando dados fornecidos pelo spawner/ícone)
+    // Compat: versão antiga que usa estado atual (mantida caso algo externo chame)
     IEnumerator ReabrirAposDelay()
+    {
+        // Wrapper legado: captura snapshots atuais (pode estar incorreto se outro evento abriu depois, mas mantém compat). Preferir fluxo novo.
+        yield return ReabrirAposDelaySnapshot(eventoInstanceId ?? "legacy", ultimoRespawnPrefab, ultimoRespawnParent, ultimoRespawnPos, ultimoRespawnRot, eventoAtual, heroiSelecionado);
+    }
+
+    // Nova versão parametrizada: inclui evento/herói para evitar interferência entre múltiplos eventos simultâneos (race conditions)
+    IEnumerator ReabrirAposDelaySnapshot(string instanceId, GameObject prefab, Transform parent, Vector3 pos, Quaternion rot, Evento eventoSnap, HeroiSelecionavel heroiSnap)
     {
         if (delayReabrirSeg > 0f)
             yield return new WaitForSeconds(delayReabrirSeg);
 
-        if (ultimoRespawnPrefab == null)
+        if (prefab == null)
         {
-            Debug.LogWarning("[EventoUI] ReabrirAposDelay: não há prefab registrado para reabrir. Chame DefinirUltimaOrigemIcone ao abrir o evento.");
+            Debug.LogWarning($"[EventoUI] ReabrirAposDelaySnapshot(ID={instanceId}) prefab nulo, nenhum ícone para reabrir.");
             yield break;
         }
 
-        var go = Instantiate(ultimoRespawnPrefab, ultimoRespawnPos, ultimoRespawnRot, ultimoRespawnParent);
-        Debug.Log($"[EventoUI] Ícone de reabrir instanciado: '{go.name}' em {ultimoRespawnPos} (parent='{ultimoRespawnParent?.name ?? "<none>"}')");
+        var go = Instantiate(prefab, pos, rot, parent);
+        Debug.Log($"[EventoUI] Ícone de reabrir instanciado (ID={instanceId}): '{go.name}' em {pos} (parent='{parent?.name ?? "<none>"}') evento='{eventoSnap?.name}' heroi='{heroiSnap?.name}'");
 
-        // Garantir que seja clicável
         if (go.GetComponent<Collider2D>() == null)
             go.AddComponent<BoxCollider2D>();
+        // Se o prefab tiver o componente de clique padrão (EventoIconeClick), removemos para evitar conflito
+        // com o comportamento específico de reabrir (EventoReabrirIcon). Isso evita erro de 'evento não definido'.
+        var clickPadrao = go.GetComponent<EventoIconeClick>();
+        if (clickPadrao != null)
+        {
+            clickPadrao.enabled = false;
+            Destroy(clickPadrao);
+        }
         var reabrirCmp = go.GetComponent<EventoReabrirIcon>();
         if (reabrirCmp == null)
             reabrirCmp = go.AddComponent<EventoReabrirIcon>();
         if (reabrirCmp != null)
-            reabrirCmp.Configurar(this);
+            reabrirCmp.Configurar(this, instanceId, eventoSnap, heroiSnap);
     }
 
     public void AbrirOpcoesFromIcon(GameObject icon)
@@ -506,13 +566,27 @@ public class EventoUI : MonoBehaviour
         if (icon != null) Destroy(icon);
         if (painelEvento != null)
         {
+            if (painelEvento == this.gameObject && !gameObject.activeSelf)
+                gameObject.SetActive(true);
             SetPainelEventoVisivel(true);
             RestaurarLayoutEvento();
         }
         if (botaoAceite != null) botaoAceite.gameObject.SetActive(false);
+        // Atualiza título e descrição com o evento atual (necessário ao reabrir direto em Opções para outro evento)
+        if (nomeEventoText != null) nomeEventoText.text = eventoAtual != null ? eventoAtual.nomeEvento : "";
+        if (descricaoEventoText != null) descricaoEventoText.text = eventoAtual != null ? eventoAtual.descricaoEvento : "";
         SelecionarHeroi(heroiSelecionado);
         GerarBotoesDeOpcoes();
         DebugChildrenEstado();
+    }
+
+    // Abre diretamente a fase de opções a partir de um ícone respawnado, usando os dados vinculados àquele ícone
+    public void AbrirOpcoesFromRespawn(string instanceId, Evento evento, HeroiSelecionavel heroi, GameObject icon)
+    {
+        this.eventoInstanceId = instanceId;
+        this.eventoAtual = evento;
+        this.heroiSelecionado = heroi;
+        AbrirOpcoesFromIcon(icon);
     }
 
     // Oculta tudo exceto título, descrição, slot herói e botão aceite (para fase IntroFiltrada)

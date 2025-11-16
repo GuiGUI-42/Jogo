@@ -14,19 +14,29 @@ public class BagInventoryUI : MonoBehaviour
     {
         if (!slotsRoot) slotsRoot = transform; // assume filhos diretos
         ColetarSlots();
+        // Assina cedo para atualizar mesmo se painel estiver oculto
+        if (InventoryManager.Instance != null)
+        {
+            InventoryManager.Instance.OnInventoryChanged -= RefreshSlotsInterno;
+            InventoryManager.Instance.OnInventoryChanged += RefreshSlotsInterno;
+            Debug.Log("[BagInventoryUI] Subscrito InventoryChanged (Awake)");
+        }
     }
 
     void OnEnable()
     {
         if (InventoryManager.Instance != null)
-            InventoryManager.Instance.OnInventoryChanged += RefreshSlots;
-        if (refreshOnEnable) RefreshSlots();
+        {
+            InventoryManager.Instance.OnInventoryChanged -= RefreshSlotsInterno; // garantir uma única subscrição
+            InventoryManager.Instance.OnInventoryChanged += RefreshSlotsInterno;
+        }
+        if (refreshOnEnable) RefreshSlotsInterno();
     }
 
     void OnDisable()
     {
         if (InventoryManager.Instance != null)
-            InventoryManager.Instance.OnInventoryChanged -= RefreshSlots;
+            InventoryManager.Instance.OnInventoryChanged -= RefreshSlotsInterno;
     }
 
     void ColetarSlots()
@@ -40,7 +50,8 @@ public class BagInventoryUI : MonoBehaviour
         }
     }
 
-    public void RefreshSlots()
+    // Chamado pelo evento e por UI aberta; funciona mesmo inativo
+    void RefreshSlotsInterno()
     {
         if (InventoryManager.Instance == null) return;
         var entries = InventoryManager.Instance.itens;
@@ -48,6 +59,13 @@ public class BagInventoryUI : MonoBehaviour
         for (int i = 0; i < slotImages.Count; i++)
         {
             var slotImg = slotImages[i];
+            // Garante que raycasts estejam ativos (pode ter sido deixado false se drag foi destruído antes de EndDrag)
+            var cg = slotImg.GetComponent<CanvasGroup>();
+            if (cg && cg.blocksRaycasts == false)
+            {
+                cg.blocksRaycasts = true;
+                Debug.Log($"[BagInventoryUI] Reativando blocksRaycasts no slot {i}");
+            }
             if (i < entries.Count)
             {
                 var e = entries[i];
@@ -57,6 +75,20 @@ public class BagInventoryUI : MonoBehaviour
                 slotImg.preserveAspect = true;
                 AtualizarQuantidadeOverlay(slotImg.transform, e.quantidade);
 
+                // Garante drop target por slot (bag)
+                var dropTarget = slotImg.GetComponent<InventorySlotDropTarget>();
+                if (!dropTarget)
+                {
+                    dropTarget = slotImg.gameObject.AddComponent<InventorySlotDropTarget>();
+                    dropTarget.slotTipo = InventorySlotDropTarget.SlotTipo.Bag;
+                    dropTarget.slotIndex = i;
+                }
+                else
+                {
+                    dropTarget.slotTipo = InventorySlotDropTarget.SlotTipo.Bag;
+                    dropTarget.slotIndex = i;
+                }
+
                 // Configura drag
                 var drag = slotImg.GetComponent<DraggableBagSlot>();
                 if (!drag) drag = slotImg.gameObject.AddComponent<DraggableBagSlot>();
@@ -65,17 +97,41 @@ public class BagInventoryUI : MonoBehaviour
                 drag.quantidade = e.quantidade;
                 drag.inventoryIndex = i;
                 drag.sourceImage = slotImg;
+                Debug.Log($"[BagInventoryUI] Slot {i}: asset={e.asset?.name} qtd={e.quantidade} drag=ON");
             }
             else
             {
                 slotImg.sprite = null;
                 slotImg.color = new Color(1,1,1,0.08f);
                 AtualizarQuantidadeOverlay(slotImg.transform, 0);
+                var cg2 = slotImg.GetComponent<CanvasGroup>();
+                if (cg2 && cg2.blocksRaycasts == false)
+                {
+                    cg2.blocksRaycasts = true; // mesmo vazio precisa aceitar drop
+                    Debug.Log($"[BagInventoryUI] Reativando blocksRaycasts em slot vazio {i}");
+                }
                 var drag = slotImg.GetComponent<DraggableBagSlot>();
                 if (drag) Destroy(drag);
+                // Mesmo vazio ainda queremos drop target para permitir receber itens
+                var dropTarget = slotImg.GetComponent<InventorySlotDropTarget>();
+                if (!dropTarget)
+                {
+                    dropTarget = slotImg.gameObject.AddComponent<InventorySlotDropTarget>();
+                    dropTarget.slotTipo = InventorySlotDropTarget.SlotTipo.Bag;
+                    dropTarget.slotIndex = i;
+                }
+                else
+                {
+                    dropTarget.slotTipo = InventorySlotDropTarget.SlotTipo.Bag;
+                    dropTarget.slotIndex = i;
+                }
+                Debug.Log($"[BagInventoryUI] Slot {i}: vazio drag=OFF");
             }
         }
     }
+
+    // Mantém compatibilidade com antigas chamadas públicas
+    public void RefreshSlots() => RefreshSlotsInterno();
 
     void AtualizarQuantidadeOverlay(Transform slot, int quantidade)
     {

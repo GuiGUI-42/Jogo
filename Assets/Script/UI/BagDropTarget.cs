@@ -12,6 +12,7 @@ public class BagDropTarget : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
     {
         img = GetComponent<Image>();
         originalColor = img ? img.color : Color.white;
+        Debug.Log("[BagDropTarget] Awake raycastTarget=" + (img ? img.raycastTarget.ToString() : "nullImage"));
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -29,27 +30,45 @@ public class BagDropTarget : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
         if (img) img.color = originalColor;
         var dragged = eventData.pointerDrag;
         if (!dragged) return;
-        var d = dragged.GetComponent<DraggableDropItem>();
-        if (d != null)
+        // Drop vindo de combate
+        var dropItem = dragged.GetComponent<DraggableDropItem>();
+        if (dropItem != null)
         {
-            var quantidade = Mathf.Max(1, d.quantidade);
-            if (d.item != null)
-            {
-                InventoryManager.Instance.Add(d.item, quantidade);
-            }
-            else if (d.asset != null)
-            {
-                InventoryManager.Instance.AddAsset(d.asset, quantidade);
-            }
-
-            if (d.item != null || d.asset != null)
-            {
-                // Fecha a UI de combate após coletar o item
-                if (EventoCombateUI.Instance != null)
-                {
-                    EventoCombateUI.Instance.Fechar();
-                }
-            }
+            var quantidade = Mathf.Max(1, dropItem.quantidade);
+            if (dropItem.item != null) InventoryManager.Instance.Add(dropItem.item, quantidade);
+            else if (dropItem.asset != null) InventoryManager.Instance.AddAsset(dropItem.asset, quantidade);
+            if (EventoCombateUI.Instance != null) EventoCombateUI.Instance.Fechar();
+            Debug.Log("[BagDropTarget] Recebeu drop de combate: " + (dropItem.item ? dropItem.item.name : dropItem.asset?.name));
+            return;
         }
+
+        // Drop vindo de inventário de herói
+        var heroSlot = dragged.GetComponent<DraggableHeroInventarioSlot>();
+        if (heroSlot != null && (heroSlot.asset || heroSlot.item))
+        {
+            var asset = heroSlot.asset ? heroSlot.asset : heroSlot.item;
+            InventoryManager.Instance.AddAsset(asset, Mathf.Max(1, heroSlot.quantidade));
+            if (heroSlot.heroiAtributos != null)
+            {
+                if (heroSlot.inventoryIndex >= 0)
+                    heroSlot.heroiAtributos.RemoverAssetNoIndice(heroSlot.inventoryIndex);
+                else
+                    heroSlot.heroiAtributos.RemoverAsset(asset);
+            }
+            AtualizarUIs();
+            Debug.Log("[BagDrop] Item movido do herói para a Bag: " + asset.name);
+            return;
+        }
+        Debug.Log("[BagDropTarget] Drop ignorado: sem componente reconhecido.");
+    }
+
+    void AtualizarUIs()
+    {
+        var heroisMenores = FindObjectsByType<HeroiInventarioUI>(FindObjectsSortMode.None);
+        foreach (var ui in heroisMenores) ui.AtualizarInventario();
+        var heroisMaiores = FindObjectsByType<InventarioHeroiUI>(FindObjectsSortMode.None);
+        foreach (var ui in heroisMaiores) ui.AtualizarInventario();
+        var bags = FindObjectsByType<BagInventoryUI>(FindObjectsSortMode.None);
+        foreach (var b in bags) b.RefreshSlots();
     }
 }
