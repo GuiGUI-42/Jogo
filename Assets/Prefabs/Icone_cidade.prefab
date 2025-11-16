@@ -105,6 +105,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EventoIconeClick
   evento: {fileID: 0}
   esconderAoAbrir: 0
-  localIcone: 0
-  aceitaQualquerLocal: 0
+  localIcone: 1
+  aceitaQualquerLocal: 1
   herdarLocalDoEventoSeWildcard: 1

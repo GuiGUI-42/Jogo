@@ -8,6 +8,8 @@ using TMPro;
 public class EventoUI : MonoBehaviour
 {
     public static EventoUI Instance;
+    // Dispara quando um evento é totalmente concluído (após combate ou passivo).
+    public static event Action<EventoLocal, Evento> OnEventoResolvido;
 
     // Fases de visualização do fluxo do evento
     // IntroFiltrada: primeira abertura (ícone) mostrando apenas Título, Descrição, Slot Herói e Botão Aceite
@@ -587,6 +589,26 @@ public class EventoUI : MonoBehaviour
         this.eventoAtual = evento;
         this.heroiSelecionado = heroi;
         AbrirOpcoesFromIcon(icon);
+    }
+
+    // Deve ser chamado pelo fluxo de combate/passivo quando o evento terminar.
+    // Se usar multi-instância futuramente, será movido para painel individual.
+    public void FinalizarEventoAtual()
+    {
+        if (eventoAtual == null)
+        {
+            Debug.LogWarning("[EventoUI] FinalizarEventoAtual chamado sem eventoAtual.");
+            return;
+        }
+        var local = eventoAtual.local;
+        Debug.Log($"[EventoUI] FinalizarEventoAtual: evento='{eventoAtual.name}', local={local}");
+        OnEventoResolvido?.Invoke(local, eventoAtual);
+        // Fecha painel atual (mantém singleton pronto para outro)
+        Fechar();
+        // Limpa estado interno para evitar interferência em novos eventos
+        eventoAtual = null;
+        opcaoSelecionada = null;
+        heroiSelecionado = null;
     }
 
     // Oculta tudo exceto título, descrição, slot herói e botão aceite (para fase IntroFiltrada)

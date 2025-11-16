@@ -508,7 +508,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!224 &67741631
 RectTransform:
@@ -931,8 +931,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PassivoUI
   painelPassivo: {fileID: 296081275}
-  tituloText: {fileID: 0}
+  tituloText: {fileID: 420873545}
   descricaoText: {fileID: 0}
+  slotHeroiImage: {fileID: 0}
 --- !u!1 &300266905
 GameObject:
   m_ObjectHideFlags: 0
@@ -2237,6 +2238,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f32dfddb033d3e40b5841bc53cc1689, type: 3}
+--- !u!224 &705427673 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5858194825181716857, guid: 3325ff6a43edc904eab75037c8a6a8c1, type: 3}
+  m_PrefabInstance: {fileID: 1936055342}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &724473016 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2544506079477701020, guid: 7d550d32954049441ab59c54ab843972, type: 3}
@@ -2836,6 +2842,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Inventario
       objectReference: {fileID: 0}
+    - target: {fileID: 8296164516786512106, guid: 0497fff315e30b64cbdc265fa6915505, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8796748308680662546, guid: 0497fff315e30b64cbdc265fa6915505, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -2928,6 +2938,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1034564159}
   - component: {fileID: 1034564160}
+  - component: {fileID: 1034564161}
   m_Layer: 0
   m_Name: Arvore
   m_TagString: Untagged
@@ -3008,6 +3019,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1034564161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034564158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9dc06ff2e381d447a7b58b9e4fc1a7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EventoLocalPoint
+  local: 1
+  spawnOffset: {x: -14.04001, y: -9.035611, z: 0}
+  habilitado: 1
+  especializarWildcard: 1
+  prefabIconeOverride: {fileID: 0}
 --- !u!4 &1046684082 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 4f32dfddb033d3e40b5841bc53cc1689, type: 3}
@@ -6317,63 +6345,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f32dfddb033d3e40b5841bc53cc1689, type: 3}
---- !u!1 &1384214562
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1384214564}
-  - component: {fileID: 1384214563}
-  m_Layer: 0
-  m_Name: SpawnerFloresta
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1384214563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1384214562}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb105db1a367ccd47a83e68868a2791c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::IconeEventoSpawner
-  eventosDisponiveis:
-  - {fileID: 11400000, guid: 2557c9397f340ce47b38a50e067fe0ed, type: 2}
-  - {fileID: 11400000, guid: aad4ba15b145fce4dae606742199b4c7, type: 2}
-  - {fileID: 11400000, guid: b8340fd43e37395459eec85a3db5125d, type: 2}
-  escolherLocalAleatorio: 0
-  locaisAleatorios: 0000000001000000
-  localFiltro: 1
-  iconePrefabs:
-  - {fileID: 6509758333111850536, guid: 5ecbff89d0fcd444eb4fe3e1b5252369, type: 3}
-  iconeRespawnPrefab: {fileID: 7717870568425524174, guid: 758fad00a766c224ea3020eb94ed864c, type: 3}
-  casaTransform: {fileID: 1034564159}
-  offset: {x: 5, y: 7, z: 0}
-  delayInicial: 10
---- !u!4 &1384214564
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1384214562}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.74924, y: 102.58936, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1469360004
 GameObject:
   m_ObjectHideFlags: 0
@@ -6528,15 +6499,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2557c9397f340ce47b38a50e067fe0ed, type: 2}
   - {fileID: 11400000, guid: aad4ba15b145fce4dae606742199b4c7, type: 2}
   - {fileID: 11400000, guid: b8340fd43e37395459eec85a3db5125d, type: 2}
-  escolherLocalAleatorio: 0
-  locaisAleatorios: 0000000001000000
-  localFiltro: 0
   iconePrefabs:
   - {fileID: 6509758333111850536, guid: 24112bd45db29aa47a49a7f8bf71909a, type: 3}
   iconeRespawnPrefab: {fileID: 7717870568425524174, guid: 758fad00a766c224ea3020eb94ed864c, type: 3}
-  casaTransform: {fileID: 1704292041}
-  offset: {x: 5, y: 7, z: 0}
   delayInicial: 2
+  evitarDuplicarNoMesmoPonto: 1
+  logDetalhado: 1
+  spawnSequencialPorLocalidade: 1
+  delayEntreLocalidades: 5
+  delayRespawnPorLocal: 2
 --- !u!4 &1510762410
 Transform:
   m_ObjectHideFlags: 0
@@ -7306,6 +7277,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1704292041}
   - component: {fileID: 1704292040}
+  - component: {fileID: 1704292042}
   m_Layer: 5
   m_Name: GameObject
   m_TagString: Untagged
@@ -7386,6 +7358,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1815593578}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1704292042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704292039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9dc06ff2e381d447a7b58b9e4fc1a7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EventoLocalPoint
+  local: 0
+  spawnOffset: {x: 0, y: 0, z: 0}
+  habilitado: 1
+  especializarWildcard: 1
+  prefabIconeOverride: {fileID: 0}
 --- !u!1 &1815593577
 GameObject:
   m_ObjectHideFlags: 0
@@ -14466,6 +14455,10 @@ PrefabInstance:
       propertyPath: painelVitoria
       value: 
       objectReference: {fileID: 228005488}
+    - target: {fileID: 4543745999146985268, guid: 3325ff6a43edc904eab75037c8a6a8c1, type: 3}
+      propertyPath: slotItensHeroiContainer
+      value: 
+      objectReference: {fileID: 705427673}
     - target: {fileID: 4917628181644161969, guid: 3325ff6a43edc904eab75037c8a6a8c1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -15098,7 +15091,6 @@ SceneRoots:
   - {fileID: 67741631}
   - {fileID: 611740489}
   - {fileID: 1510762410}
-  - {fileID: 1384214564}
   - {fileID: 747094161}
   - {fileID: 1815593578}
   - {fileID: 24955644}
