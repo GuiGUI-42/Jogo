@@ -6902,9 +6902,14 @@ MonoBehaviour:
   delayInicial: 2
   evitarDuplicarNoMesmoPonto: 1
   logDetalhado: 1
+  logContagemRespawn: 1
   spawnSequencialPorLocalidade: 1
   delayEntreLocalidades: 5
   delayRespawnPorLocal: 2
+  usarWatchdog: 1
+  watchdogInterval: 3
+  watchdogTimeout: 15
+  watchdogDestruirIconeTimeout: 1
 --- !u!4 &1510762410
 Transform:
   m_ObjectHideFlags: 0

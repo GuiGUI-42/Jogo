@@ -23,6 +23,10 @@ public class EventoSpawner : MonoBehaviour
     [Tooltip("Log detalhado para depuração.")]
     public bool logDetalhado = true;
 
+    [Header("Debug Contagem")]
+    [Tooltip("Logar contagem de spawns/respawns por local para depuração.")]
+    public bool logContagemRespawn = true;
+
     [Header("Sequencial por Localidade")]
     [Tooltip("Se verdadeiro, spawna um ícone por localidade em sequência ao iniciar.")]
     public bool spawnSequencialPorLocalidade = true;
@@ -31,10 +35,33 @@ public class EventoSpawner : MonoBehaviour
     [Tooltip("Delay para respawn após resolver evento daquele local.")]
     public float delayRespawnPorLocal = 2f;
 
+    [Header("Watchdog Looping")]
+    [Tooltip("Ativa verificação contínua para garantir respawn infinito.")]
+    public bool usarWatchdog = true;
+    [Tooltip("Intervalo entre varreduras do watchdog (segundos).")]
+    public float watchdogInterval = 10f;
+    [Tooltip("Tempo máximo bloqueado antes de forçar respawn (segundos). 0 desativa timeout.")]
+    public float watchdogTimeout = 60f;
+    [Tooltip("Destruir ícone antigo quando ocorrer timeout.")]
+    public bool watchdogDestruirIconeTimeout = true;
+
     // Controle de bloqueio por local (um evento ativo/ícone pendente por local)
     readonly HashSet<EventoLocal> locaisBloqueados = new HashSet<EventoLocal>();
     // Ícone atualmente spawnado por local (para verificação extra / limpeza futura)
     readonly Dictionary<EventoLocal, GameObject> iconeAtualPorLocal = new Dictionary<EventoLocal, GameObject>();
+    // Timestamp de quando o local foi bloqueado
+    readonly Dictionary<EventoLocal, float> tempoBloqueioInicio = new Dictionary<EventoLocal, float>();
+    // Momento futuro (Time.time) em que um respawn manual/planejado poderá ocorrer (delay de aceite da Intro)
+    readonly Dictionary<EventoLocal, float> respawnAgendadoAposTempo = new Dictionary<EventoLocal, float>();
+
+    // Contadores para debug
+    readonly Dictionary<EventoLocal, int> contagemSpawnInicialPorLocal = new Dictionary<EventoLocal, int>();
+    readonly Dictionary<EventoLocal, int> contagemRespawnPorLocal = new Dictionary<EventoLocal, int>();
+
+    // Evento exclusivo por local durante o ciclo de vida (até finalizar combate/passivo)
+    readonly Dictionary<EventoLocal, Evento> eventoExclusivoPorLocal = new Dictionary<EventoLocal, Evento>();
+
+    Coroutine watchdogCoroutine;
 
     void OnEnable()
     {
@@ -44,6 +71,11 @@ public class EventoSpawner : MonoBehaviour
     void OnDisable()
     {
         EventoUI.OnEventoResolvido -= HandleEventoResolvido;
+        if (watchdogCoroutine != null)
+        {
+            StopCoroutine(watchdogCoroutine);
+            watchdogCoroutine = null;
+        }
     }
 
     void Start()
@@ -52,6 +84,9 @@ public class EventoSpawner : MonoBehaviour
             StartCoroutine(SpawnSequencialInicial());
         else
             StartCoroutine(SpawnTodosAposDelay());
+
+        if (usarWatchdog && watchdogCoroutine == null)
+            watchdogCoroutine = StartCoroutine(WatchdogLoop());
     }
 
     void HandleEventoResolvido(EventoLocal local, Evento evento)
@@ -62,6 +97,9 @@ public class EventoSpawner : MonoBehaviour
                 Debug.Log($"[EventoSpawner] Evento resolvido para local {local}. Liberando para próximo spawn.");
             locaisBloqueados.Remove(local);
         }
+        tempoBloqueioInicio.Remove(local);
+        respawnAgendadoAposTempo.Remove(local);
+        eventoExclusivoPorLocal.Remove(local); // libera vínculo exclusivo do evento para este local
         if (delayRespawnPorLocal > 0f)
             StartCoroutine(SpawnLocalAposDelay(local, delayRespawnPorLocal));
         else
@@ -389,6 +427,18 @@ public class EventoSpawner : MonoBehaviour
         // Bloqueia local até resolução
         locaisBloqueados.Add(localAlvo);
         if (iconeAtualPorLocal.ContainsKey(localAlvo)) iconeAtualPorLocal[localAlvo] = iconeInstanciado; else iconeAtualPorLocal.Add(localAlvo, iconeInstanciado);
+        tempoBloqueioInicio[localAlvo] = Time.time;
+        // Se havia um respawn agendado para depois desse momento, já cumpriu; remove para evitar interferência.
+        respawnAgendadoAposTempo.Remove(localAlvo);
+
+        // Define vínculo exclusivo do evento para o local até finalizar o evento
+        eventoExclusivoPorLocal[localAlvo] = eventoAleatorio;
+
+        // Contagem de spawn inicial (debug)
+        if (!contagemSpawnInicialPorLocal.ContainsKey(localAlvo)) contagemSpawnInicialPorLocal[localAlvo] = 0;
+        contagemSpawnInicialPorLocal[localAlvo]++;
+        if (logContagemRespawn)
+            Debug.Log($"[EventoSpawner][Debug] Spawn inicial local={localAlvo} total={contagemSpawnInicialPorLocal[localAlvo]}");
     }
 
     // Context menu para diagnosticar especificamente a localidade Floresta
@@ -414,5 +464,162 @@ public class EventoSpawner : MonoBehaviour
                 Debug.Log($"    - name='{pt.name}' ativoGO={pt.gameObject.activeSelf} habilitado={pt.habilitado} offset={pt.spawnOffset}");
             }
         }
+    }
+
+    IEnumerator WatchdogLoop()
+    {
+        while (usarWatchdog)
+        {
+            float intervalo = watchdogInterval > 0f ? watchdogInterval : 1f;
+            yield return new WaitForSeconds(intervalo);
+            foreach (var local in locaisBloqueados.ToArray())
+            {
+                iconeAtualPorLocal.TryGetValue(local, out var go);
+                bool ativo = go != null && go.activeSelf;
+                if (!ativo)
+                {
+                    // Se existe um respawn agendado e o tempo ainda não chegou, apenas continuar aguardando.
+                    if (respawnAgendadoAposTempo.TryGetValue(local, out var tResp) && Time.time < tResp)
+                    {
+                        if (logDetalhado)
+                            Debug.Log($"[EventoSpawner][Watchdog] Aguardando respawn agendado para local {local} (faltam {tResp - Time.time:0.0}s).");
+                        continue;
+                    }
+                    if (!tempoBloqueioInicio.ContainsKey(local)) tempoBloqueioInicio[local] = Time.time;
+                    var elapsedSemIcone = Time.time - tempoBloqueioInicio[local];
+                    // Sem ícone e sem respawn agendado: manter bloqueado, a não ser que estoure timeout
+                    if (watchdogTimeout > 0f && elapsedSemIcone >= watchdogTimeout)
+                    {
+                        if (logDetalhado)
+                            Debug.Log($"[EventoSpawner][Watchdog] Timeout {elapsedSemIcone:0.0}s sem ícone no local {local}. Forçando respawn do MESMO evento.");
+                        if (watchdogDestruirIconeTimeout && go != null)
+                            Destroy(go);
+                        // Não desbloqueia: respawna o mesmo evento e mantém exclusividade
+                        tempoBloqueioInicio[local] = Time.time; // reinicia janela
+                        respawnAgendadoAposTempo.Remove(local);
+                        RespawnMesmoEventoNoLocal(local);
+                    }
+                    else
+                    {
+                        if (logDetalhado)
+                            Debug.Log($"[EventoSpawner][Watchdog] Local {local} bloqueado sem ícone (aguardando fluxo da UI).");
+                    }
+                    continue;
+                }
+                if (!tempoBloqueioInicio.ContainsKey(local)) tempoBloqueioInicio[local] = Time.time;
+                if (watchdogTimeout > 0f && tempoBloqueioInicio.TryGetValue(local, out var t0))
+                {
+                    var elapsed = Time.time - t0;
+                    if (elapsed >= watchdogTimeout)
+                    {
+                        // Respeita respawn agendado: só forçar se já passou do tempo previsto
+                        if (respawnAgendadoAposTempo.TryGetValue(local, out var tResp2) && Time.time < tResp2)
+                        {
+                            if (logDetalhado)
+                                Debug.Log($"[EventoSpawner][Watchdog] Timeout atingido mas aguardando respawn agendado futuro para local {local}." );
+                            continue;
+                        }
+                        if (logDetalhado)
+                            Debug.Log($"[EventoSpawner][Watchdog] Timeout {elapsed:0.0}s em local {local}. Forçando respawn do MESMO evento.");
+                        if (watchdogDestruirIconeTimeout && go != null)
+                            Destroy(go);
+                        // Mantém bloqueio e respawna o mesmo evento
+                        tempoBloqueioInicio[local] = Time.time;
+                        respawnAgendadoAposTempo.Remove(local);
+                        RespawnMesmoEventoNoLocal(local);
+                    }
+                }
+            }
+        }
+    }
+
+    // Recria um ícone para o mesmo evento exclusivo do local (sem liberar bloqueio)
+    void RespawnMesmoEventoNoLocal(EventoLocal local)
+    {
+        if (!eventoExclusivoPorLocal.TryGetValue(local, out var eventoFixo) || eventoFixo == null)
+        {
+            Debug.LogWarning($"[EventoSpawner] RespawnMesmoEventoNoLocal: nenhum evento fixo registrado para {local}. Abortando respawn dedicado.");
+            return;
+        }
+
+        // Escolhe um ponto válido para o local
+        var todos = UnityEngine.Object.FindObjectsByType<EventoLocalPoint>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        var pontos = todos.Where(p => p != null && p.habilitado && p.local.Equals(local)).ToList();
+        if (pontos.Count == 0)
+        {
+            Debug.LogWarning($"[EventoSpawner] RespawnMesmoEventoNoLocal: nenhum ponto habilitado para {local}.");
+            return;
+        }
+        var pontoEscolhido = pontos[Random.Range(0, pontos.Count)];
+
+        // Prefab de ícone compatível
+        GameObject prefabIcone = pontoEscolhido.prefabIconeOverride;
+        if (prefabIcone == null)
+        {
+            var listaCompatíveis = (iconePrefabs ?? new GameObject[0])
+                .Where(p => p != null)
+                .Select(p => new { prefab = p, clic = p.GetComponent<EventoIconeClick>() })
+                .Where(pc => pc.clic != null)
+                .Where(pc => pc.clic.aceitaQualquerLocal || pc.clic.localIcone == local)
+                .Select(pc => pc.prefab)
+                .ToList();
+            prefabIcone = listaCompatíveis.Count > 0 ? listaCompatíveis[Random.Range(0, listaCompatíveis.Count)] : (iconePrefabs != null && iconePrefabs.Length > 0 ? iconePrefabs[Random.Range(0, iconePrefabs.Length)] : null);
+        }
+        if (prefabIcone == null)
+        {
+            Debug.LogError($"[EventoSpawner] RespawnMesmoEventoNoLocal: nenhum prefab disponível para {local}.");
+            return;
+        }
+
+        // Spawn direto (mesmo evento), preservando bloqueio
+        SpawnIconeEmPonto(pontoEscolhido, prefabIcone, eventoFixo, false);
+    }
+
+    // Chamado pela UI ao aceitar evento e agendar respawn do ícone de reabrir
+    public void AgendarRespawnLocal(EventoLocal local, float delaySeg)
+    {
+        if (delaySeg <= 0f)
+        {
+            // Se delay zero, não agenda; watchdog pode reutilizar lógica padrão
+            respawnAgendadoAposTempo.Remove(local);
+            return;
+        }
+        var t = Time.time + delaySeg;
+        respawnAgendadoAposTempo[local] = t;
+        if (logDetalhado)
+            Debug.Log($"[EventoSpawner] Respawn agendado para local {local} em {delaySeg:0.##}s (t={t:0.##}).");
+    }
+
+    // Permite que a UI registre um novo ícone (reabrir) para um local bloqueado sem que o watchdog force outro
+    public void RegistrarIconeLocal(EventoLocal local, GameObject iconGO)
+    {
+        if (iconGO == null) return;
+        if (!locaisBloqueados.Contains(local))
+            locaisBloqueados.Add(local); // garante estado consistente
+        iconeAtualPorLocal[local] = iconGO;
+        tempoBloqueioInicio[local] = Time.time; // reinicia contagem
+        // Respawn cumprido
+        respawnAgendadoAposTempo.Remove(local);
+        if (logDetalhado)
+            Debug.Log($"[EventoSpawner] Ícone registrado manualmente para local {local}: '{iconGO.name}'.");
+
+        // Atualiza/afirma o vínculo do evento exclusivo com base no componente do ícone
+        // Preferimos dados do ícone de reabrir (são garantidos para respawn), e só caímos no binder para ícones originais
+        Evento eventoVinculado = null;
+        var reabrir = iconGO.GetComponent<EventoReabrirIcon>();
+        if (reabrir != null && reabrir.evento != null) eventoVinculado = reabrir.evento;
+        if (eventoVinculado == null)
+        {
+            var binder = iconGO.GetComponent<EventoIconeOrigemBinder>();
+            if (binder != null && binder.eventoRef != null) eventoVinculado = binder.eventoRef;
+        }
+        if (eventoVinculado != null)
+            eventoExclusivoPorLocal[local] = eventoVinculado;
+
+        // Contagem de respawn (debug)
+        if (!contagemRespawnPorLocal.ContainsKey(local)) contagemRespawnPorLocal[local] = 0;
+        contagemRespawnPorLocal[local]++;
+        if (logContagemRespawn)
+            Debug.Log($"[EventoSpawner][Debug] Respawn local={local} total={contagemRespawnPorLocal[local]}");
     }
 }

@@ -453,6 +453,13 @@ public class EventoUI : MonoBehaviour
                 botaoAceite.interactable = false;
                 botaoAceite.gameObject.SetActive(false);
             }
+            // Informa o spawner para manter o local bloqueado e aguardar o respawn previsto
+            if (eventoAtual != null)
+            {
+                var spawner = UnityEngine.Object.FindFirstObjectByType<EventoSpawner>(FindObjectsInactive.Include);
+                if (spawner != null)
+                    spawner.AgendarRespawnLocal(eventoAtual.local, delayReabrirSeg);
+            }
             // Snapshot dos dados atuais para este evento (evita sobrescrita se outro evento abrir antes do delay)
             var snapPrefab = ultimoRespawnPrefab;
             var snapParent = ultimoRespawnParent;
@@ -553,11 +560,23 @@ public class EventoUI : MonoBehaviour
             clickPadrao.enabled = false;
             Destroy(clickPadrao);
         }
+        // Evita herdar binder serializado do prefab de respawn (pode conter evento antigo de outro prefab)
+        var binderPrefab = go.GetComponent<EventoIconeOrigemBinder>();
+        if (binderPrefab != null)
+            Destroy(binderPrefab);
         var reabrirCmp = go.GetComponent<EventoReabrirIcon>();
         if (reabrirCmp == null)
             reabrirCmp = go.AddComponent<EventoReabrirIcon>();
         if (reabrirCmp != null)
             reabrirCmp.Configurar(this, instanceId, eventoSnap, heroiSnap);
+
+        // Registra o novo ícone no spawner para manter bloqueio e telemetria de respawn por local
+        if (eventoSnap != null)
+        {
+            var spawner = UnityEngine.Object.FindFirstObjectByType<EventoSpawner>(FindObjectsInactive.Include);
+            if (spawner != null)
+                spawner.RegistrarIconeLocal(eventoSnap.local, go);
+        }
     }
 
     public void AbrirOpcoesFromIcon(GameObject icon)

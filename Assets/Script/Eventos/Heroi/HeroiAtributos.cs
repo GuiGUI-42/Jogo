@@ -1,5 +1,7 @@
 using UnityEngine;
 
+// Versão consolidada do componente de atributos do herói.
+// Mantém suporte a base (ScriptableObject Heroi) e inventário, além de utilitário GetValorAtributo.
 public class HeroiAtributos : MonoBehaviour, IAtributos
 {
     [Header("Base (ScriptableObject)")]
@@ -17,7 +19,6 @@ public class HeroiAtributos : MonoBehaviour, IAtributos
     [Tooltip("Slots atuais do inventário do herói (podem incluir itens iniciais).")]
     public ScriptableObject[] slotsInventario = new ScriptableObject[9];
 
-    // Evento disparado sempre que o inventário (slotsInventario) é alterado
     public System.Action<HeroiAtributos> OnInventarioAlterado;
 
     void Awake()
@@ -29,12 +30,12 @@ public class HeroiAtributos : MonoBehaviour, IAtributos
     public void ResetarParaBase()
     {
         if (baseAtributos == null) return;
-        forcaAtual       = baseAtributos.forca;
-        carismaAtual     = baseAtributos.carisma;
-        sabedoriaAtual   = baseAtributos.sabedoria;
-        inteligenciaAtual= baseAtributos.inteligencia;
-        vitalidadeAtual  = baseAtributos.vitalidade;
-        destrezaAtual    = baseAtributos.destreza;
+        forcaAtual        = baseAtributos.forca;
+        carismaAtual      = baseAtributos.carisma;
+        sabedoriaAtual    = baseAtributos.sabedoria;
+        inteligenciaAtual = baseAtributos.inteligencia;
+        vitalidadeAtual   = baseAtributos.vitalidade;
+        destrezaAtual     = baseAtributos.destreza;
     }
 
     void InicializarInventario()
@@ -56,7 +57,7 @@ public class HeroiAtributos : MonoBehaviour, IAtributos
                 return true;
             }
         }
-        return false; // sem espaço
+        return false;
     }
 
     public bool RemoverAssetNoIndice(int index)
@@ -85,11 +86,26 @@ public class HeroiAtributos : MonoBehaviour, IAtributos
         return false;
     }
 
-    // Implementação da interface IAtributos
+    // Implementação IAtributos via propriedades atuais
     public int forca => forcaAtual;
     public int carisma => carismaAtual;
     public int sabedoria => sabedoriaAtual;
     public int inteligencia => inteligenciaAtual;
     public int vitalidade => vitalidadeAtual;
     public int destreza => destrezaAtual;
+
+    // Utilitário compatível com PassivoUI
+    public int GetValorAtributo(TipoAtributo tipo)
+    {
+        switch (tipo)
+        {
+            case TipoAtributo.Forca: return forca;
+            case TipoAtributo.Carisma: return carisma;
+            case TipoAtributo.Sabedoria: return sabedoria;
+            case TipoAtributo.Inteligencia: return inteligencia;
+            case TipoAtributo.Vitalidade: return vitalidade;
+            case TipoAtributo.Destreza: return destreza;
+            default: return 0;
+        }
+    }
 }

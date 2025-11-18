@@ -15,6 +15,10 @@ public class EventoCombateUI : MonoBehaviour
     [Header("Drop de Item")]
     public GameObject dropItemRoot;      // GameObject que mostra o item dropado (ex.: Image)
     public Image dropItemImage;          // Image dentro de dropItemRoot
+    [Header("Derrota")]
+    [Tooltip("Root contendo o botão para finalizar/continuar quando houver derrota.")]
+    public GameObject finalizarRoot;
+    public Button finalizarButton;
     // Monstro
     public TMP_Text nomeMonstroText;
     public Image monstroImage;
@@ -76,6 +80,14 @@ public class EventoCombateUI : MonoBehaviour
         {
             dropItemImage = dropItemRoot.GetComponentInChildren<Image>(true);
         }
+        // Localiza UI de finalizar automaticamente, se não ligado
+        if (!finalizarRoot)
+        {
+            var tFin = transform.Find("Finalizar");
+            if (tFin) finalizarRoot = tFin.gameObject;
+        }
+        if (!finalizarButton && finalizarRoot)
+            finalizarButton = finalizarRoot.GetComponentInChildren<Button>(true);
 
         itemSlots.Clear();
         if (slotItensContainer)
@@ -101,6 +113,8 @@ public class EventoCombateUI : MonoBehaviour
         if (painelVitoria) painelVitoria.SetActive(false);
         if (painelDerrota) painelDerrota.SetActive(false);
         if (dropItemRoot) dropItemRoot.SetActive(false);
+        if (finalizarRoot) finalizarRoot.SetActive(false);
+        else if (finalizarButton) finalizarButton.gameObject.SetActive(false);
 
         combateSistema = GetComponent<CombateSistema>();
         if (!combateSistema) combateSistema = gameObject.AddComponent<CombateSistema>();
@@ -266,6 +280,8 @@ public class EventoCombateUI : MonoBehaviour
         if (painelVitoria) painelVitoria.SetActive(false);
         if (painelDerrota) painelDerrota.SetActive(false);
         if (dropItemRoot) dropItemRoot.SetActive(false);
+        if (finalizarRoot) finalizarRoot.SetActive(false);
+        else if (finalizarButton) finalizarButton.gameObject.SetActive(false);
     }
 
     void MostrarApenasDrop(Sprite spriteVisual, ScriptableObject asset, Item itemInventario, int quantidade)
@@ -394,6 +410,8 @@ public class EventoCombateUI : MonoBehaviour
         if (painelVitoria) painelVitoria.SetActive(false);
         if (painelDerrota) painelDerrota.SetActive(false);
         if (dropItemRoot) dropItemRoot.SetActive(false);
+        if (finalizarRoot) finalizarRoot.SetActive(false);
+        else if (finalizarButton) finalizarButton.gameObject.SetActive(false);
     }
 
     void AtualizarBarrasDeVida(float heroiVida, float heroiMax, float monstroVida, float monstroMax)
@@ -465,8 +483,8 @@ public class EventoCombateUI : MonoBehaviour
         }
         else
         {
-            // Derrota: não há drop; fecha a UI de combate
-            Fechar();
+            // Derrota: ao invés de fechar diretamente, mostra botão finalizar
+            MostrarApenasBotaoFinalizar();
         }
     }
 
@@ -474,6 +492,39 @@ public class EventoCombateUI : MonoBehaviour
     {
         var t = transform.Find(path);
         if (t) t.gameObject.SetActive(ativo);
+    }
+
+    void MostrarApenasBotaoFinalizar()
+    {
+        if (painelCombate) painelCombate.SetActive(true);
+        // Oculta elementos principais e qualquer drop/resultado
+        AtivarSecao("SlotMonstro", false);
+        AtivarSecao("SlotHeroi", false);
+        AtivarSecao("Nome", false);
+        if (barraVidaHeroi) barraVidaHeroi.gameObject.SetActive(false);
+        if (barraVidaMonstro) barraVidaMonstro.gameObject.SetActive(false);
+        if (painelVitoria) painelVitoria.SetActive(false);
+        if (painelDerrota) painelDerrota.SetActive(false);
+        if (dropItemRoot) dropItemRoot.SetActive(false);
+
+        // Suporta dois cenários: com root dedicado ou apenas o botão ligado diretamente
+        GameObject host = finalizarRoot ? finalizarRoot : (finalizarButton ? finalizarButton.gameObject : null);
+        if (!host) return;
+        host.SetActive(true);
+
+        if (!finalizarButton && finalizarRoot)
+            finalizarButton = finalizarRoot.GetComponentInChildren<Button>(true);
+        if (finalizarButton)
+        {
+            finalizarButton.onClick.RemoveAllListeners();
+            finalizarButton.onClick.AddListener(() =>
+            {
+                // Fecha a UI de combate e finaliza o evento no sistema principal
+                Fechar();
+                var ui = EventoUI.EnsureInstance();
+                if (ui != null) ui.FinalizarEventoAtual();
+            });
+        }
     }
 }
 
