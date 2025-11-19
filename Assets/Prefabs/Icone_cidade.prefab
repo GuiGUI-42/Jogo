@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2301919668061186742}
   - component: {fileID: 1443237061692954824}
   - component: {fileID: 856651560940891102}
+  - component: {fileID: -1790396865373158122}
   m_Layer: 0
   m_Name: Icone_cidade
   m_TagString: Untagged
@@ -108,3 +109,17 @@ MonoBehaviour:
   localIcone: 1
   aceitaQualquerLocal: 1
   herdarLocalDoEventoSeWildcard: 1
+--- !u!114 &-1790396865373158122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6509758333111850536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daa33e0a77f71e74796a2e34d38f04a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EventoIconeOrigemBinder
+  prefabRef: {fileID: 6509758333111850536}
+  eventoRef: {fileID: 0}

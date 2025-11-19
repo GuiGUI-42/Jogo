@@ -37,7 +37,7 @@ public class BagDropTarget : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
             var quantidade = Mathf.Max(1, dropItem.quantidade);
             if (dropItem.item != null) InventoryManager.Instance.Add(dropItem.item, quantidade);
             else if (dropItem.asset != null) InventoryManager.Instance.AddAsset(dropItem.asset, quantidade);
-            if (EventoCombateUI.Instance != null) EventoCombateUI.Instance.Fechar();
+            // Removido: referência a EventoCombateUI
             Debug.Log("[BagDropTarget] Recebeu drop de combate: " + (dropItem.item ? dropItem.item.name : dropItem.asset?.name));
             return;
         }

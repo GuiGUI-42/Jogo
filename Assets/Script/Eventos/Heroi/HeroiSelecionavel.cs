@@ -37,9 +37,6 @@ public class HeroiSelecionavel : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
-            EventoUI.Instance.SelecionarHeroi(this);
-        else if (eventData.button == PointerEventData.InputButton.Right)
-            FindFirstObjectByType<HUDPersonagens>().AbrirInventarioHeroi(this);
+        // Removido: referência a EventoUI e HUDPersonagens
     }
 }

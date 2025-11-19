@@ -1138,6 +1138,72 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b0084fb56aeb6e4e90f88a0def84cf0, type: 3}
+--- !u!1 &357175814
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 357175816}
+  - component: {fileID: 357175815}
+  m_Layer: 0
+  m_Name: Spawner_Floresta
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &357175815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 357175814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb105db1a367ccd47a83e68868a2791c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IconeEventoSpawner
+  restringirAoLocal: 1
+  localResponsavel: 1
+  eventosDisponiveis:
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 840ed5a2f597c3047957e4ff7dc4d2c6, type: 2}
+  - {fileID: 11400000, guid: b8340fd43e37395459eec85a3db5125d, type: 2}
+  iconePrefabs:
+  - {fileID: 6509758333111850536, guid: 24112bd45db29aa47a49a7f8bf71909a, type: 3}
+  iconeRespawnPrefab: {fileID: 0}
+  delayInicial: 2
+  evitarDuplicarNoMesmoPonto: 1
+  logDetalhado: 1
+  logContagemRespawn: 1
+  spawnSequencialPorLocalidade: 1
+  delayEntreLocalidades: 3
+  delayRespawnPorLocal: 2
+  usarWatchdog: 1
+  watchdogInterval: 1
+  watchdogTimeout: 80
+  watchdogDestruirIconeTimeout: 0
+  congelarTimersComUIAtiva: 1
+  congelarSomenteSeUIDoMeuLocal: 1
+--- !u!4 &357175816
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 357175814}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.74924, y: 102.58936, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &364980308 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 4f32dfddb033d3e40b5841bc53cc1689, type: 3}
@@ -6892,19 +6958,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb105db1a367ccd47a83e68868a2791c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IconeEventoSpawner
+  restringirAoLocal: 0
+  localResponsavel: 0
   eventosDisponiveis:
   - {fileID: 11400000, guid: 2557c9397f340ce47b38a50e067fe0ed, type: 2}
   - {fileID: 11400000, guid: aad4ba15b145fce4dae606742199b4c7, type: 2}
-  - {fileID: 11400000, guid: b8340fd43e37395459eec85a3db5125d, type: 2}
+  - {fileID: 0}
   iconePrefabs:
   - {fileID: 6509758333111850536, guid: 24112bd45db29aa47a49a7f8bf71909a, type: 3}
-  iconeRespawnPrefab: {fileID: 7717870568425524174, guid: 758fad00a766c224ea3020eb94ed864c, type: 3}
+  iconeRespawnPrefab: {fileID: 0}
   delayInicial: 2
   evitarDuplicarNoMesmoPonto: 1
   logDetalhado: 1
+  logContagemRespawn: 1
   spawnSequencialPorLocalidade: 1
-  delayEntreLocalidades: 5
+  delayEntreLocalidades: 3
   delayRespawnPorLocal: 2
+  usarWatchdog: 1
+  watchdogInterval: 1
+  watchdogTimeout: 80
+  watchdogDestruirIconeTimeout: 0
+  congelarTimersComUIAtiva: 1
+  congelarSomenteSeUIDoMeuLocal: 1
 --- !u!4 &1510762410
 Transform:
   m_ObjectHideFlags: 0
@@ -15580,6 +15655,7 @@ SceneRoots:
   - {fileID: 67741631}
   - {fileID: 611740489}
   - {fileID: 1510762410}
+  - {fileID: 357175816}
   - {fileID: 747094161}
   - {fileID: 1815593578}
   - {fileID: 24955644}
