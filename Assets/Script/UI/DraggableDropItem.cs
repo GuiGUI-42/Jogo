@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System; // Necessário para Action
 
 public class DraggableDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -11,7 +12,10 @@ public class DraggableDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler,
     public ScriptableObject asset;
 
     [Header("Referências")]
-    public Image sourceImage; // a Image que mostra o ícone do item
+    public Image sourceImage;
+
+    // Evento para avisar quem estiver ouvindo (EventoCombateUI) que o item foi entregue
+    public event Action OnItemArrastadoComSucesso;
 
     Canvas canvas;
     GameObject dragIcon;
@@ -34,8 +38,8 @@ public class DraggableDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler,
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (sourceImage == null || canvas == null) return;
-        // Permite drag mesmo sem 'item' se houver 'asset' genérico com sprite
         if (item == null && asset == null) return;
+
         dragIcon = new GameObject("DragIcon", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
         dragIcon.transform.SetParent(canvas.transform, false);
         var img = dragIcon.GetComponent<Image>();
@@ -45,6 +49,7 @@ public class DraggableDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler,
         (dragIcon.transform as RectTransform).sizeDelta = (sourceImage.transform as RectTransform).rect.size;
 
         sourceCanvasGroup.alpha = 0.6f;
+        sourceCanvasGroup.blocksRaycasts = false; // Importante: Permitir que o raycast passe para o alvo (Bag)
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -63,5 +68,13 @@ public class DraggableDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler,
             dragIcon = null;
         }
         sourceCanvasGroup.alpha = 1f;
+        sourceCanvasGroup.blocksRaycasts = true;
+    }
+
+    // Método chamado pelos "Recebedores" (BagDropTarget, InventorySlotDropTarget)
+    public void NotificarSucesso()
+    {
+        Debug.Log("[DraggableDropItem] Sucesso notificado! Disparando evento...");
+        OnItemArrastadoComSucesso?.Invoke();
     }
 }

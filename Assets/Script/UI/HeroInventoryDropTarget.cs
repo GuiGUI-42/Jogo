@@ -41,14 +41,16 @@ public class HeroInventoryDropTarget : MonoBehaviour, IDropHandler, IPointerEnte
         if (!draggedGO) return;
         Debug.Log("[HeroDrop] OnDrop pointerDrag='" + draggedGO.name + "'");
 
-        // Bag slot
+        // ---------------------------------------------------------
+        // Bag -> Herói
+        // ---------------------------------------------------------
         var bagSlot = draggedGO.GetComponent<DraggableBagSlot>();
         if (bagSlot != null && (bagSlot.asset || bagSlot.item))
         {
-            // Sempre usa estado atual da bag
             ScriptableObject asset = null;
             if (InventoryManager.Instance != null && bagSlot.inventoryIndex >= 0 && bagSlot.inventoryIndex < InventoryManager.Instance.itens.Count)
                 asset = InventoryManager.Instance.itens[bagSlot.inventoryIndex].asset;
+            
             if (heroiAtributos.TentarAdicionarAsset(asset))
             {
                 InventoryManager.Instance.RemoveAsset(asset, 1);
@@ -62,62 +64,65 @@ public class HeroInventoryDropTarget : MonoBehaviour, IDropHandler, IPointerEnte
             }
             return;
         }
-        else
+        
+        // ---------------------------------------------------------
+        // Drop direto de Combate (NOTIFICAR SUCESSO AQUI)
+        // ---------------------------------------------------------
+        var dropItem = draggedGO.GetComponent<DraggableDropItem>();
+        if (dropItem != null && (dropItem.asset || dropItem.item))
         {
-            // Drop vindo diretamente de combate (DraggableDropItem)
-            var dropItem = draggedGO.GetComponent<DraggableDropItem>();
-            if (dropItem != null && (dropItem.asset || dropItem.item))
+            var asset = dropItem.asset ? dropItem.asset : dropItem.item;
+            if (heroiAtributos.TentarAdicionarAsset(asset))
             {
-                var asset = dropItem.asset ? dropItem.asset : dropItem.item;
-                if (heroiAtributos.TentarAdicionarAsset(asset))
-                {
-                    Debug.Log("[HeroDrop] Item coletado do drop diretamente para o herói: " + asset.name);
-                    SincronizarHerois();
-                    AtualizarUIs();
-                }
-                else
-                {
-                    Debug.Log("[HeroDrop] Inventário do herói cheio (drop direto).");
-                }
-                return;
+                Debug.Log("[HeroDrop] Item coletado do drop diretamente para o herói: " + asset.name);
+                SincronizarHerois();
+                AtualizarUIs();
+                
+                // IMPORTANTE: Avisa o drop
+                dropItem.NotificarSucesso();
             }
             else
             {
-                // Transferência entre heróis
-                var heroSlot = draggedGO.GetComponent<DraggableHeroInventarioSlot>();
-                if (heroSlot != null && (heroSlot.asset || heroSlot.item))
-                {
-                    // Sempre usa estado atual do slot origem
-                    ScriptableObject asset = null;
-                    if (heroSlot.heroiAtributos != null && heroSlot.inventoryIndex >= 0 && heroSlot.inventoryIndex < heroSlot.heroiAtributos.slotsInventario.Length)
-                        asset = heroSlot.heroiAtributos.slotsInventario[heroSlot.inventoryIndex];
-                    if (heroiAtributos.TentarAdicionarAsset(asset))
-                    {
-                        if (heroSlot.heroiAtributos != null)
-                        {
-                            if (heroSlot.inventoryIndex >= 0)
-                                heroSlot.heroiAtributos.RemoverAssetNoIndice(heroSlot.inventoryIndex);
-                            else
-                                heroSlot.heroiAtributos.RemoverAsset(asset);
-                        }
-                        SincronizarHerois();
-                        AtualizarUIs();
-                        Debug.Log("[HeroDrop] Item transferido entre heróis: " + asset.name);
-                    }
-                    else
-                    {
-                        Debug.Log("[HeroDrop] Inventário do herói destino cheio (transferência).");
-                    }
-                    return;
-                }
+                Debug.Log("[HeroDrop] Inventário do herói cheio (drop direto).");
             }
+            return;
         }
+        
+        // ---------------------------------------------------------
+        // Herói -> Herói (Transferência)
+        // ---------------------------------------------------------
+        var heroSlot = draggedGO.GetComponent<DraggableHeroInventarioSlot>();
+        if (heroSlot != null && (heroSlot.asset || heroSlot.item))
+        {
+            ScriptableObject asset = null;
+            if (heroSlot.heroiAtributos != null && heroSlot.inventoryIndex >= 0)
+                asset = heroSlot.heroiAtributos.slotsInventario[heroSlot.inventoryIndex];
+            
+            if (heroiAtributos.TentarAdicionarAsset(asset))
+            {
+                if (heroSlot.heroiAtributos != null)
+                {
+                    if (heroSlot.inventoryIndex >= 0)
+                        heroSlot.heroiAtributos.RemoverAssetNoIndice(heroSlot.inventoryIndex);
+                    else
+                        heroSlot.heroiAtributos.RemoverAsset(asset);
+                }
+                SincronizarHerois();
+                AtualizarUIs();
+                Debug.Log("[HeroDrop] Item transferido entre heróis: " + asset.name);
+            }
+            else
+            {
+                Debug.Log("[HeroDrop] Inventário do herói destino cheio (transferência).");
+            }
+            return;
+        }
+        
         Debug.Log("[HeroDrop] Drop ignorado: nenhum payload reconhecido.");
     }
 
     void SincronizarHerois()
     {
-        // Propaga slotsInventario para todas instâncias do mesmo herói (mesmo baseAtributos)
         if (!heroiAtributos) return;
         var baseRef = heroiAtributos.baseAtributos;
         if (!baseRef) return;

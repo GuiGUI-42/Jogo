@@ -30,19 +30,39 @@ public class BagDropTarget : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
         if (img) img.color = originalColor;
         var dragged = eventData.pointerDrag;
         if (!dragged) return;
-        // Drop vindo de combate
+
+        // ---------------------------------------------------------
+        // CASO 1: Drop vindo de combate (Item Dropado)
+        // ---------------------------------------------------------
         var dropItem = dragged.GetComponent<DraggableDropItem>();
         if (dropItem != null)
         {
             var quantidade = Mathf.Max(1, dropItem.quantidade);
-            if (dropItem.item != null) InventoryManager.Instance.Add(dropItem.item, quantidade);
-            else if (dropItem.asset != null) InventoryManager.Instance.AddAsset(dropItem.asset, quantidade);
-            // Removido: referência a EventoCombateUI
-            Debug.Log("[BagDropTarget] Recebeu drop de combate: " + (dropItem.item ? dropItem.item.name : dropItem.asset?.name));
+            bool adicionou = false;
+
+            if (dropItem.item != null) 
+            {
+                InventoryManager.Instance.Add(dropItem.item, quantidade);
+                adicionou = true;
+            }
+            else if (dropItem.asset != null) 
+            {
+                InventoryManager.Instance.AddAsset(dropItem.asset, quantidade);
+                adicionou = true;
+            }
+
+            if (adicionou)
+            {
+                Debug.Log("[BagDropTarget] Recebeu drop de combate com sucesso.");
+                // AVISA O ITEM QUE ELE FOI ACEITO (Para fechar a UI de Combate)
+                dropItem.NotificarSucesso(); 
+            }
             return;
         }
 
-        // Drop vindo de inventário de herói
+        // ---------------------------------------------------------
+        // CASO 2: Drop vindo de inventário de herói (Remover do herói -> Bag)
+        // ---------------------------------------------------------
         var heroSlot = dragged.GetComponent<DraggableHeroInventarioSlot>();
         if (heroSlot != null && (heroSlot.asset || heroSlot.item))
         {
@@ -59,6 +79,7 @@ public class BagDropTarget : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
             Debug.Log("[BagDrop] Item movido do herói para a Bag: " + asset.name);
             return;
         }
+        
         Debug.Log("[BagDropTarget] Drop ignorado: sem componente reconhecido.");
     }
 
