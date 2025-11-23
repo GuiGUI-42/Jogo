@@ -19,7 +19,6 @@ public class EventoCombateUI : MonoBehaviour
     public GameObject painelDrop;      
 
     [Header("Containers (Molduras)")] 
-    // ARRASTE OS OBJETOS PAIS AQUI (SlotHeroi, SlotMonstro, Nome)
     public GameObject containerSlotHeroi; 
     public GameObject containerSlotMonstro;
     public GameObject containerNome; 
@@ -63,16 +62,14 @@ public class EventoCombateUI : MonoBehaviour
             return;
         }
 
-        // 1. Ativa a tela e garante que os elementos do combate estão visíveis
         painelCombate.SetActive(true);
-        SetElementosCombateAtivos(true); // Liga as molduras e barras
+        SetElementosCombateAtivos(true); 
 
-        // Esconde resultados antigos
         if(uiVitoria) uiVitoria.SetActive(false);
         if(uiDerrota) uiDerrota.SetActive(false);
         if(painelDrop) painelDrop.SetActive(false);
 
-        // 2. Configura Visual do Herói
+        // Configura Visual do Herói
         if (heroiSelecionado.baseAtributos != null)
         {
             if(imgHeroi) {
@@ -84,7 +81,7 @@ public class EventoCombateUI : MonoBehaviour
             AtualizarIconesItens(heroiSelecionado, slotItemsHeroi);
         }
 
-        // 3. Configura Visual do Monstro
+        // Configura Visual do Monstro
         if (monstroInstancia != null) Destroy(monstroInstancia);
         monstroInstancia = Instantiate(prefabMonstro, transform); 
         monstroInstancia.SetActive(false); 
@@ -133,13 +130,9 @@ public class EventoCombateUI : MonoBehaviour
 
     void MostrarDrops()
     {
-        // 1. Esconde a tela de vitória
         if(uiVitoria) uiVitoria.SetActive(false);
-        
-        // 2. Desativa as molduras inteiras e textos
         SetElementosCombateAtivos(false);
 
-        // 3. Calcula o Drop
         ScriptableObject itemDropado = CalcularDrop();
 
         if (itemDropado != null)
@@ -147,29 +140,22 @@ public class EventoCombateUI : MonoBehaviour
             if(painelDrop) painelDrop.SetActive(true);
             if(imgItemDropado)
             {
-                // Configura visual
                 imgItemDropado.sprite = ExtrairSprite(itemDropado);
                 imgItemDropado.preserveAspect = true;
                 imgItemDropado.color = Color.white;
 
-                // --- LÓGICA DE DRAG PARA FECHAR ---
-                // Garante componente de drag
                 var dragComp = imgItemDropado.GetComponent<DraggableDropItem>();
                 if (dragComp == null) dragComp = imgItemDropado.gameObject.AddComponent<DraggableDropItem>();
 
-                // Configura dados do drag
                 dragComp.asset = itemDropado;
                 dragComp.quantidade = 1;
                 dragComp.sourceImage = imgItemDropado;
 
-                // Assina evento de sucesso para fechar a janela
-                dragComp.OnItemArrastadoComSucesso -= OnDropRealizado; // Remove anterior
-                dragComp.OnItemArrastadoComSucesso += OnDropRealizado; // Adiciona novo
+                dragComp.OnItemArrastadoComSucesso -= OnDropRealizado; 
+                dragComp.OnItemArrastadoComSucesso += OnDropRealizado; 
 
                 Debug.Log("Aguardando jogador arrastar o item...");
             }
-            // NÃO adicionamos ao inventário aqui. O BagDropTarget fará isso ao soltar.
-            // NÃO usamos Invoke para fechar. Esperamos o evento.
         }
         else
         {
@@ -178,7 +164,6 @@ public class EventoCombateUI : MonoBehaviour
         }
     }
 
-    // Chamado quando o DraggableDropItem avisa que foi solto na Bag/Heroi
     void OnDropRealizado()
     {
         Debug.Log("Item coletado! Fechando interface.");
@@ -190,19 +175,15 @@ public class EventoCombateUI : MonoBehaviour
         FecharCombate();
     }
 
-    // --- Controla a visibilidade dos containers/molduras ---
     void SetElementosCombateAtivos(bool ativo)
     {
-        // Molduras
         if (containerSlotHeroi) containerSlotHeroi.SetActive(ativo);
         if (containerSlotMonstro) containerSlotMonstro.SetActive(ativo);
         if (containerNome) containerNome.SetActive(ativo);
 
-        // Elementos soltos que podem não estar dentro das molduras
         if (barraVidaHeroi) barraVidaHeroi.gameObject.SetActive(ativo);
         if (barraVidaMonstro) barraVidaMonstro.gameObject.SetActive(ativo);
         
-        // Se imgHeroi estiver fora do container, desativa também
         if (imgHeroi && (!containerSlotHeroi || !imgHeroi.transform.IsChildOf(containerSlotHeroi.transform))) 
             imgHeroi.gameObject.SetActive(ativo);
     }
@@ -214,10 +195,7 @@ public class EventoCombateUI : MonoBehaviour
         foreach (var dropInfo in opcaoOrigem.drops)
         {
             float rolagem = Random.value;
-            if (rolagem <= dropInfo.chance)
-            {
-                return dropInfo.item; 
-            }
+            if (rolagem <= dropInfo.chance) return dropInfo.item; 
         }
         return null;
     }
@@ -230,10 +208,19 @@ public class EventoCombateUI : MonoBehaviour
         
         if (monstroInstancia != null) Destroy(monstroInstancia);
         
-        EventoUI eventoUI = FindFirstObjectByType<EventoUI>();
+        // --- CORREÇÃO AQUI: FindObjectsInactive.Include ---
+        EventoUI eventoUI = FindFirstObjectByType<EventoUI>(FindObjectsInactive.Include);
+        
         if (eventoUI != null)
         {
-             // Aqui você pode resetar o ciclo do mapa (botão reaparecer)
+             eventoUI.FinalizarCicloDoEvento();
+        }
+        else
+        {
+             // Fallback
+             eventoUI = FindAnyObjectByType<EventoUI>(FindObjectsInactive.Include);
+             if(eventoUI) eventoUI.FinalizarCicloDoEvento();
+             else Debug.LogWarning("[EventoCombateUI] Não encontrou EventoUI para finalizar ciclo.");
         }
     }
 

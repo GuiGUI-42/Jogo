@@ -13,27 +13,30 @@ public class EventoUI : MonoBehaviour
     public GameObject botaoAceiteObjeto;
 
     [Header("Seleção de Herói")]
-    public Image slotHeroiImagem; // ARRASTE O "Heroi_Slot" AQUI
-    public Sprite spriteSlotVazio; // Opcional: Sprite padrão quando ninguém está selecionado
-    
-    // Esta variável guarda quem foi selecionado para usar nas opções depois
+    public Image slotHeroiImagem; 
+    public Sprite spriteSlotVazio; 
     public HeroiAtributos heroiParticipante { get; private set; }
 
-    [Header("Sistema de Combate")]
-    public EventoCombateUI combateUI; // ARRASTE O OBJETO DO COMBATE AQUI
+    [Header("Painel Dinâmica (Hover das Opções)")]
+    public GameObject dinamicaEventoPainel; 
+    public TextMeshProUGUI textoDinamica;   
+
+    [Header("Sistemas de Resolução")]
+    public EventoCombateUI combateUI; 
+    public EventoPassivoUI passivoUI; 
 
     [Header("Elementos da Tela 2 (Opções)")]
     public Transform containerOpcoes;
     public GameObject prefabOpcaoCombate;
     public GameObject prefabOpcaoPassivo;
 
-    // Estado interno
     private Evento eventoAtual;
     private BotaoEventoMapa botaoOrigem;
 
     void Start()
     {
         if(painelPrincipal) painelPrincipal.SetActive(false);
+        if(dinamicaEventoPainel) dinamicaEventoPainel.SetActive(false);
     }
 
     // FASE 1: Abertura
@@ -41,83 +44,49 @@ public class EventoUI : MonoBehaviour
     {
         this.eventoAtual = evento;
         this.botaoOrigem = origem;
-        
-        // Reseta o herói selecionado ao abrir um novo evento
         this.heroiParticipante = null;
+        
         AtualizarSlotVisual();
-
-        // Configura visual
+        
         if(textoTitulo) textoTitulo.text = evento.nomeEvento;
         if(textoDescricao) textoDescricao.text = evento.descricaoEvento;
         if(imagemEvento && evento.iconeEvento) imagemEvento.sprite = evento.iconeEvento;
-
-        // Mostra botão aceite
+        
         if(botaoAceiteObjeto) botaoAceiteObjeto.SetActive(true);
-        LimparBotoesAntigos();
+        if(dinamicaEventoPainel) dinamicaEventoPainel.SetActive(false);
 
+        LimparBotoesAntigos();
+        
         if(painelPrincipal) painelPrincipal.SetActive(true);
     }
 
-    // --- Lógica de Seleção de Herói ---
     public void ReceberSelecaoHeroi(HeroiAtributos heroi)
     {
-        // Só permite selecionar se a janela estiver aberta e na Fase 1 (Botão Aceite ativo)
-        if (!painelPrincipal.activeSelf || (botaoAceiteObjeto != null && !botaoAceiteObjeto.activeSelf))
-            return;
-
+        if (!painelPrincipal.activeSelf || (botaoAceiteObjeto != null && !botaoAceiteObjeto.activeSelf)) return;
         this.heroiParticipante = heroi;
-        Debug.Log($"[EventoUI] Herói selecionado: {heroi.name}");
-        
         AtualizarSlotVisual();
     }
 
     void AtualizarSlotVisual()
     {
         if (slotHeroiImagem == null) return;
-
         if (heroiParticipante != null && heroiParticipante.baseAtributos != null)
         {
-            // Mostra a foto do herói
             slotHeroiImagem.sprite = heroiParticipante.baseAtributos.iconeHeroi;
-            
-            // Garante que a imagem está visível e branca (sem tintura escura)
             slotHeroiImagem.color = Color.white; 
             slotHeroiImagem.enabled = true;
         }
         else
         {
-            // Se não tem herói, mostra vazio ou esconde
-            if (spriteSlotVazio != null)
-            {
-                slotHeroiImagem.sprite = spriteSlotVazio;
-                slotHeroiImagem.enabled = true;
-            }
-            else
-            {
-                slotHeroiImagem.color = Color.clear; 
-            }
+            if (spriteSlotVazio != null) { slotHeroiImagem.sprite = spriteSlotVazio; slotHeroiImagem.enabled = true; }
+            else { slotHeroiImagem.color = Color.clear; }
         }
     }
-    // ---------------------------------------
 
     public void BotaoAceitar()
     {
-        // Opcional: Se quiser obrigar a seleção, descomente abaixo:
-        /*
-        if (heroiParticipante == null) {
-            Debug.LogWarning("Selecione um herói antes de aceitar!");
-            return;
-        }
-        */
-
         if(botaoAceiteObjeto) botaoAceiteObjeto.SetActive(false);
-        
-        // O botão do mapa vai esperar 2s
-        if (botaoOrigem != null)
-        {
-            botaoOrigem.PrepararFaseOpcoes(2f);
-        }
-        
+        if (botaoOrigem != null) botaoOrigem.PrepararFaseOpcoes(2f);
         if(painelPrincipal) painelPrincipal.SetActive(false);
     }
 
@@ -126,13 +95,17 @@ public class EventoUI : MonoBehaviour
     {
         this.eventoAtual = evento;
         this.botaoOrigem = origem;
-
+        
         if(painelPrincipal) painelPrincipal.SetActive(true);
         if(botaoAceiteObjeto) botaoAceiteObjeto.SetActive(false);
         
-        // Garante que a foto do herói continue aparecendo na fase 2
-        AtualizarSlotVisual();
+        if(dinamicaEventoPainel) 
+        {
+            dinamicaEventoPainel.SetActive(true);
+            if(textoDinamica) textoDinamica.text = "Escolha uma opção..."; 
+        }
 
+        AtualizarSlotVisual();
         LimparBotoesAntigos();
         GerarOpcoes();
     }
@@ -140,11 +113,9 @@ public class EventoUI : MonoBehaviour
     void GerarOpcoes()
     {
         if (eventoAtual == null || containerOpcoes == null) return;
-
         foreach (var opcao in eventoAtual.opcoesDecisao)
         {
             GameObject prefabUsar = (opcao.tipo == TipoEvento.Combate) ? prefabOpcaoCombate : prefabOpcaoPassivo;
-
             if (prefabUsar != null)
             {
                 GameObject btn = Instantiate(prefabUsar, containerOpcoes);
@@ -154,45 +125,69 @@ public class EventoUI : MonoBehaviour
         }
     }
 
+    public void MostrarDescricaoDinamica(string descricao)
+    {
+        if (dinamicaEventoPainel && textoDinamica) textoDinamica.text = descricao;
+    }
+
+    public void EsconderDescricaoDinamica()
+    {
+        if (dinamicaEventoPainel && textoDinamica) textoDinamica.text = "Escolha uma opção...";
+    }
+
     public void ResolverOpcao(EventoOpcao opcaoEscolhida)
     {
         Debug.Log($"Jogador escolheu: {opcaoEscolhida.nomeOpcao} ({opcaoEscolhida.tipo})");
+
+        painelPrincipal.SetActive(false);
+        if(dinamicaEventoPainel) dinamicaEventoPainel.SetActive(false);
 
         if (opcaoEscolhida.tipo == TipoEvento.Combate)
         {
             if (combateUI != null && heroiParticipante != null && eventoAtual.monstroPrefab != null)
             {
-                painelPrincipal.SetActive(false);
-                
-                // CHANGE: Passando "opcaoEscolhida" como 3º parâmetro
                 combateUI.IniciarCombate(heroiParticipante, eventoAtual.monstroPrefab, opcaoEscolhida);
             }
             else
             {
-                Debug.LogError("Erro ao iniciar combate: Faltando UI, Herói ou Prefab do Monstro!");
+                Debug.LogError("Erro ao iniciar combate! Verifique referências no EventoUI.");
             }
         }
-        else
+        else 
         {
-            // Lógica Passiva
-            FecharEAgendarRetorno();
-            heroiParticipante = null;
+            if (passivoUI != null && heroiParticipante != null)
+            {
+                passivoUI.ResolverPassivo(heroiParticipante, opcaoEscolhida);
+            }
+            else
+            {
+                Debug.LogError("Erro Passivo: Faltando PassivoUI ou Herói Selecionado!");
+                FinalizarCicloDoEvento(); // Fecha para não travar
+            }
         }
     }
 
-    // ESTA ERA A FUNÇÃO QUE FALTAVA:
-    void FecharEAgendarRetorno()
+    // --- ESTE MÉTODO É O CORAÇÃO DO LOOP ---
+    public void FinalizarCicloDoEvento()
     {
-        // Fecha a janela visualmente
+        Debug.Log("Finalizando Ciclo do Evento.");
+
+        // 1. Avisa o Spawner para contar +1 evento finalizado
+        if (EventoSpawner.Instance != null)
+        {
+            EventoSpawner.Instance.RegistrarEventoFinalizado();
+        }
+
+        // 2. Fecha janela principal se estiver aberta
         if(painelPrincipal) painelPrincipal.SetActive(false);
 
-        // Avisa o botão do mapa para resetar o ciclo e voltar daqui a 2 segundos
+        // 3. Manda o botão original tentar spawnar de novo (com 50% chance e delay)
         if (botaoOrigem != null)
         {
             botaoOrigem.ResetarParaInicio(2f); 
             botaoOrigem = null;
         }
-    }
+    } 
 
     void LimparBotoesAntigos()
     {

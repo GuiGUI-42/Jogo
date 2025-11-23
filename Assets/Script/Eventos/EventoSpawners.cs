@@ -1,109 +1,114 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq; // Adicionado para usar Where e ToList
 
 public class EventoSpawner : MonoBehaviour
 {
+    public static EventoSpawner Instance; // Singleton para acesso global
+
     [Header("Configuração")]
-    public GameObject iconeEventoPrefab; // Seu prefab "BotãoAceite"
-    public RectTransform uiContainer;    // Seu "Canvas_eventos"
-    public EventoUI eventoUIManager;     // Referência à Janela de Evento na cena
+    public GameObject iconeEventoPrefab;
+    public RectTransform uiContainer;
+    public EventoUI eventoUIManager;
 
     [Header("Banco de Eventos")]
-    // Arraste aqui seus assets (Incendio, Roubo, Goblin...)
     public List<Evento> eventosPossiveis; 
+
+    [Header("Ciclo de Jogo")]
+    public int limiteEventosDia = 5; // Limite de eventos por ciclo
+    public int eventosFinalizados = 0; // Contador atual
 
     [Header("Teste Inicial")]
     public bool spawnarAoIniciar = true;
 
+    void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+    }
+
     void Start()
     {
+        eventosFinalizados = 0; // Reseta contagem ao iniciar
         if (spawnarAoIniciar)
         {
             SpawnarEventosNoLocal(EventoLocal.Cidade);
         }
     }
 
-    public void SpawnarEventosNoLocal(EventoLocal localAlvo)
-{
-    // Procura todos os pontos na cena
-    var pontos = FindObjectsByType<EventoLocalPoint>(FindObjectsSortMode.None);
-
-    // LOG 1: Avisa quantos pontos achou no total
-    Debug.Log($"[Spawner] Buscando locais... Encontrei {pontos.Length} objetos com 'EventoLocalPoint' na cena.");
-
-    if (pontos.Length == 0)
+    // Chamado pelos botões para saber se ainda podem aparecer
+    public bool PodeSpawnarNovo()
     {
-        Debug.LogError("[Spawner] ERRO: Nenhum 'EventoLocalPoint' encontrado na cena! Você adicionou o script na Cidade?");
-        return;
+        return eventosFinalizados < limiteEventosDia;
     }
 
-    foreach (var ponto in pontos)
+    // Chamado pela UI (EventoUI) quando um evento termina totalmente
+    public void RegistrarEventoFinalizado()
     {
-        // LOG 2: Mostra o que está verificando
-        Debug.Log($"[Spawner] Verificando objeto: {ponto.name} | Local configurado: {ponto.local} | Habilitado: {ponto.habilitado}");
+        eventosFinalizados++;
+        Debug.Log($"[Spawner] Evento finalizado! Progresso: {eventosFinalizados}/{limiteEventosDia}");
 
-        if (ponto.habilitado && ponto.local == localAlvo)
+        if (eventosFinalizados >= limiteEventosDia)
         {
-            Debug.Log($"[Spawner] SUCESSO! Criando botão em: {ponto.name}");
-            CriarBotao(ponto);
+            Debug.Log("=== DIA ENCERRADO! ===");
+            // Aqui você pode colocar lógica de fim de dia
         }
     }
-}
+
+    // --- NOVO MÉTODO PARA SORTEAR EVENTO ALEATÓRIO POR LOCAL ---
+    public Evento ObterEventoAleatorio(EventoLocal local)
+    {
+        if (eventosPossiveis == null || eventosPossiveis.Count == 0) return null;
+
+        // Filtra eventos que pertencem ao local solicitado
+        var eventosDoLocal = eventosPossiveis.Where(e => e.local == local).ToList();
+
+        if (eventosDoLocal.Count == 0)
+        {
+            Debug.LogWarning($"[Spawner] Nenhum evento encontrado para o local: {local}");
+            return null;
+        }
+
+        // Retorna um aleatório da lista filtrada (chances iguais)
+        return eventosDoLocal[Random.Range(0, eventosDoLocal.Count)];
+    }
+
+    public void SpawnarEventosNoLocal(EventoLocal localAlvo)
+    {
+        var pontos = FindObjectsByType<EventoLocalPoint>(FindObjectsSortMode.None);
+        Debug.Log($"[Spawner] Criando botões para {localAlvo}. Pontos encontrados: {pontos.Length}");
+
+        foreach (var ponto in pontos)
+        {
+            if (ponto.habilitado && ponto.local == localAlvo)
+            {
+                CriarBotao(ponto);
+            }
+        }
+    }
 
     void CriarBotao(EventoLocalPoint ponto)
     {
-        // LOG DE ENTRADA
-        Debug.Log($"[Diagnostico] Tentando criar botão para: {ponto.name}...");
+        if (iconeEventoPrefab == null || uiContainer == null) return;
 
-        // 1. VERIFICAÇÕES INDIVIDUAIS (Para saber qual está falhando)
-        if (iconeEventoPrefab == null)
-        {
-            Debug.LogError("[ERRO CRÍTICO] O campo 'Icone Evento Prefab' está VAZIO no Inspector!");
-            return;
-        }
-        if (uiContainer == null)
-        {
-            Debug.LogError("[ERRO CRÍTICO] O campo 'Ui Container' está VAZIO no Inspector!");
-            return;
-        }
-        if (eventosPossiveis == null || eventosPossiveis.Count == 0)
-        {
-            Debug.LogError("[ERRO CRÍTICO] A lista 'Eventos Possiveis' está VAZIA! Adicione os assets de evento.");
-            return;
-        }
+        // Sorteia o primeiro evento
+        Evento eventoSorteado = ObterEventoAleatorio(ponto.local);
+        if (eventoSorteado == null) return;
 
-        // 2. TENTATIVA DE INSTANCIAÇÃO
-        Debug.Log("[Diagnostico] Tudo ok. Instanciando agora...");
-        
-        Evento eventoSorteado = eventosPossiveis[Random.Range(0, eventosPossiveis.Count)];
         GameObject btnObj = Instantiate(iconeEventoPrefab, uiContainer);
 
-        if (btnObj == null)
-        {
-            Debug.LogError("[ERRO ESTRANHO] O Instantiate retornou nulo! O Prefab pode estar corrompido?");
-            return;
-        }
-        
-        Debug.Log($"[Diagnostico] Objeto instanciado com sucesso: {btnObj.name}");
-
-        // 3. POSICIONAMENTO
         UIFollowWorldObject seguidor = btnObj.GetComponent<UIFollowWorldObject>();
         if (seguidor == null) seguidor = btnObj.AddComponent<UIFollowWorldObject>();
         seguidor.SetTarget(ponto.transform, ponto.spawnOffset);
 
-        // 4. CONFIGURAÇÃO
         BotaoEventoMapa scriptBotao = btnObj.GetComponent<BotaoEventoMapa>();
         if (scriptBotao != null)
         {
             if (eventoUIManager == null) 
                 eventoUIManager = FindFirstObjectByType<EventoUI>();
 
-            scriptBotao.Configurar(eventoSorteado, eventoUIManager);
-            Debug.Log("[Diagnostico] Botão configurado completamente!");
-        }
-        else
-        {
-            Debug.LogError($"[ERRO] O Prefab '{btnObj.name}' não tem o script 'BotaoEventoMapa'!");
+            // Passamos também o ponto.local para o botão saber qual seu tipo de terreno
+            scriptBotao.Configurar(eventoSorteado, eventoUIManager, ponto.local);
         }
     }
 }

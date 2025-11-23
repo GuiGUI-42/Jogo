@@ -1,12 +1,13 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems; // Necessário para detectar mouse over
 
-public class BotaoOpcaoUI : MonoBehaviour
+public class BotaoOpcaoUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("UI Interna do Botão")]
     public TextMeshProUGUI textoOpcao;
-    public Image iconeOpcao; // Opcional, caso queira mostrar ícone
+    public Image iconeOpcao; 
 
     private EventoOpcao dadosOpcao;
     private EventoUI manager;
@@ -16,11 +17,9 @@ public class BotaoOpcaoUI : MonoBehaviour
         this.dadosOpcao = opcao;
         this.manager = uiManager;
 
-        // Configura o texto do botão (Ex: "Lutar", "Convencer")
         if (textoOpcao != null) 
             textoOpcao.text = opcao.nomeOpcao;
 
-        // Se tiver ícone configurado no ScriptableObject da opção, usa ele
         if (iconeOpcao != null && opcao.icone != null && opcao.usarIconeDaOpcao)
         {
             iconeOpcao.sprite = opcao.icone;
@@ -28,12 +27,31 @@ public class BotaoOpcaoUI : MonoBehaviour
         }
     }
 
-    // Vincule essa função ao OnClick do botão no Inspector do Prefab
     public void AoClicar()
     {
         if (manager != null)
         {
             manager.ResolverOpcao(dadosOpcao);
+        }
+    }
+
+    // --- DETECÇÃO DE MOUSE (HOVER) ---
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        // Quando o mouse entra, manda mostrar a descrição neste painel flutuante
+        if (manager != null && dadosOpcao != null)
+        {
+            manager.MostrarDescricaoDinamica(dadosOpcao.descricao);
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        // Quando o mouse sai, esconde ou limpa o texto
+        if (manager != null)
+        {
+            manager.EsconderDescricaoDinamica();
         }
     }
 }
