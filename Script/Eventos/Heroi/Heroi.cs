@@ -1,11 +1,12 @@
 using UnityEngine;
+using UnityEngine.Localization; // Necessário para tradução
 
 [CreateAssetMenu(menuName = "Heroi/HeroiBase")]
 public class Heroi : ScriptableObject
 {
-    public string nomeHeroi;
+    public LocalizedString nomeHeroi; // Alterado para tradução
     public Sprite iconeHeroi;
-    public string descricaoHeroi;
+    public LocalizedString descricaoHeroi; // Alterado para tradução
 
     [Header("Atributos")]
     public int forca;

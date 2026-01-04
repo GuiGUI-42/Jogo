@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using System.Collections.Generic;
+using UnityEngine.Localization;
 
 public class EventoUI : MonoBehaviour
 {
@@ -12,29 +12,28 @@ public class EventoUI : MonoBehaviour
     public Image imagemEvento;
     public GameObject botaoAceiteObjeto;
 
-    [Header("Seleção de Herói Principal")]
+    [Header("Seleção de Herói")]
     public Image slotHeroiImagem; 
     public Sprite spriteSlotVazio; 
     public HeroiAtributos heroiParticipante { get; private set; }
-
-    [Header("Multiplos Herois (Visual)")]
-    [Tooltip("Arraste o objeto Container (com Horizontal Layout Group) que ficará dentro ou ao lado do Slot_Heroi.")]
     public Transform containerAjudantes; 
-    [Tooltip("Arraste um Prefab simples de uma imagem/moldura vazia para representar o slot do ajudante.")]
     public GameObject prefabSlotAjudante;
 
-    [Header("Painel Dinâmica (Hover das Opções)")]
+    [Header("Dinâmica")]
     public GameObject dinamicaEventoPainel; 
     public TextMeshProUGUI textoDinamica;   
 
     [Header("Sistemas de Resolução")]
     public EventoCombateUI combateUI; 
     public EventoPassivoUI passivoUI; 
+    public EventoLojaUI lojaUI; // <-- ARRASTE O SCRIPT DA LOJA AQUI NO INSPECTOR
 
-    [Header("Elementos da Tela 2 (Opções)")]
+    [Header("Opções (Botões)")]
     public Transform containerOpcoes;
     public GameObject prefabOpcaoCombate;
     public GameObject prefabOpcaoPassivo;
+    public GameObject prefabOpcaoLoja;
+    public GameObject prefabOpcaoOuro;
 
     private Evento eventoAtual;
     private BotaoEventoMapa botaoOrigem;
@@ -56,8 +55,8 @@ public class EventoUI : MonoBehaviour
         AtualizarSlotVisual();
         ConfigurarSlotsExtras(); 
         
-        if(textoTitulo) textoTitulo.text = evento.nomeEvento;
-        if(textoDescricao) textoDescricao.text = evento.descricaoEvento;
+        if(textoTitulo) textoTitulo.text = evento.nomeEvento.GetLocalizedString();
+        if(textoDescricao) textoDescricao.text = evento.descricaoEvento.GetLocalizedString();
         if(imagemEvento && evento.iconeEvento) imagemEvento.sprite = evento.iconeEvento;
         
         if(botaoAceiteObjeto) botaoAceiteObjeto.SetActive(true);
@@ -71,7 +70,6 @@ public class EventoUI : MonoBehaviour
     public void ReceberSelecaoHeroi(HeroiAtributos heroi)
     {
         if (!painelPrincipal.activeSelf || (botaoAceiteObjeto != null && !botaoAceiteObjeto.activeSelf)) return;
-        
         this.heroiParticipante = heroi;
         AtualizarSlotVisual();
     }
@@ -95,31 +93,22 @@ public class EventoUI : MonoBehaviour
     void ConfigurarSlotsExtras()
     {
         if (containerAjudantes == null || prefabSlotAjudante == null || eventoAtual == null) return;
-
         foreach(Transform child in containerAjudantes) Destroy(child.gameObject);
 
-        int totalSlots = (int)eventoAtual.slotsNecessarios;
-        int slotsExtras = totalSlots - 1;
-
+        int slotsExtras = (int)eventoAtual.slotsNecessarios - 1;
         if (slotsExtras > 0)
         {
             containerAjudantes.gameObject.SetActive(true);
-            for (int i = 0; i < slotsExtras; i++)
-            {
-                Instantiate(prefabSlotAjudante, containerAjudantes);
-            }
+            for (int i = 0; i < slotsExtras; i++) Instantiate(prefabSlotAjudante, containerAjudantes);
         }
-        else
-        {
-            containerAjudantes.gameObject.SetActive(false);
-        }
+        else containerAjudantes.gameObject.SetActive(false);
     }
 
     public void BotaoAceitar()
     {
         if(botaoAceiteObjeto) botaoAceiteObjeto.SetActive(false);
         if (botaoOrigem != null) botaoOrigem.PrepararFaseOpcoes(2f);
-        if(painelPrincipal) painelPrincipal.SetActive(false);
+        painelPrincipal.SetActive(false); 
     }
 
     // FASE 2: Opções
@@ -128,11 +117,11 @@ public class EventoUI : MonoBehaviour
         this.eventoAtual = evento;
         this.botaoOrigem = origem;
 
-        if(textoTitulo) textoTitulo.text = evento.nomeEvento;
-        if(textoDescricao) textoDescricao.text = evento.descricaoEvento;
+        if(textoTitulo) textoTitulo.text = evento.nomeEvento.GetLocalizedString();
+        if(textoDescricao) textoDescricao.text = evento.descricaoEvento.GetLocalizedString();
         if(imagemEvento && evento.iconeEvento) imagemEvento.sprite = evento.iconeEvento;
         
-        if(painelPrincipal) painelPrincipal.SetActive(true);
+        painelPrincipal.SetActive(true);
         if(botaoAceiteObjeto) botaoAceiteObjeto.SetActive(false);
         
         if(dinamicaEventoPainel) 
@@ -152,7 +141,16 @@ public class EventoUI : MonoBehaviour
         if (eventoAtual == null || containerOpcoes == null) return;
         foreach (var opcao in eventoAtual.opcoesDecisao)
         {
-            GameObject prefabUsar = (opcao.tipo == TipoEvento.Combate) ? prefabOpcaoCombate : prefabOpcaoPassivo;
+            GameObject prefabUsar = null;
+            switch (opcao.tipo)
+            {
+                case TipoEvento.Combate: prefabUsar = prefabOpcaoCombate; break;
+                case TipoEvento.Passivo: prefabUsar = prefabOpcaoPassivo; break;
+                case TipoEvento.Loja:    prefabUsar = prefabOpcaoLoja; break;
+                case TipoEvento.Ouro:    prefabUsar = prefabOpcaoOuro; break;
+            }
+            if(prefabUsar == null) prefabUsar = prefabOpcaoCombate; 
+
             if (prefabUsar != null)
             {
                 GameObject btn = Instantiate(prefabUsar, containerOpcoes);
@@ -162,60 +160,61 @@ public class EventoUI : MonoBehaviour
         }
     }
 
-    public void MostrarDescricaoDinamica(string descricao)
-    {
-        if (dinamicaEventoPainel && textoDinamica) textoDinamica.text = descricao;
-    }
-
-    public void EsconderDescricaoDinamica()
-    {
-        if (dinamicaEventoPainel && textoDinamica) textoDinamica.text = "Escolha uma opção...";
-    }
-
     public void ResolverOpcao(EventoOpcao opcaoEscolhida)
     {
-        Debug.Log($"Jogador escolheu: {opcaoEscolhida.nomeOpcao} ({opcaoEscolhida.tipo})");
-
         painelPrincipal.SetActive(false);
         if(dinamicaEventoPainel) dinamicaEventoPainel.SetActive(false);
 
-        if (opcaoEscolhida.tipo == TipoEvento.Combate)
+        switch (opcaoEscolhida.tipo)
         {
-            if (combateUI != null && heroiParticipante != null && eventoAtual.monstroPrefab != null)
-            {
-                combateUI.IniciarCombate(heroiParticipante, eventoAtual.monstroPrefab, opcaoEscolhida);
-            }
-            else
-            {
-                Debug.LogError("Erro ao iniciar combate! Verifique referências no EventoUI.");
-                // Se falhou ao iniciar, consideramos falha no evento
-                FinalizarCicloDoEvento(false); 
-            }
-        }
-        else 
-        {
-            if (passivoUI != null && heroiParticipante != null)
-            {
-                passivoUI.ResolverPassivo(heroiParticipante, opcaoEscolhida);
-            }
-            else
-            {
-                Debug.LogError("Erro Passivo: Faltando PassivoUI ou Herói Selecionado!");
-                FinalizarCicloDoEvento(false); 
-            }
+            case TipoEvento.Combate:
+                if (combateUI) combateUI.IniciarCombate(heroiParticipante, eventoAtual.monstroPrefab, opcaoEscolhida);
+                else FinalizarCicloDoEvento(false);
+                break;
+
+            case TipoEvento.Passivo:
+                if (passivoUI) passivoUI.ResolverPassivo(heroiParticipante, opcaoEscolhida);
+                else FinalizarCicloDoEvento(false); 
+                break;
+
+            case TipoEvento.Loja:
+                // --- ABRE A LOJA ---
+                if (lojaUI)
+                {
+                    lojaUI.AbrirLoja(opcaoEscolhida, this);
+                }
+                else
+                {
+                    Debug.LogError("[EventoUI] Faltando referência da LojaUI!");
+                    FinalizarCicloDoEvento(false);
+                }
+                break;
+
+            case TipoEvento.Ouro:
+                // --- PAGA OURO DIRETO (SUBORNO) ---
+                if (GameManager.instance.TemOuroSuficiente(opcaoEscolhida.custoOuro))
+                {
+                    GameManager.instance.GastarOuro(opcaoEscolhida.custoOuro);
+                    Debug.Log($"[EventoUI] Pagou {opcaoEscolhida.custoOuro} de Ouro. Sucesso!");
+                    FinalizarCicloDoEvento(true); 
+                }
+                else
+                {
+                    Debug.Log("[EventoUI] Ouro insuficiente para esta opção.");
+                    FinalizarCicloDoEvento(false); // Falha
+                }
+                break;
         }
     }
 
-    // --- ASSINATURA ALTERADA PARA RECEBER RESULTADO ---
     public void FinalizarCicloDoEvento(bool sucesso)
     {
-        Debug.Log($"Finalizando Ciclo do Evento. Sucesso: {sucesso}");
-
         if (EventoSpawner.Instance != null && eventoAtual != null)
-        {
-            // Informa ao Spawner qual evento terminou e se foi bem sucedido
             EventoSpawner.Instance.RegistrarEventoFinalizado(eventoAtual, sucesso);
-        }
+
+        // O GameManager atualiza a UI de recompensas finais
+        if (GameManager.instance != null && eventoAtual != null)
+            GameManager.instance.FinalizarEvento(sucesso, eventoAtual.recompensaOuro, eventoAtual.recompensaReputacao);
 
         if(painelPrincipal) painelPrincipal.SetActive(false);
 
@@ -224,14 +223,10 @@ public class EventoUI : MonoBehaviour
             botaoOrigem.ResetarParaInicio(2f); 
             botaoOrigem = null;
         }
-        
-        // Limpa referência para evitar lixo
         eventoAtual = null;
     } 
 
-    void LimparBotoesAntigos()
-    {
-        if (!containerOpcoes) return;
-        foreach (Transform child in containerOpcoes) Destroy(child.gameObject);
-    }
+    public void MostrarDescricaoDinamica(string descricao) { if (textoDinamica) textoDinamica.text = descricao; }
+    public void EsconderDescricaoDinamica() { if (textoDinamica) textoDinamica.text = "Escolha uma opção..."; }
+    void LimparBotoesAntigos() { foreach (Transform child in containerOpcoes) Destroy(child.gameObject); }
 }

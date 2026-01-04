@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Reflection;
 using System.Collections.Generic;
+using UnityEngine.Localization; // Necessário
 
 public class EventoCombateUI : MonoBehaviour
 {
@@ -56,11 +57,7 @@ public class EventoCombateUI : MonoBehaviour
     {
         this.opcaoOrigem = dadosOpcao;
 
-        if (heroiSelecionado == null || prefabMonstro == null)
-        {
-            Debug.LogError("[EventoCombateUI] Faltando herói ou monstro!");
-            return;
-        }
+        if (heroiSelecionado == null || prefabMonstro == null) return;
 
         painelCombate.SetActive(true);
         SetElementosCombateAtivos(true); 
@@ -77,7 +74,9 @@ public class EventoCombateUI : MonoBehaviour
                 imgHeroi.preserveAspect = true;
                 imgHeroi.color = Color.white;
             }
-            if(txtNomeHeroi) txtNomeHeroi.text = heroiSelecionado.baseAtributos.nomeHeroi;
+            // --- TRADUÇÃO ---
+            if(txtNomeHeroi) txtNomeHeroi.text = heroiSelecionado.baseAtributos.nomeHeroi.GetLocalizedString();
+            
             AtualizarIconesItens(heroiSelecionado, slotItemsHeroi);
         }
 
@@ -94,7 +93,9 @@ public class EventoCombateUI : MonoBehaviour
                 imgMonstro.preserveAspect = true;
                 imgMonstro.color = Color.white;
             }
-            if(txtNomeMonstro) txtNomeMonstro.text = atributosMonstro.baseAtributos.nomeHeroi;
+            // --- TRADUÇÃO ---
+            if(txtNomeMonstro) txtNomeMonstro.text = atributosMonstro.baseAtributos.nomeHeroi.GetLocalizedString();
+            
             AtualizarIconesItens(atributosMonstro, slotItemsMonstro);
         }
         else
@@ -124,12 +125,10 @@ public class EventoCombateUI : MonoBehaviour
         else
         {
             if(uiDerrota) uiDerrota.SetActive(true);
-            // Chama o helper auxiliar porque Invoke não aceita parâmetros
             Invoke(nameof(FecharCombateComDerrota), 2f); 
         }
     }
 
-    // Helper necessário para o Invoke
     void FecharCombateComDerrota()
     {
         FecharCombate(false);
@@ -160,27 +159,21 @@ public class EventoCombateUI : MonoBehaviour
 
                 dragComp.OnItemArrastadoComSucesso -= OnDropRealizado; 
                 dragComp.OnItemArrastadoComSucesso += OnDropRealizado; 
-
-                Debug.Log("Aguardando jogador arrastar o item...");
             }
         }
         else
         {
-            Debug.Log("Nenhum item dropado.");
-            // Venceu sem drops -> Sucesso
             FecharCombate(true);
         }
     }
 
     void OnDropRealizado()
     {
-        Debug.Log("Item coletado! Fechando interface.");
         if (imgItemDropado)
         {
             var dragComp = imgItemDropado.GetComponent<DraggableDropItem>();
             if(dragComp) dragComp.OnItemArrastadoComSucesso -= OnDropRealizado;
         }
-        // Coletou o drop -> Sucesso
         FecharCombate(true);
     }
 
@@ -209,7 +202,6 @@ public class EventoCombateUI : MonoBehaviour
         return null;
     }
 
-    // Atualizado para receber status de sucesso
     void FecharCombate(bool sucesso)
     {
         painelCombate.SetActive(false);

@@ -1,0 +1,1126 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: ConteudoJogo_pt
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: pt
+  m_SharedData: {fileID: 11400000, guid: 50d21012a9f74dc459a3397cbdbc606e, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 5696925802496
+    m_Localized: "Um fantasma exige ver sua certid\xE3o de \xF3bito para descansar"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 637580156928
+    m_Localized: "Esp\xEDrito Burocrata"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7158590414848
+    m_Localized: Festa Gotica
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7393706319872
+    m_Localized: "Jovens g\xF3ticos acidentalmente invocaram um dem\xF4nio real."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7674552721408
+    m_Localized: "Ladr\xE3ozinho de Covas"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7798699925504
+    m_Localized: "Algu\xE9m est\xE1 roubando dentes de ouro dos esqueletos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7924633903104
+    m_Localized: Portal para o Submundo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8018347237376
+    m_Localized: Um buraco aberto em uma cova leva direto para o inferno.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9344154148864
+    m_Localized: Combate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9504481419264
+    m_Localized: Derrote o Dono do Portal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9917255458816
+    m_Localized: "Derrote o Ladr\xE3o\r\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10077108772864
+    m_Localized: Loja
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10188815671296
+    m_Localized: ' Veja oque ele tem a oferecer'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11208014766080
+    m_Localized: "Derrote o dem\xF4nio emo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11577725886464
+    m_Localized: "Ofere\xE7a um peda\xE7o de papel qualquer"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27639435567104
+    m_Localized: "Inc\xEAndio"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27844927102976
+    m_Localized: "Inc\xEAndio no pr\xE9dio comercial - causa desconhecida"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28301514842112
+    m_Localized: "Teste de Resist\xEAncia"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28729400958976
+    m_Localized: Resgatar as pessoas o mais rapido possivel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29529820962816
+    m_Localized: Encontre um meio de Apagar o fogo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30015424897024
+    m_Localized: ' Acabe com o sofrimento do fantasma'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30465763123200
+    m_Localized: Roubo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30528509911040
+    m_Localized: Roubo recorrente na Casa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30780239454208
+    m_Localized: "Derrote o Ladr\xE3o - Ladr\xE3o Halfling"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30911135293440
+    m_Localized: Lixo Mutante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30997072388096
+    m_Localized: Derrote o Golem de Sucata
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31262215315456
+    m_Localized: Lixo Mutante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31321984147456
+    m_Localized: "Lixo eletr\xF4nico descartado ilegalmente criou um Golem de Sucata
+      agressivo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31470395400192
+    m_Localized: "Protesto de G\xE1rgulas"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31555896287232
+    m_Localized: "G\xE1rgulas de pedra entraram em greve e est\xE3o bloqueando a
+      entrada do banco exigindo limpeza contra pombos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31711890841600
+    m_Localized: "Conven\xE7a as g\xE1rgulas para liberarem a entrada do banco"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31885304340480
+    m_Localized: "Limpe as g\xE1rgulas rapidamente para liberar o banco"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31988610048000
+    m_Localized: Slimes no Esgoto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32077504126976
+    m_Localized: "Slimes est\xE3o surgindo das tampas de esgoto."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32215379288064
+    m_Localized: Derrote os Slimes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32423181885440
+    m_Localized: Sniper Elfo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32491364491264
+    m_Localized: "Um elfo arqueiro est\xE1 no topo de um pr\xE9dio atirando em antenas
+      de 5G (ele acha que interferem na magia)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32613108359168
+    m_Localized: Derrote o Elfo Sniper
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32798999912448
+    m_Localized: "Promo\xE7\xE3o Maldita"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32887382286336
+    m_Localized: "Uma loja oferece 99% de desconto, mas o custo \xE9 a sua alma.
+      - Diabo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33012104110080
+    m_Localized: Derrote o Diabo comprador de alma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33282863210496
+    m_Localized: "Compre itens- com sua reputa\xE7\xE3o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33696731963392
+    m_Localized: "Pra\xE7a de Alimenta\xE7\xE3o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33783105265664
+    m_Localized: Um Elemental de Gordura nasceu na lixeira.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33961581289472
+    m_Localized: 'Derrote o elemental de gordura '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34123284291584
+    m_Localized: Loja de Penhores
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34204544737280
+    m_Localized: "Um item amaldi\xE7oado foi vendido e est\xE1 causando azar em todo
+      o shopping."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34430538031104
+    m_Localized: Interrogue todos os clientes para achar o item rapidamente
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34670343168000
+    m_Localized: Encontre a fonte do Azar e ache o item
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34855970480128
+    m_Localized: Furtos de Gnomos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34913105289216
+    m_Localized: "Gnomos invis\xEDveis est\xE3o roubando celulares dos bolsos das
+      pessoas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35071113109504
+    m_Localized: Derrote os Gnomos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35521287757824
+    m_Localized: O Curandeiro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35601285718016
+    m_Localized: "O m\xE9dico da comunidade precisa de ervas raras para curar uma
+      doen\xE7a m\xE1gica."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35707019927552
+    m_Localized: "Encontre os ingredientes o mais r\xE1pido poss\xEDvel"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35911198646272
+    m_Localized: "Encontre os ingredientes com maior n\xEDvel de qualidade"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36013703241728
+    m_Localized: Laje Asssombrada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36096318447616
+    m_Localized: "Um fantasma n\xE3o deixa ningu\xE9m soltar pipa na laje mais alta."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36215608647680
+    m_Localized: ' Derrote o Fanstasma'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36332440985600
+    m_Localized: Batalha de Rap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36398878760960
+    m_Localized: "Um Bardo est\xE1 usando magia de controle mental durante uma batalha
+      de rimas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36538872045568
+    m_Localized: " Derrote o Bardo, mas n\xE3o em uma batalha de rima"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36688587726848
+    m_Localized: "Conven\xE7a o Bardo a parar de trapacear"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36824751611904
+    m_Localized: "Ajudantte do tr\xE1fico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36914308390912
+    m_Localized: "Traficantes invocaram um dem\xF4nio para ajudar no tr\xE1fico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 37145632645120
+    m_Localized: "Derrote o Dem\xF4nio"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46846676115456
+    m_Localized: Pipa Perdida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46989429252096
+    m_Localized: Uma pipa caiu no ninho de um Grifo e precisa ser recuperado.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47138889080832
+    m_Localized: Derrote o Grifo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47226298376192
+    m_Localized: " Pegue o bal\xE3o sem chamar atens\xE3o do grifo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47366790782976
+    m_Localized: Garimpo Ilegal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47445874384896
+    m_Localized: "Den\xFAncia de garimpo ilegal na \xE1rea"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47554393612288
+    m_Localized: Derrote os garimpeiros
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47665433616384
+    m_Localized: Druidas vs. Madeireira
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47720727126016
+    m_Localized: "Ativistas druidas est\xE3o transformando tratores em \xE1rvores
+      vivas. Desmatamento ilegal"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47823634374656
+    m_Localized: " Destrua o resto da opera\xE7\xE3o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47946384875520
+    m_Localized: "Conven\xE7a os druidas a irem embora"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48106376601600
+    m_Localized: A Torre de Celular
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48176706691072
+    m_Localized: "Uma Dryad est\xE1 destruindo uma torre de celular camuflada de
+      \xE1rvore."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48300652568576
+    m_Localized: Derrote a Dryad antes que o sinal caia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48397931061248
+    m_Localized: "Ca\xE7a Ilegal de Unic\xF3rnios"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48475043340288
+    m_Localized: "Ca\xE7adores modernos com rifles est\xE3o atr\xE1s de criaturas
+      raras."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48645696987136
+    m_Localized: "Derrote os ca\xE7adores de un\xEDcornios"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48802165497856
+    m_Localized: O eremita Ex-Aventureiro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48906184237056
+    m_Localized: "Um mago velho e louco est\xE1 soltando bolas de fogo em quem pisa
+      no seu gramado."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49030440493056
+    m_Localized: Acalme o velho Eremita
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49142659096576
+    m_Localized: "Fale sobre a hist\xF3ria dos antigos magos para acalmar o Eremita"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49233990066176
+    m_Localized: Portal Esquecido
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49311035236352
+    m_Localized: "Um portal antigo ativou sozinho e est\xE1 soltando diabretes."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49402106159104
+    m_Localized: ' Derrote os diabretes para fechar o portal'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49505315397632
+    m_Localized: Busque o Item
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49595916558336
+    m_Localized: "Um alquimista est\xE1 precisando de um item espec\xEDfico "
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49743354732544
+    m_Localized: Procure o item espefifico do alquimista
+    m_Metadata:
+      m_Items: []
+  - m_Id: 361352040095744
+    m_Localized: "Confession\xE1rio"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 361422194024448
+    m_Localized: "Um anjo ca\xEDdo est\xE1 no confession\xE1rio ouvindo os pecados
+      para chantagear."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 361559200964608
+    m_Localized: "Derrote o anjo ca\xEDdo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 361634362892288
+    m_Localized: Casamento Monstruoso
+    m_Metadata:
+      m_Items: []
+  - m_Id: 361698489606144
+    m_Localized: "Um vampiro e um lobisomem querem casar na igreja; impe\xE7a a briga
+      das fam\xEDlias."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 361838344478720
+    m_Localized: "Conven\xE7a as familias para que ocorra o casamento"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 361942824591360
+    m_Localized: Fuja com o cerimonialista antes que a briga piore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362033593524224
+    m_Localized: "Rel\xEDquia Roubada"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362132075782144
+    m_Localized: "Um c\xE1lice sagrado foi roubado por um ladr\xE3o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362207741026304
+    m_Localized: "Derrote o Ladr\xE3o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362299583700992
+    m_Localized: "Investigue o paradeiro do c\xE1lice"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362416785137664
+    m_Localized: Cripta do Fundador
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362477417996288
+    m_Localized: "O fundador da igreja acordou como um Lich e n\xE3o esta conformado
+      com a igreja atual."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362568182734848
+    m_Localized: Derrote o Lich
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362683479957504
+    m_Localized: "Invasa\xE3o de Morcegos"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362762932658176
+    m_Localized: "Morcegos demon\xEDacos invadiram a torre do sino."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362884911407104
+    m_Localized: Derrote os morcegos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362989911613440
+    m_Localized: "Invoca\xE7\xE3o Perigosa"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 363072354852864
+    m_Localized: "A igreja est\xE1 planejando invocar o Deus."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 363167590719488
+    m_Localized: Derrote o suposto Deus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 363271068393472
+    m_Localized: "Descubra como interromper o Ritual de invoca\xE7\xE3o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365357482975232
+    m_Localized: A Ferrugem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365520729481216
+    m_Localized: "Descubra como interromper o Ritual de invoca\xE7\xE3o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365703743741952
+    m_Localized: "O M\xFAsico do Metr\xF4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365771687272448
+    m_Localized: "Um bardo est\xE1 tocando uma m\xFAsica que faz todos dormirem e
+      perderem a esta\xE7\xE3o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365866281410560
+    m_Localized: Derrote o Bardo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365980139986944
+    m_Localized: " Conven\xE7a o bardo a parar com a m\xFAsica"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 366115196575744
+    m_Localized: Descubra a causa exata da magia e interrompa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 366215687905280
+    m_Localized: "T\xFAnel Proibido"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 366290715615232
+    m_Localized: Uma parede quebrou revelando uma masmorra antiga nos trilhos.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 366863527518208
+    m_Localized: Encontre reliquias escondidas na masmorra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367037037486080
+    m_Localized: Investigue a masmorra para saber do que se trata
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367175348854784
+    m_Localized: Mosntro da Catraca
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367247365054464
+    m_Localized: "A catraca virou um M\xEDmico e morde quem n\xE3o paga."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367335877451776
+    m_Localized: Ouro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367417083371520
+    m_Localized: "Pague o M\xEDmico para ele nao atacar\r\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367567616942080
+    m_Localized: "Derrote o m\xEDmico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368585591300096
+    m_Localized: Lodo nos Trilhos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368679979917312
+    m_Localized: "Um slime gigante est\xE1 deixando o trilho escorregadio, o trem
+      n\xE3o para."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368881121959936
+    m_Localized: Derrote o Slime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370606901895168
+    m_Localized: Vendedor Ambulante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370688032317440
+    m_Localized: "Um goblin est\xE1 vendendo po\xE7\xF5es de cura vencidas nos vag\xF5es."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370758429515776
+    m_Localized: Derrote o  goblin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370862448254976
+    m_Localized: "Conven\xE7a o Goblin a beber a pr\xF3pria po\xE7\xE3o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370988851994624
+    m_Localized: ' Atraia o goblin para prender ele no flagra'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 752607189024768
+    m_Localized: "Deslizamento M\xE1gico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 752668648161280
+    m_Localized: "Um Elemental da Terra est\xE1 bravo e causando deslizamentos na
+      estrada."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 752756493664256
+    m_Localized: Derrote o Elemental de Terra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 752860403351552
+    m_Localized: "T\xFAnel Interditado"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 752964367564800
+    m_Localized: "Um Basilisco est\xE1 dormindo no meio do t\xFAnel que corta a montanha."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753084299493376
+    m_Localized: "Derrote o Basilisco que est\xE1 dormindo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753198111932416
+    m_Localized: Encontre um modo de atrair o basilisco para fora sem irrita-lo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753296527081472
+    m_Localized: Wyvern na Antena
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753355348000768
+    m_Localized: "Um Wyvern fez ninho no topo da antena de transmiss\xE3o de TV da
+      cidade."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753426013634560
+    m_Localized: Derrote o Wyvern
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753559803543552
+    m_Localized: Encontre um modo de atrair o basilisco para fora sem irrita-lo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753803769430016
+    m_Localized: "Cont\xEAiner M\xEDmico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753875320061952
+    m_Localized: "Um dos cont\xEAineres do navio \xE9 um monstro gigante."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753957985599488
+    m_Localized: "Derrot o M\xEDmico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754060335005696
+    m_Localized: Contrabando de Ovos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754142375591936
+    m_Localized: "A m\xE1fia est\xE1 traficando ovos de drag\xE3o "
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754240388087808
+    m_Localized: ' Derrote a mafia'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754349645512704
+    m_Localized: "Encontre provas e os respons\xE1veis por tr\xE1s"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754441219751936
+    m_Localized: "Se infiltre e pegue os ovos de drag\xE3o antes que vejam"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754588251078656
+    m_Localized: Roubo de Mercadoria
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754661831753728
+    m_Localized: "Gangue de serinideos est\xE3o roubando mercadorias dos navios"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754785349812224
+    m_Localized: Derrote os Serinideos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754900215021568
+    m_Localized: O Troll da Ponte
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754950676692992
+    m_Localized: "Um troll exige ped\xE1gio (em Dinheiro ou carne) embaixo da ponte
+      principal."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 755056679337984
+    m_Localized: Encontre uma grande quantidade de carne por perto para dar ao troll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 755141299421184
+    m_Localized: "Conven\xE7a o troll a deixar a ponte"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 755241136439296
+    m_Localized: Entregue o ouro para o troll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 755341753597952
+    m_Localized: "Sereias Polu\xEDdas"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 755408828907520
+    m_Localized: "Sereias est\xE3o puxando pescadores para o fundo do rio polu\xEDdo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 756257416298496
+    m_Localized: Derrote as Sereias
+    m_Metadata:
+      m_Items: []
+  - m_Id: 756374588375040
+    m_Localized: "O Monstro do Lago (Vers\xE3o Mini)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 756452073947136
+    m_Localized: "Um filhote de Hydra est\xE1 pegando os peixes das redes dos pescadores"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 756547158818816
+    m_Localized: Derrote o filhote de Hydra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 757476243292160
+    m_Localized: "Vazamento de Po\xE7\xE3o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 757542823673856
+    m_Localized: "Uma f\xE1brica de po\xE7\xF5es despejou po\xE7\xF5es  no rio, contaminando
+      o rio"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 757652404060160
+    m_Localized: "Encontre a po\xE7\xE3o certa para jogar no Rio para descontaminar"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 789764519772160
+    m_Localized: Gangue de Centauros Motociclistas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 837842220105728
+    m_Localized: "Centauros (que usam motos como parte de baixo?) est\xE3o causando
+      caos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 838040795234304
+    m_Localized: Derrote o Lider dos Centauros
+    m_Metadata:
+      m_Items: []
+  - m_Id: 838199918739456
+    m_Localized: Disperse os centauros
+    m_Metadata:
+      m_Items: []
+  - m_Id: 838314737811456
+    m_Localized: O Carteiro Zumbi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 838372019421184
+    m_Localized: "Um carteiro morreu mas continua entregando contas por puro h\xE1bito."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 838479829811200
+    m_Localized: Entregue as cartas para o carteiro poder descansar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 838650751893504
+    m_Localized: "Conven\xE7a o carteiro de que ele est\xE1 morto e deve parar de
+      entregar as cartas"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 838729227321344
+    m_Localized: "Ponto de \xD4nibus Dimensional"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 838791743422464
+    m_Localized: "Quem espera nesse ponto acaba indo parar em outra dimens\xE3o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 838903752310784
+    m_Localized: Investigue e feche a fenda dimensional
+    m_Metadata:
+      m_Items: []
+  - m_Id: 839064444485632
+    m_Localized: A Colheita Estranha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 839137999994880
+    m_Localized: "As ab\xF3boras cresceram com rostos humanos este ano."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 839276651102208
+    m_Localized: "Investigue a causa do estranho fen\xF4meno"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 839374676180992
+    m_Localized: Lobisomem Local
+    m_Metadata:
+      m_Items: []
+  - m_Id: 839446046457856
+    m_Localized: "O padeiro da vila \xE9 suspeito de ser o lobisomem, mas faz o melhor
+      p\xE3o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 839624124022784
+    m_Localized: "Derrote o Padeiro, mas cuidado com os P\xE3os"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 839732244791296
+    m_Localized: Turistas Desaparecidos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 839847223246848
+    m_Localized: Um grupo de turistas da cidade sumiu ao fazer trilha.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 840013250576384
+    m_Localized: Encontre os desaparecidos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 840118808625152
+    m_Localized: A Velha Ponte de Corda
+    m_Metadata:
+      m_Items: []
+  - m_Id: 840188505374720
+    m_Localized: "Um esp\xEDrito exige que resolvam um enigma para atravessar."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 840285817421824
+    m_Localized: Derrote o Espirito
+    m_Metadata:
+      m_Items: []
+  - m_Id: 840403354402816
+    m_Localized: "Fique atento a qualquer trapa\xE7a no enigma"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 840516671913984
+    m_Localized: Resolva o enigma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 840645684510720
+    m_Localized: Vendedor Viajante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 840726450028544
+    m_Localized: Um mercador misterioso apareceu vendendo itens proibidos.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 840863691849728
+    m_Localized: Deja os itens
+    m_Metadata:
+      m_Items: []
+  - m_Id: 841212930572288
+    m_Localized: Avalanche Controlada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 841280614055936
+    m_Localized: "Magos do gelo est\xE3o amea\xE7ando soterrar a vila se n\xE3o pagarem
+      impostos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 841413288280064
+    m_Localized: Derrote os magos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 841581702168576
+    m_Localized: "Conven\xE7a os magos a n\xE3o soterrar a vila"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 842238983159808
+    m_Localized: Pague os impostos da vila
+    m_Metadata:
+      m_Items: []
+  - m_Id: 842318796570624
+    m_Localized: Cabana Isolada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 842409867493376
+    m_Localized: Uma bruxa vive no topo e precisa de entregas de suprimentos modernos
+      (pilhas, chocolate).
+    m_Metadata:
+      m_Items: []
+  - m_Id: 842586535772160
+    m_Localized: "Entregue os suprimentos mais r\xE1pido possivel"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 842669817872384
+    m_Localized: Busque os melhores suprimentos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 842831814475776
+    m_Localized: Fonte Termal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 842884939530240
+    m_Localized: "Um Elemental de fogo tomou conta da \xFAnica fonte de \xE1gua quente."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 843295377342464
+    m_Localized: Derrote o Elemental de Fogo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 843400130084864
+    m_Localized: O Grito
+    m_Metadata:
+      m_Items: []
+  - m_Id: 843449622872064
+    m_Localized: Um som ensurdecedor vem das cavernas toda noite, impedindo o sono.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 843523211935744
+    m_Localized: "A fonte do grito \xE9 uma banshee, derrote antes que cause mais
+      problemas"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 843645178101760
+    m_Localized: Mineiros Desaparecidos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 843727956885504
+    m_Localized: Escavaram fundo demais e acordaram algo antigo.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 843839059804160
+    m_Localized: Derrote o Monstro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 843941006557184
+    m_Localized: "Doen\xE7a da Altitude"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 844005124882432
+    m_Localized: "Uma praga m\xE1gica est\xE1 fazendo as pessoas flutuarem e voarem
+      para longe."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 844080119037952
+    m_Localized: "Investigue a fonte da praga m\xE1gica"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 844287556730880
+    m_Localized: "Tente perceber se alguma mudan\xE7a no Ar do local"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 844604415426560
+    m_Localized: Covas Abertas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 844660115783680
+    m_Localized: "O Coveiro relatou que tem algu\xE9m roubando restos esquel\xE9ticos
+      no cemit\xE9rio "
+    m_Metadata:
+      m_Items: []
+  - m_Id: 844778227384320
+    m_Localized: Procure por pistas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 844879402385408
+    m_Localized: O Ritual
+    m_Metadata:
+      m_Items: []
+  - m_Id: 844973824557056
+    m_Localized: Tem aparecido estranho relatos de barulhos a noite perto da entrada
+      da igreja
+    m_Metadata:
+      m_Items: []
+  - m_Id: 845088014483456
+    m_Localized: "Investigue oque s\xE3o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 845191492157440
+    m_Localized: O Ritual
+    m_Metadata:
+      m_Items: []
+  - m_Id: 845285582979072
+    m_Localized: "Os inidicios da investiga\xE7\xE3o est\xE3o levando ao cemit\xE9rio,
+      h\xE1 movimenta\xE7\xF5es estranhas"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 845419234476032
+    m_Localized: "Investigue a cova com esqueletos estranhos (Drag\xF5es filhotes)    "
+    m_Metadata:
+      m_Items: []
+  - m_Id: 845554022629376
+    m_Localized: Derrote o estranho
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4425562687291392
+    m_Localized: Slime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4426182173409280
+    m_Localized: Drow Sniper
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4426666632298496
+    m_Localized: Grifo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4427045004656640
+    m_Localized: Garimpeiro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4427379768836096
+    m_Localized: Madereira
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4428064728039424
+    m_Localized: Dryad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4428600462295040
+    m_Localized: Golem de Sucata
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4429324000706560
+    m_Localized: Portal Submundo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4439673609404416
+    m_Localized: Sereia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4440164863066112
+    m_Localized: Filhote Hydra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4440736303431680
+    m_Localized: Wyvern
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4441058149154816
+    m_Localized: Elemental de Terra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4441611235246080
+    m_Localized: Basilisco
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4442045026942976
+    m_Localized: Fantasma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4442509894238208
+    m_Localized: "Dem\xF4nio"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4442851012788224
+    m_Localized: Centauro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4443536756326400
+    m_Localized: Diabo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4443922732957696
+    m_Localized: Elemental de Gordura
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4444366800699392
+    m_Localized: Lobisomem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4444667687485440
+    m_Localized: Elemental de Fogo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4446940165586944
+    m_Localized: Banshee
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4447245716439040
+    m_Localized: Baldor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4449706548150272
+    m_Localized: "M\xEDmico Gigante"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4450062531313664
+    m_Localized: Mafioso
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4450368988135424
+    m_Localized: "Serin\xEDdeo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4450808085626880
+    m_Localized: Monstro da Ferrugem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4451258184777728
+    m_Localized: "Dem\xF4nio Emo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4451630383120384
+    m_Localized: Dono do Portal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4452103802601472
+    m_Localized: "Anjo Ca\xEDdo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4452483278061568
+    m_Localized: Lich
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4452805367054336
+    m_Localized: "Invas\xE3o de Morcegos"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4453221848858624
+    m_Localized: Deus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4453535855427584
+    m_Localized: "M\xEDmico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4453922477981696
+    m_Localized: Goblin
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

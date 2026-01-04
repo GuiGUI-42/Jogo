@@ -12,9 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e8c3e566152c940b23bc1da4798553, type: 3}
   m_Name: Portal
   m_EditorClassIdentifier: Assembly-CSharp::Evento
-  nomeEvento: Portal para o Submundo
+  nomeEvento:
+    m_TableReference:
+      m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+    m_TableEntryReference:
+      m_KeyId: 7924633903104
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   iconeEvento: {fileID: 0}
-  descricaoEvento: Um buraco aberto em uma cova leva direto para o inferno.
+  descricaoEvento:
+    m_TableReference:
+      m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+    m_TableEntryReference:
+      m_KeyId: 8018347237376
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   local: 4
   slotsNecessarios: 1
   semanaMin: 1
@@ -24,12 +40,44 @@ MonoBehaviour:
   categoria: 0
   antecessor: {fileID: 0}
   monstro: {fileID: 0}
-  monstroPrefab: {fileID: 2062277851170540446, guid: 968bb016fadea3344b6365c30ba7e808, type: 3}
+  monstroPrefab: {fileID: 2062277851170540446, guid: 5be61eb1f6c4cdf4fb81292fa310ea6d, type: 3}
   opcoesDecisao:
-  - nomeOpcao: Derrote o dono do portal
-    descricao: 
+  - nomeOpcao:
+      m_TableReference:
+        m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+      m_TableEntryReference:
+        m_KeyId: 9344154148864
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    descricao:
+      m_TableReference:
+        m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+      m_TableEntryReference:
+        m_KeyId: 9504481419264
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     icone: {fileID: 0}
     usarIconeDaOpcao: 0
     tipo: 0
     efeitosPassivos: []
-    drops: []
+    drops:
+    - item: {fileID: 11400000, guid: 8655592e63a2eff42ab4be885168190f, type: 2}
+      quantidadeMin: 1
+      quantidadeMax: 1
+      chance: 1
+    - item: {fileID: 11400000, guid: 7ade722d755ec3642b7bcdaccc839546, type: 2}
+      quantidadeMin: 1
+      quantidadeMax: 1
+      chance: 1
+    - item: {fileID: 11400000, guid: 38d112d6b35b95a47883b33b2a9f9f3e, type: 2}
+      quantidadeMin: 1
+      quantidadeMax: 1
+      chance: 1
+    custoOuro: 0
+  references:
+    version: 2
+    RefIds: []

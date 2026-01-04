@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 222e438225ecba64899c980d3c1c7e4d, type: 3}
+  m_Name: Grifo
+  m_EditorClassIdentifier: Assembly-CSharp::Heroi
+  nomeHeroi:
+    m_TableReference:
+      m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+    m_TableEntryReference:
+      m_KeyId: 4426666632298496
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  iconeHeroi: {fileID: 21300000, guid: 0bfdc541dd038a14cbc259da920de601, type: 3}
+  descricaoHeroi:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  forca: 18
+  carisma: 8
+  sabedoria: 13
+  inteligencia: 2
+  vitalidade: 16
+  destreza: 15
+  references:
+    version: 2
+    RefIds: []

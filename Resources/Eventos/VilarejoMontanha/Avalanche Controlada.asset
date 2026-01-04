@@ -1,0 +1,137 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e8c3e566152c940b23bc1da4798553, type: 3}
+  m_Name: Avalanche Controlada
+  m_EditorClassIdentifier: Assembly-CSharp::Evento
+  nomeEvento:
+    m_TableReference:
+      m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+    m_TableEntryReference:
+      m_KeyId: 841212930572288
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  iconeEvento: {fileID: 0}
+  descricaoEvento:
+    m_TableReference:
+      m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+    m_TableEntryReference:
+      m_KeyId: 841280614055936
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  local: 8
+  slotsNecessarios: 1
+  semanaMin: 1
+  semanaMax: 10
+  recompensaReputacao: 0
+  recompensaOuro: 0
+  categoria: 0
+  antecessor: {fileID: 0}
+  monstro: {fileID: 0}
+  monstroPrefab: {fileID: 3888285330298529445, guid: a6189e084dfde60489f74e2ff90d75b8, type: 3}
+  opcoesDecisao:
+  - nomeOpcao:
+      m_TableReference:
+        m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+      m_TableEntryReference:
+        m_KeyId: 9344154148864
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    descricao:
+      m_TableReference:
+        m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+      m_TableEntryReference:
+        m_KeyId: 841413288280064
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    icone: {fileID: 0}
+    usarIconeDaOpcao: 0
+    tipo: 0
+    efeitosPassivos: []
+    personagemDropavel: 1
+    personagemAsset: {fileID: 11400000, guid: 28ad3515b85569848b3fce2e7bec4354, type: 2}
+    drops:
+    - item: {fileID: 11400000, guid: 6f677257ce8f23e41bf69e94ac8100aa, type: 2}
+      quantidadeMin: 1
+      quantidadeMax: 1
+      chance: 1
+    - item: {fileID: 11400000, guid: df1199c522e1c934fa3a9a7f408989e4, type: 2}
+      quantidadeMin: 1
+      quantidadeMax: 1
+      chance: 1
+    custoOuro: 0
+  - nomeOpcao:
+      m_TableReference:
+        m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+      m_TableEntryReference:
+        m_KeyId: 28301514842112
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    descricao:
+      m_TableReference:
+        m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+      m_TableEntryReference:
+        m_KeyId: 841581702168576
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    icone: {fileID: 0}
+    usarIconeDaOpcao: 0
+    tipo: 1
+    efeitosPassivos:
+    - atributo: 1
+      valor: 10
+    personagemDropavel: 0
+    personagemAsset: {fileID: 0}
+    drops: []
+    custoOuro: 0
+  - nomeOpcao:
+      m_TableReference:
+        m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+      m_TableEntryReference:
+        m_KeyId: 367335877451776
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    descricao:
+      m_TableReference:
+        m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+      m_TableEntryReference:
+        m_KeyId: 842238983159808
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    icone: {fileID: 0}
+    usarIconeDaOpcao: 0
+    tipo: 3
+    efeitosPassivos:
+    - atributo: 1
+      valor: 10
+    personagemDropavel: 0
+    personagemAsset: {fileID: 0}
+    drops: []
+    custoOuro: 50
+  references:
+    version: 2
+    RefIds: []

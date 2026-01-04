@@ -1,14 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Localization; // Necessário para tradução
 
 [System.Serializable]
 public enum EventoLocal
 {
-    // Renomeei 'Cidade' para 'CentroDaCidade' mantendo o índice 0 para não quebrar assets antigos
     CentroDaCidade = 0, 
     Floresta = 1,
-    
-    // Novos Locais
     Ruas = 2,
     ZonaComercial = 3,
     Cemiterio = 4,
@@ -18,10 +16,10 @@ public enum EventoLocal
     VilarejosMontanha = 8,
     Metro = 9,
     Rio = 10,
-    Porto = 11
+    Porto = 11,
+    Montanha = 12
 }
 
-// Enum para a caixa de seleção de Slots (1 a 4)
 public enum EventoSlots
 {
     Um = 1,
@@ -35,40 +33,100 @@ public enum CategoriaEvento
     Aventura
 }
 
+public enum TipoEvento 
+{ 
+    Combate = 0, 
+    Passivo = 1,
+    Loja = 2,
+    Ouro = 3
+}
+
 [System.Serializable]
 public class EventoOpcao
 {
-    public string nomeOpcao;
-    public string descricao;
+    public LocalizedString nomeOpcao; // Alterado para tradução
+    public LocalizedString descricao; // Alterado para tradução
     public Sprite icone;
-    [Tooltip("Quando marcado, usa o campo 'icone' para sobrescrever o sprite do prefab do botão. Quando desmarcado, usa o sprite do prefab.")]
+    [Tooltip("Quando marcado, usa o campo 'icone' para sobrescrever o sprite do prefab do botão.")]
     public bool usarIconeDaOpcao = false;
-    [Tooltip("Tipo desta opção (Combate ou Passivo).")]
+    
+    [Tooltip("Tipo desta opção (Combate, Passivo, Loja, Ouro).")]
     public TipoEvento tipo = TipoEvento.Combate;
+
     [Tooltip("Modificadores aplicados se tipo=Passivo.")]
     public List<PassivoModificador> efeitosPassivos = new List<PassivoModificador>();
-    [Tooltip("Lista de possíveis drops ao escolher esta opção.")]
+    
+    // --- NOVO: Lógica de Drop de Personagem ---
+    [Header("Drop Especial (Combate)")]
+    [Tooltip("Se marcado, existe 20% de chance de dropar o personagem definido ao vencer. Se isso ocorrer, os itens abaixo NÃO dropam.")]
+    public bool personagemDropavel;
+    
+    [Tooltip("O ScriptableObject do Herói/Monstro a ser adicionado ao inventário caso o drop de 20% ocorra.")]
+    public ScriptableObject personagemAsset;
+    // ------------------------------------------
+
+    [Tooltip("Lista de possíveis drops (ou itens da loja).")]
     public List<ItemDrop> drops = new List<ItemDrop>();
+
+    [Tooltip("Quantidade de Ouro necessária para escolher esta opção (Se tipo=Ouro).")]
+    public int custoOuro; 
+
+    /// <summary>
+    /// Calcula quais recompensas o jogador receberá.
+    /// Regra: 20% de chance de vir o Personagem (se ativado). 
+    /// Se falhar (80%), calcula os drops de itens normalmente.
+    /// </summary>
+    public List<ScriptableObject> ResolverDrops()
+    {
+        List<ScriptableObject> resultado = new List<ScriptableObject>();
+
+        // 1. Tenta o drop do Personagem (Apenas se for Combate e estiver marcado)
+        if (tipo == TipoEvento.Combate && personagemDropavel && personagemAsset != null)
+        {
+            // Random.value retorna entre 0.0 e 1.0. <= 0.2 é 20%
+            if (Random.value <= 0.2f)
+            {
+                resultado.Add(personagemAsset);
+                return resultado; // Retorna apenas o personagem, ignorando itens
+            }
+        }
+
+        // 2. Se não dropou personagem (ou não estava configurado), processa itens normais
+        if (drops != null)
+        {
+            foreach (var drop in drops)
+            {
+                if (drop.item == null) continue;
+
+                // Verifica a chance individual de cada item
+                if (Random.value <= drop.chance)
+                {
+                    int qtd = Random.Range(drop.quantidadeMin, drop.quantidadeMax + 1);
+                    for (int i = 0; i < qtd; i++)
+                    {
+                        resultado.Add(drop.item);
+                    }
+                }
+            }
+        }
+
+        return resultado;
+    }
 }
 
 [CreateAssetMenu(menuName = "Evento/Evento")]
 public class Evento : ScriptableObject
 {
-    public string nomeEvento;
+    public LocalizedString nomeEvento; // Alterado para tradução
     public Sprite iconeEvento;
-    [TextArea] public string descricaoEvento;
+    public LocalizedString descricaoEvento; // Alterado para tradução
     
     [Header("Contexto e Regras")]
-    [Tooltip("Local onde este evento pode ocorrer.")]
     public EventoLocal local = EventoLocal.CentroDaCidade;
-
-    [Tooltip("Número de slots que este evento ocupa.")]
     public EventoSlots slotsNecessarios = EventoSlots.Um;
 
     [Header("Disponibilidade (Semanas)")]
-    [Tooltip("Semana inicial em que o evento pode aparecer.")]
     [Min(1)] public int semanaMin = 1;
-    [Tooltip("Semana final em que o evento pode aparecer.")]
     [Min(1)] public int semanaMax = 1;
 
     [Header("Recompensas do Evento")]
@@ -77,21 +135,16 @@ public class Evento : ScriptableObject
     
     [Header("Categoria do Evento")]
     public CategoriaEvento categoria = CategoriaEvento.Normal;
-
-    [Tooltip("Se for Aventura, este evento só aparecerá se o Antecessor tiver sido completado com sucesso.")]
     public Evento antecessor;
-    // Antigo (oculto)
+
     [HideInInspector] public Heroi monstro; 
 
-    // Preferido: arraste aqui o PREFAB do monstro (do Project)
     [Header("Inimigo")]
     public GameObject monstroPrefab;
 
     [Header("Opções de Decisão")]
-    [Tooltip("Lista de opções apresentadas ao jogador: cada opção tem nome, descrição, ícone e tipo (Combate ou Passivo).")]
     public EventoOpcao[] opcoesDecisao;
 
-    // Helpers para UI
     public int QuantidadeOpcoes => opcoesDecisao == null ? 0 : opcoesDecisao.Length;
     public EventoOpcao ObterOpcao(int indice)
     {
@@ -99,25 +152,15 @@ public class Evento : ScriptableObject
         return opcoesDecisao[indice];
     }
 
-    // Validação simples para garantir que min não seja maior que max
     void OnValidate()
     {
         if (semanaMax < semanaMin) semanaMax = semanaMin;
     }
 }
 
-// Tipo de uma opção (não do evento inteiro)
-public enum TipoEvento { Combate = 0, Passivo = 1 }
-
-// Tipos de atributos possíveis para modificadores passivos
 public enum TipoAtributo
 {
-    Forca,
-    Carisma,
-    Sabedoria,
-    Inteligencia,
-    Vitalidade,
-    Destreza
+    Forca, Carisma, Sabedoria, Inteligencia, Vitalidade, Destreza
 }
 
 [System.Serializable]
@@ -130,7 +173,6 @@ public class PassivoModificador
 [System.Serializable]
 public class ItemDrop
 {
-    [Tooltip("Asset do item que pode cair.")]
     public ScriptableObject item;
     [Min(1)] public int quantidadeMin = 1;
     [Min(1)] public int quantidadeMax = 1;

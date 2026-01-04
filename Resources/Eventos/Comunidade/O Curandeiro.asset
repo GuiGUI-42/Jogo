@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e8c3e566152c940b23bc1da4798553, type: 3}
+  m_Name: O Curandeiro
+  m_EditorClassIdentifier: Assembly-CSharp::Evento
+  nomeEvento:
+    m_TableReference:
+      m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+    m_TableEntryReference:
+      m_KeyId: 35521287757824
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  iconeEvento: {fileID: 0}
+  descricaoEvento:
+    m_TableReference:
+      m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+    m_TableEntryReference:
+      m_KeyId: 35601285718016
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  local: 6
+  slotsNecessarios: 2
+  semanaMin: 1
+  semanaMax: 10
+  recompensaReputacao: 0
+  recompensaOuro: 0
+  categoria: 0
+  antecessor: {fileID: 0}
+  monstro: {fileID: 0}
+  monstroPrefab: {fileID: 0}
+  opcoesDecisao:
+  - nomeOpcao:
+      m_TableReference:
+        m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+      m_TableEntryReference:
+        m_KeyId: 28301514842112
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    descricao:
+      m_TableReference:
+        m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+      m_TableEntryReference:
+        m_KeyId: 35707019927552
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    icone: {fileID: 0}
+    usarIconeDaOpcao: 0
+    tipo: 1
+    efeitosPassivos:
+    - atributo: 5
+      valor: 10
+    drops: []
+    custoOuro: 0
+  - nomeOpcao:
+      m_TableReference:
+        m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+      m_TableEntryReference:
+        m_KeyId: 28301514842112
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    descricao:
+      m_TableReference:
+        m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+      m_TableEntryReference:
+        m_KeyId: 35911198646272
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    icone: {fileID: 0}
+    usarIconeDaOpcao: 0
+    tipo: 1
+    efeitosPassivos:
+    - atributo: 2
+      valor: 15
+    drops: []
+    custoOuro: 0
+  references:
+    version: 2
+    RefIds: []

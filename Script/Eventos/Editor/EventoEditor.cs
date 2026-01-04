@@ -10,7 +10,7 @@ public class EventoEditor : Editor
     SerializedProperty localProp;
     SerializedProperty slotsNecessariosProp;
     
-    // --- NOVAS PROPRIEDADES ---
+    // --- PROPRIEDADES DE CATEGORIA ---
     SerializedProperty categoriaProp;
     SerializedProperty antecessorProp;
     // --------------------------
@@ -30,10 +30,8 @@ public class EventoEditor : Editor
         localProp = serializedObject.FindProperty("local");
         slotsNecessariosProp = serializedObject.FindProperty("slotsNecessarios");
         
-        // --- LOCALIZANDO ---
         categoriaProp = serializedObject.FindProperty("categoria");
         antecessorProp = serializedObject.FindProperty("antecessor");
-        // -------------------
 
         semanaMinProp = serializedObject.FindProperty("semanaMin");
         semanaMaxProp = serializedObject.FindProperty("semanaMax");
@@ -93,25 +91,26 @@ public class EventoEditor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 
-    // (Mantenha o método DrawOpcoes inalterado...)
     void DrawOpcoes(SerializedProperty arrayProp) 
     {
-        // ... Copie o conteúdo existente do DrawOpcoes que já estava no arquivo ...
-        // Para economizar espaço na resposta, assumo que você manterá o método original
-        // que desenha a lista de opções, passivos e drops.
         if (arrayProp == null) return;
         EditorGUILayout.BeginVertical("box");
         for (int i = 0; i < arrayProp.arraySize; i++)
         {
             var elem = arrayProp.GetArrayElementAtIndex(i);
-            // ... (todo o código de desenho das opções)
-             var nomeProp = elem.FindPropertyRelative("nomeOpcao");
+            var nomeProp = elem.FindPropertyRelative("nomeOpcao");
             var descProp = elem.FindPropertyRelative("descricao");
             var iconeProp = elem.FindPropertyRelative("icone");
             var usarIconeProp = elem.FindPropertyRelative("usarIconeDaOpcao");
             var tipoProp = elem.FindPropertyRelative("tipo");
             var efeitosProp = elem.FindPropertyRelative("efeitosPassivos");
             var dropsProp = elem.FindPropertyRelative("drops");
+            var custoOuroProp = elem.FindPropertyRelative("custoOuro"); 
+
+            // --- NOVAS PROPRIEDADES ---
+            var dropaPersonagemProp = elem.FindPropertyRelative("personagemDropavel");
+            var personagemAssetProp = elem.FindPropertyRelative("personagemAsset");
+            // --------------------------
 
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.BeginHorizontal();
@@ -137,6 +136,10 @@ public class EventoEditor : Editor
             EditorGUILayout.PropertyField(tipoProp);
 
             var tipo = (TipoEvento)tipoProp.enumValueIndex;
+            
+            // --- EXIBIÇÃO CONDICIONAL POR TIPO ---
+            
+            // 1) Passivo
             if (tipo == TipoEvento.Passivo)
             {
                 EditorGUILayout.BeginVertical("box");
@@ -166,40 +169,83 @@ public class EventoEditor : Editor
                 }
                 EditorGUILayout.EndVertical();
             }
+            // 2) Ouro
+            else if (tipo == TipoEvento.Ouro)
+            {
+                EditorGUILayout.BeginVertical("box");
+                EditorGUILayout.PropertyField(custoOuroProp, new GUIContent("Custo em Ouro"));
+                EditorGUILayout.EndVertical();
+            }
 
-            // Drops
-            EditorGUILayout.BeginVertical("box");
-            EditorGUILayout.LabelField("Drops", EditorStyles.boldLabel);
-            for (int d = 0; d < dropsProp.arraySize; d++)
+            // Drops (Combate, Passivo e LOJA usam essa lista)
+            if (tipo != TipoEvento.Ouro) 
             {
-                var drop = dropsProp.GetArrayElementAtIndex(d);
-                var itemProp = drop.FindPropertyRelative("item");
-                var qMinProp = drop.FindPropertyRelative("quantidadeMin");
-                var qMaxProp = drop.FindPropertyRelative("quantidadeMax");
-                var chanceProp = drop.FindPropertyRelative("chance");
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.PropertyField(itemProp, GUIContent.none, GUILayout.Width(180));
-                qMinProp.intValue = EditorGUILayout.IntField(qMinProp.intValue, GUILayout.Width(40));
-                qMaxProp.intValue = EditorGUILayout.IntField(qMaxProp.intValue, GUILayout.Width(40));
-                chanceProp.floatValue = EditorGUILayout.Slider(chanceProp.floatValue, 0f, 1f);
-                if (GUILayout.Button("X", GUILayout.Width(20)))
+                // Muda o título se for Loja
+                string tituloDrops = (tipo == TipoEvento.Loja) ? "Itens da Loja" : "Drops de Recompensa";
+                
+                EditorGUILayout.BeginVertical("box");
+                EditorGUILayout.LabelField(tituloDrops, EditorStyles.boldLabel);
+
+                // --- BLOCO DE PERSONAGEM DROPÁVEL (NOVO) ---
+                if (tipo == TipoEvento.Combate)
                 {
-                    dropsProp.DeleteArrayElementAtIndex(d);
-                    EditorGUILayout.EndHorizontal();
-                    break;
+                    EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                    EditorGUILayout.PropertyField(dropaPersonagemProp, new GUIContent("Personagem Dropável?"));
+                    if (dropaPersonagemProp.boolValue)
+                    {
+                        EditorGUILayout.PropertyField(personagemAssetProp, new GUIContent("Asset do Personagem"));
+                        EditorGUILayout.HelpBox("Chance Fixa: 20%. Se dropar, ignora itens abaixo.", MessageType.Info);
+                    }
+                    EditorGUILayout.EndVertical();
+                    EditorGUILayout.Space();
                 }
-                EditorGUILayout.EndHorizontal();
+                // -------------------------------------------
+
+                for (int d = 0; d < dropsProp.arraySize; d++)
+                {
+                    var drop = dropsProp.GetArrayElementAtIndex(d);
+                    var itemProp = drop.FindPropertyRelative("item");
+                    var qMinProp = drop.FindPropertyRelative("quantidadeMin");
+                    var qMaxProp = drop.FindPropertyRelative("quantidadeMax");
+                    var chanceProp = drop.FindPropertyRelative("chance");
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.PropertyField(itemProp, GUIContent.none, GUILayout.Width(150));
+                    
+                    if (tipo != TipoEvento.Loja)
+                    {
+                        chanceProp.floatValue = EditorGUILayout.Slider(chanceProp.floatValue, 0f, 1f, GUILayout.Width(50));
+                    }
+                    else
+                    {
+                         // Na loja, mantemos o slider visível conforme código original
+                         chanceProp.floatValue = EditorGUILayout.Slider(chanceProp.floatValue, 0f, 1f, GUILayout.Width(50));
+                    }
+                    
+                    EditorGUILayout.LabelField("Qtd:", GUILayout.Width(30));
+                    qMinProp.intValue = EditorGUILayout.IntField(qMinProp.intValue, GUILayout.Width(30));
+                    EditorGUILayout.LabelField("-", GUILayout.Width(10));
+                    qMaxProp.intValue = EditorGUILayout.IntField(qMaxProp.intValue, GUILayout.Width(30));
+                    
+                    if (GUILayout.Button("X", GUILayout.Width(20)))
+                    {
+                        dropsProp.DeleteArrayElementAtIndex(d);
+                        EditorGUILayout.EndHorizontal();
+                        break;
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+                if (GUILayout.Button("Adicionar Item"))
+                {
+                    dropsProp.arraySize++;
+                    var novo = dropsProp.GetArrayElementAtIndex(dropsProp.arraySize - 1);
+                    novo.FindPropertyRelative("item").objectReferenceValue = null;
+                    novo.FindPropertyRelative("quantidadeMin").intValue = 1;
+                    novo.FindPropertyRelative("quantidadeMax").intValue = 1;
+                    novo.FindPropertyRelative("chance").floatValue = 1f;
+                }
+                EditorGUILayout.EndVertical();
             }
-            if (GUILayout.Button("Adicionar Drop"))
-            {
-                dropsProp.arraySize++;
-                var novo = dropsProp.GetArrayElementAtIndex(dropsProp.arraySize - 1);
-                novo.FindPropertyRelative("item").objectReferenceValue = null;
-                novo.FindPropertyRelative("quantidadeMin").intValue = 1;
-                novo.FindPropertyRelative("quantidadeMax").intValue = 1;
-                novo.FindPropertyRelative("chance").floatValue = 1f;
-            }
-            EditorGUILayout.EndVertical();
+            
             EditorGUILayout.EndVertical();
         }
         if (GUILayout.Button("Adicionar Opção"))

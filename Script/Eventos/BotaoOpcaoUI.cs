@@ -1,7 +1,8 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using UnityEngine.EventSystems; // Necessário para detectar mouse over
+using UnityEngine.EventSystems;
+using UnityEngine.Localization; // Necessário
 
 public class BotaoOpcaoUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -17,8 +18,9 @@ public class BotaoOpcaoUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         this.dadosOpcao = opcao;
         this.manager = uiManager;
 
+        // --- TRADUÇÃO ---
         if (textoOpcao != null) 
-            textoOpcao.text = opcao.nomeOpcao;
+            textoOpcao.text = opcao.nomeOpcao.GetLocalizedString(); 
 
         if (iconeOpcao != null && opcao.icone != null && opcao.usarIconeDaOpcao)
         {
@@ -35,20 +37,17 @@ public class BotaoOpcaoUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         }
     }
 
-    // --- DETECÇÃO DE MOUSE (HOVER) ---
-
     public void OnPointerEnter(PointerEventData eventData)
     {
-        // Quando o mouse entra, manda mostrar a descrição neste painel flutuante
         if (manager != null && dadosOpcao != null)
         {
-            manager.MostrarDescricaoDinamica(dadosOpcao.descricao);
+            // --- TRADUÇÃO ---
+            manager.MostrarDescricaoDinamica(dadosOpcao.descricao.GetLocalizedString());
         }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        // Quando o mouse sai, esconde ou limpa o texto
         if (manager != null)
         {
             manager.EsconderDescricaoDinamica();

@@ -1,0 +1,1120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: ConteudoJogo Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: ConteudoJogo
+  m_TableCollectionNameGuidString: 50d21012a9f74dc459a3397cbdbc606e
+  m_Entries:
+  - m_Id: 637580156928
+    m_Key: evento_espirito_burocrata_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5696925802496
+    m_Key: evento_espirito_burocrata_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7158590414848
+    m_Key: evento_festa_gotica_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7393706319872
+    m_Key: evento_festa_gotica_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7674552721408
+    m_Key: evento_ladraozinho_covas_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7798699925504
+    m_Key: evento_ladraozinho_covas_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7924633903104
+    m_Key: evento_portal_submundo_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8018347237376
+    m_Key: evento_portal_submundo_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9344154148864
+    m_Key: evento_opcao_combate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9504481419264
+    m_Key: evento_combate_portal_submundo_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9679065128960
+    m_Key: C
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9917255458816
+    m_Key: evento_combate_ladraozinho_covas_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10077108772864
+    m_Key: evento_opcao_loja_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10188815671296
+    m_Key: evento_loja_ladraozinho_covas_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11208014766080
+    m_Key: evento_combate_festa_gotica_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11577725886464
+    m_Key: evento_passivo_espirito_burocrata_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27639435567104
+    m_Key: evento_incendio_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27844927102976
+    m_Key: evento_incendio_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28301514842112
+    m_Key: evento_opcao_passivo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28729400958976
+    m_Key: evento_passivo1_incendio_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29529820962816
+    m_Key: evento_passivo2_incendio_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30015424897024
+    m_Key: evento_combate_espirito_burocrata_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30465763123200
+    m_Key: evento_roubo_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30528509911040
+    m_Key: evento_roubo_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30780239454208
+    m_Key: evento_combate_roubo_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30911135293440
+    m_Key: evento_lixo_mutante_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30997072388096
+    m_Key: evento_combate_lixo_mutante_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31262215315456
+    m_Key: evento_lixo_mutando_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31321984147456
+    m_Key: evento_lixo_mutante_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31470395400192
+    m_Key: evento_protesto_gargulas_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31555896287232
+    m_Key: evento_protesto_gargulas_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31711890841600
+    m_Key: evento_passivo1_protesto_gargulas_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31885304340480
+    m_Key: evento_passivo2_protesto_gargulas_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31988610048000
+    m_Key: evento_slimite_esgoto_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32077504126976
+    m_Key: evento_slime_esgoto_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32215379288064
+    m_Key: evento_combate_slime_esgoto_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32423181885440
+    m_Key: evento_sniper_elfo_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32491364491264
+    m_Key: evento_sniper_elfo_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32613108359168
+    m_Key: evento_combate_sniper_elfo_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32798999912448
+    m_Key: evento_promocao_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32887382286336
+    m_Key: evento_promocao_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33012104110080
+    m_Key: evento_combate_promocao_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33155926794240
+    m_Key: New Entry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33282863210496
+    m_Key: evento_loja_promocao_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33696731963392
+    m_Key: evento_praca_alimentacao_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33783105265664
+    m_Key: evento_praca_alimentacao_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33961581289472
+    m_Key: evento_combate_praca_alimentacao_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34123284291584
+    m_Key: evento_loja_penhores_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34204544737280
+    m_Key: evento_loja_penhores_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34430538031104
+    m_Key: evento_passivo1_loja_penhores_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34670343168000
+    m_Key: evento_passivo2_loja_penhores)desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34855970480128
+    m_Key: evento_furto_gnomos_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34913105289216
+    m_Key: evento_furto_gnomos_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35071113109504
+    m_Key: evento_combate_furto_gnomos_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35521287757824
+    m_Key: evento_curandeiro_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35601285718016
+    m_Key: evento_curandeiro_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35707019927552
+    m_Key: evento_passivo1_curandeiro_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35911198646272
+    m_Key: evento_passivo2_curandeiro_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36013703241728
+    m_Key: evento_laje_assombrada_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36096318447616
+    m_Key: evento_)laje_assombrada_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36215608647680
+    m_Key: evento_combate_laje_assombrada_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36332440985600
+    m_Key: evento_batalha_rap_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36398878760960
+    m_Key: evento_batalha_rap_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36538872045568
+    m_Key: evento_combate_batalha_rap_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36688587726848
+    m_Key: evento_passivo_batalha_rap_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36824751611904
+    m_Key: evento_ajudante_trafico_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36914308390912
+    m_Key: evento_ajudante_trafico_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 37145632645120
+    m_Key: evento_combate_ajudante_trafico_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46846676115456
+    m_Key: evento_balao_perdido_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46989429252096
+    m_Key: evento_balao_perdido_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47138889080832
+    m_Key: evento_combate_balao_perdido_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47226298376192
+    m_Key: evento_passivo_balao_perdido_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47366790782976
+    m_Key: evento_garimpo_ilegal_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47445874384896
+    m_Key: evento_garimpo_ilegal_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47554393612288
+    m_Key: evento_combate_garimpo_ilegal_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47665433616384
+    m_Key: evento_druida_madareira_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47720727126016
+    m_Key: evento_druida_madareira_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47823634374656
+    m_Key: evento_combate_druida_madareira_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47946384875520
+    m_Key: evento_passivo_druida_madareira_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48106376601600
+    m_Key: evento_torre_celular_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48159589736448
+    m_Key: New Entry 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48176706691072
+    m_Key: evento_torre_celular_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48300652568576
+    m_Key: evento_combate_torre_celular_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48397931061248
+    m_Key: evento_caca_unicornio_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48475043340288
+    m_Key: evento_caca_unicornio_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48645696987136
+    m_Key: evento_combate_caca_unicornio_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48802165497856
+    m_Key: evento_eremita_exaventureiro_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48906184237056
+    m_Key: evento_eremita_exaventureiro_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49030440493056
+    m_Key: evento_passivo1_eremita_exaventureiro_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49142659096576
+    m_Key: evento_passivo2_eremita_exaventureiro_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49233990066176
+    m_Key: evento_portal_esquecido_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49311035236352
+    m_Key: evemto_portal_esquecido_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49402106159104
+    m_Key: evento_combate_portal_esquecido_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49505315397632
+    m_Key: evento_busque_item_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49595916558336
+    m_Key: evento_busque_item_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49743354732544
+    m_Key: evento_passivo_busque_item_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 361352040095744
+    m_Key: "evento_confession\xE1rio_nome"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 361422194024448
+    m_Key: evento_confessionario.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 361559200964608
+    m_Key: evento_combate_confessionario_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 361634362892288
+    m_Key: evento_casamento_monstruoso_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 361698489606144
+    m_Key: evento_casamento_monstruoso_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 361838344478720
+    m_Key: evento_passivo1_casamento_monstruoso_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 361942824591360
+    m_Key: evento_passivo2_casamento_monstruoso_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362033593524224
+    m_Key: evento_reliquia_roubada_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362132075782144
+    m_Key: evento_reliquia_roubada_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362207741026304
+    m_Key: evento_combate_reliquia_roubada_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362299583700992
+    m_Key: evento_passivo_reliquia_roubada_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362416785137664
+    m_Key: evento_cripta_fundador_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362477417996288
+    m_Key: evento_cripta_fundador_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362568182734848
+    m_Key: evento_combate_cripta_fundador_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362683479957504
+    m_Key: evento_invasao_morcegos_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362762932658176
+    m_Key: evento_invasao_morcegos_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362884911407104
+    m_Key: evento_combate_invasao_morcegos_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362989911613440
+    m_Key: evento_invocacao_perigosa_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 363072354852864
+    m_Key: evento_invocacao_perigosa_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 363167590719488
+    m_Key: evento_combate_invocacao_perigosa_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 363271068393472
+    m_Key: evento_passivo_invocacao_perigosa_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365357482975232
+    m_Key: evento_ferrugem_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365520729481216
+    m_Key: evento_ferrugem_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365631593324544
+    m_Key: evento_combate_ferrugem_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365703743741952
+    m_Key: evento_musico_metro_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365771687272448
+    m_Key: evento_musico_metro_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365866281410560
+    m_Key: evento_combate_musico_metro_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365980139986944
+    m_Key: evento_passivo1_musico_metro_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 366115196575744
+    m_Key: evento_passivo2_musico_metro_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 366215687905280
+    m_Key: evento_tunel_proibido_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 366290715615232
+    m_Key: evento_tunel_proibido_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 366863527518208
+    m_Key: evento_passivo1_tunel_proibido_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367037037486080
+    m_Key: evento_passivo2_tunel_proibido_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367175348854784
+    m_Key: evento_monstro_catraca_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367247365054464
+    m_Key: evento_monstro_catraca_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367335877451776
+    m_Key: evento_opcao_ouro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367417083371520
+    m_Key: evento_ouro_monstro_catraca_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367567616942080
+    m_Key: evento_combate_monstro_catraca_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368585591300096
+    m_Key: evento_lodo_trilhos_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368679979917312
+    m_Key: evento_lodo_trilhos_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368881121959936
+    m_Key: evento_combate_lodo_trilhos_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370606901895168
+    m_Key: evento_vendedor_ambulante_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370688032317440
+    m_Key: evento_evento_ambulante_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370758429515776
+    m_Key: evento_combate_vendedor_ambulante_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370862448254976
+    m_Key: evento_passivo1_vendedor_ambulante_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370988851994624
+    m_Key: evento_passivo2_vendedor_ambulante_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 752607189024768
+    m_Key: evento_deslizamento_magico_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 752668648161280
+    m_Key: evento_deslizamento_magico_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 752756493664256
+    m_Key: evento_combate_deslizamento_magico_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 752860403351552
+    m_Key: evento_tunel_interditado_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 752964367564800
+    m_Key: evento_tunel_interditado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753084299493376
+    m_Key: evento_combate_tunel_interditado_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753198111932416
+    m_Key: evento_passivo_tunel_interditado_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753296527081472
+    m_Key: evento_wyvern_antena_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753355348000768
+    m_Key: evento_wyvern_antena_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753426013634560
+    m_Key: evento_combate_wyvern_antena_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753559803543552
+    m_Key: evento_passivo_wyvern_antena_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753803769430016
+    m_Key: evento_container_mimico_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753875320061952
+    m_Key: evento_container_mimico_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753957985599488
+    m_Key: evento_combate_container_mimico_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754060335005696
+    m_Key: evento_contrabando_ovos_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754142375591936
+    m_Key: evento_contrabando_ovos_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754240388087808
+    m_Key: evento_combate_contrabando_ovos_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754349645512704
+    m_Key: evneto_passivo1_contrabando_ovos_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754441219751936
+    m_Key: evento_passivo2_contrabando_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754588251078656
+    m_Key: evento_roubo_mercadoria_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754661831753728
+    m_Key: evento_roubo_mercadoria_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754785349812224
+    m_Key: evento_combate_roubo_mercadoria_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754900215021568
+    m_Key: evento_troll_ponte_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 754950676692992
+    m_Key: evento_troll_ponte_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 755056679337984
+    m_Key: evento_passivo1_troll_ponte_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 755141299421184
+    m_Key: evento_passivo2_troll_ponte_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 755241136439296
+    m_Key: evento_ouro_troll_ponte_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 755341753597952
+    m_Key: evento_sereias_poluidas_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 755408828907520
+    m_Key: evento_sereias_poluidas_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 756257416298496
+    m_Key: evento_combate_sereias_poluidas_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 756374588375040
+    m_Key: evento_monstro_lago_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 756452073947136
+    m_Key: evento_monstro_lago_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 756547158818816
+    m_Key: evento_combate_monstro_lago_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 757476243292160
+    m_Key: evento_vazamento_pocao_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 757542823673856
+    m_Key: evento_vazamento_pocao_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 757652404060160
+    m_Key: evento_passivo_vazamento_pocao_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 789764519772160
+    m_Key: evento_gangue_centauros_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 837842220105728
+    m_Key: evento_gangue_centauros_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 838040795234304
+    m_Key: evento_combate_gangue_centauros_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 838199918739456
+    m_Key: evento_passivo_gangue_centauros_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 838314737811456
+    m_Key: evento_carteiro_zumbi_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 838372019421184
+    m_Key: evento_carteiro_zumbi_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 838479829811200
+    m_Key: evento_passivo1_carteiro_zumbi_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 838650751893504
+    m_Key: evento_passivo2_carteiro_zumbi_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 838729227321344
+    m_Key: evento_ponto_onibus_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 838791743422464
+    m_Key: evento_ponto_onibus_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 838903752310784
+    m_Key: evento_passivo_ponto_onibus_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 839064444485632
+    m_Key: evento_colheita_estranha_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 839137999994880
+    m_Key: evento_colheita_estranha_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 839276651102208
+    m_Key: evento_passivo_colheita_sombria_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 839374676180992
+    m_Key: evento_lobisomem_local_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 839446046457856
+    m_Key: evento_lobisomem_local_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 839624124022784
+    m_Key: evento_combate_lobisomem_local_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 839732244791296
+    m_Key: evento_turistas_desaparecidos_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 839847223246848
+    m_Key: evento_turistas_desaparecidos_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 840013250576384
+    m_Key: evento_passivo_turistas_desaparecidos_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 840118808625152
+    m_Key: evento_velha_ponte_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 840188505374720
+    m_Key: evento_velha_ponte_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 840285817421824
+    m_Key: evento_combate_velha_ponte_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 840403354402816
+    m_Key: evento_passivo1_velha_ponte_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 840516671913984
+    m_Key: evento_passivo2_velha_ponte_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 840645684510720
+    m_Key: evento_vendedor_viajante_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 840726450028544
+    m_Key: evento_vendedor_viajante_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 840863691849728
+    m_Key: evento_loja_vendedor_viajante_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 841212930572288
+    m_Key: evento_avalanche_controlada_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 841280614055936
+    m_Key: evento_avalanche_controlada_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 841413288280064
+    m_Key: evento_combate_avalanche_controlada_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 841581702168576
+    m_Key: evento_passivo_avalanche_controlada_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 842238983159808
+    m_Key: evento_ouro_avalanche_controlada_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 842318796570624
+    m_Key: evento_cabana_isolada_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 842391311892480
+    m_Key: New Entry 2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 842409867493376
+    m_Key: evento_cabana_isolada_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 842586535772160
+    m_Key: evento_passivo1_cabana_isolada_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 842669817872384
+    m_Key: evento_passivo2_cabana_isolada_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 842831814475776
+    m_Key: evento_fonte_termal_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 842884939530240
+    m_Key: evento_fonte_termal_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 843295377342464
+    m_Key: evento_combate_fonte_termal_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 843400130084864
+    m_Key: evento_grito_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 843449622872064
+    m_Key: evento_grito_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 843523211935744
+    m_Key: evento_combate_grito_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 843645178101760
+    m_Key: evento_mineiros_desaparecidos_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 843727956885504
+    m_Key: evento_mineiros_desaparecidos_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 843839059804160
+    m_Key: evento_combate_mineiros_desaparecidos_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 843941006557184
+    m_Key: evento_doenca_altitude_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 844005124882432
+    m_Key: evento_doenca_altitude_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 844080119037952
+    m_Key: evento_passivo1_doenca_altitude_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 844287556730880
+    m_Key: evento_passivo2_doenca_altitude_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 844604415426560
+    m_Key: evento_covas_abertas_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 844660115783680
+    m_Key: evento_covas_abertas_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 844778227384320
+    m_Key: evento_passivo_covas_abertas_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 844879402385408
+    m_Key: evento_ritual1_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 844973824557056
+    m_Key: evento_ritual1_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 845088014483456
+    m_Key: evento_passivo_ritual1_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 845191492157440
+    m_Key: evento_ritual2_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 845285582979072
+    m_Key: evento_ritual2_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 845419234476032
+    m_Key: evento_passivo2_ritual_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 845554022629376
+    m_Key: evento_combate_ritual2_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4425562687291392
+    m_Key: mosntro_slime_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4426182173409280
+    m_Key: monstro_drow_sniper_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4426666632298496
+    m_Key: monstro_grifo_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4427045004656640
+    m_Key: monstro_garimpeiro_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4427379768836096
+    m_Key: monstro_madereira_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4428064728039424
+    m_Key: monstro_dryad_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4428600462295040
+    m_Key: monstro_golem_sucata_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4429324000706560
+    m_Key: monstro_portal_submundo_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4439673609404416
+    m_Key: monstro_sereia_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4440164863066112
+    m_Key: monstro_filhote_hydra_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4440736303431680
+    m_Key: monstro_wyvern_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4441058149154816
+    m_Key: nome_elemental_terra_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4441611235246080
+    m_Key: monstro_basilisco_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4442045026942976
+    m_Key: monstro_fantasma_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4442509894238208
+    m_Key: monstro_demonio_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4442851012788224
+    m_Key: monstro_centauro_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4443536756326400
+    m_Key: monstro_diabo_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4443922732957696
+    m_Key: monstro_elemental_gordura_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4444366800699392
+    m_Key: Lobisomem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4444667687485440
+    m_Key: monstro_elemental_fogo_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4446940165586944
+    m_Key: monstro_banshee_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4447245716439040
+    m_Key: monstro_baldor_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4449706548150272
+    m_Key: monstro_mimico_gigante_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4450062531313664
+    m_Key: monstro_mafioso_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4450368988135424
+    m_Key: monstro_serinideo_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4450808085626880
+    m_Key: monstro_monstro_ferrugem_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4451258184777728
+    m_Key: monstro_demonio_emo_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4451630383120384
+    m_Key: monstro_dono_portal_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4452103802601472
+    m_Key: monstro_anjo_caido_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4452483278061568
+    m_Key: monstro_lich_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4452805367054336
+    m_Key: monstro_invasao_morcegos_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4453221848858624
+    m_Key: monstro_deus_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4453535855427584
+    m_Key: monstro_mimico_nome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4453922477981696
+    m_Key: monstro_goblin_nome
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 4975659767698030887
+  references:
+    version: 2
+    RefIds:
+    - rid: 4975659767698030887
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1765287914710

@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e8c3e566152c940b23bc1da4798553, type: 3}
+  m_Name: Gangue de Centauros Motociclistas
+  m_EditorClassIdentifier: Assembly-CSharp::Evento
+  nomeEvento:
+    m_TableReference:
+      m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+    m_TableEntryReference:
+      m_KeyId: 789764519772160
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  iconeEvento: {fileID: 0}
+  descricaoEvento:
+    m_TableReference:
+      m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+    m_TableEntryReference:
+      m_KeyId: 837842220105728
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  local: 2
+  slotsNecessarios: 1
+  semanaMin: 1
+  semanaMax: 10
+  recompensaReputacao: 0
+  recompensaOuro: 0
+  categoria: 0
+  antecessor: {fileID: 0}
+  monstro: {fileID: 0}
+  monstroPrefab: {fileID: 2062277851170540446, guid: ece9cb29548ac0d42a19d2242519fa3f, type: 3}
+  opcoesDecisao:
+  - nomeOpcao:
+      m_TableReference:
+        m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+      m_TableEntryReference:
+        m_KeyId: 9344154148864
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    descricao:
+      m_TableReference:
+        m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+      m_TableEntryReference:
+        m_KeyId: 838040795234304
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    icone: {fileID: 0}
+    usarIconeDaOpcao: 0
+    tipo: 0
+    efeitosPassivos: []
+    drops:
+    - item: {fileID: 11400000, guid: 06491fcfde99a7e4c85bb408f62eac04, type: 2}
+      quantidadeMin: 1
+      quantidadeMax: 1
+      chance: 1
+    - item: {fileID: 11400000, guid: 3f2aa29f108e6f3469b96a1930351e9e, type: 2}
+      quantidadeMin: 2
+      quantidadeMax: 1
+      chance: 1
+    custoOuro: 0
+  - nomeOpcao:
+      m_TableReference:
+        m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+      m_TableEntryReference:
+        m_KeyId: 28301514842112
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    descricao:
+      m_TableReference:
+        m_TableCollectionName: GUID:50d21012a9f74dc459a3397cbdbc606e
+      m_TableEntryReference:
+        m_KeyId: 838199918739456
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    icone: {fileID: 0}
+    usarIconeDaOpcao: 0
+    tipo: 1
+    efeitosPassivos:
+    - atributo: 1
+      valor: 12
+    drops:
+    - item: {fileID: 11400000, guid: 2ef07930b43b42240b190ac217afb441, type: 2}
+      quantidadeMin: 1
+      quantidadeMax: 1
+      chance: 1
+    custoOuro: 0
+  references:
+    version: 2
+    RefIds: []

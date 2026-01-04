@@ -1,9 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization; // Necessário
 
 public class CombateSistema : MonoBehaviour
 {
+    struct BuffRuntime
+    {
+        public int mascaraAlvo; 
+        public TipoElemento elemento;
+        public float valor;
+    }
+
     class QueimaduraInstance
     {
         public float danoAtual;
@@ -19,7 +27,7 @@ public class CombateSistema : MonoBehaviour
 
     class CombatenteRuntime
     {
-        public string nome;
+        public string nome; // Nome traduzido em tempo real
         public GameObject origem;
         public HeroiAtributos atributos;
         public Heroi baseHeroi; 
@@ -31,10 +39,14 @@ public class CombateSistema : MonoBehaviour
         public ItemCombate[] slotsItens; 
         public Dictionary<int, float> ultimoUso = new Dictionary<int, float>();
 
+        public List<BuffRuntime> buffsPermanentes = new List<BuffRuntime>();
+
         public float tempoAtordoado = 0f;
         public float tempoMolhado = 0f;
         public float tempoVulneravel = 0f;
         public float tempoInflamavel = 0f;
+        public float tempoCorrosao = 0f;
+        public float tempoInvulneravel = 0f;
 
         public List<QueimaduraInstance> queimaduras = new List<QueimaduraInstance>();
         public List<VenenoInstance> venenos = new List<VenenoInstance>();
@@ -50,6 +62,7 @@ public class CombateSistema : MonoBehaviour
     public System.Action<float, float, float, float, float, float> OnVidaAtualizada;
     public System.Action<ResultadoCombate> OnCombateFinalizado;
 
+    // Getters
     public float HeroiVidaAtual => heroi?.vidaAtual ?? 0f;
     public float HeroiArmaduraAtual => heroi?.armaduraAtual ?? 0f;
     public float HeroiVidaMax => heroi?.vidaMax ?? 0f;
@@ -92,7 +105,9 @@ public class CombateSistema : MonoBehaviour
 
         var c = new CombatenteRuntime
         {
-            nome = string.IsNullOrEmpty(baseH.nomeHeroi) ? go.name : baseH.nomeHeroi,
+            // --- TRADUÇÃO: Pega o texto da chave ---
+            nome = (baseH.nomeHeroi.IsEmpty) ? go.name : baseH.nomeHeroi.GetLocalizedString(),
+            
             origem = go,
             atributos = at,
             baseHeroi = baseH,
@@ -107,7 +122,7 @@ public class CombateSistema : MonoBehaviour
             if (at.slotsInventario[i] is ItemCombate itemC)
             {
                 c.slotsItens[i] = itemC;
-                c.ultimoUso[i] = Time.time; 
+                c.ultimoUso[i] = -9999f; 
             }
             else
             {
@@ -125,8 +140,10 @@ public class CombateSistema : MonoBehaviour
         while (emCombate)
         {
             float dt = Time.deltaTime;
+            
             TickStatus(heroi, dt);
             TickStatus(monstro, dt);
+            
             if (VerificarMorte()) break;
 
             if (!heroi.IsAtordoado) ProcessarItens(heroi, monstro);
@@ -146,6 +163,8 @@ public class CombateSistema : MonoBehaviour
         if (c.tempoMolhado > 0) c.tempoMolhado -= dt;
         if (c.tempoVulneravel > 0) c.tempoVulneravel -= dt;
         if (c.tempoInflamavel > 0) c.tempoInflamavel -= dt;
+        if (c.tempoCorrosao > 0) c.tempoCorrosao -= dt;
+        if (c.tempoInvulneravel > 0) c.tempoInvulneravel -= dt;
 
         for (int i = c.queimaduras.Count - 1; i >= 0; i--)
         {
@@ -198,11 +217,7 @@ public class CombateSistema : MonoBehaviour
             {
                 if (ef.modo == ModoEfeito.Passivo && ef.tipoEfeito == TipoEfeitoItem.ReduzirCooldownTipo)
                 {
-                    // USANDO O NOVO HELPER AQUI
-                    if (item.PossuiTipo(ef.parametroExtra))
-                    {
-                        cd -= ef.valor;
-                    }
+                    if (item.PossuiTipo(ef.parametroExtra)) cd -= ef.valor; 
                 }
             }
         }
@@ -214,6 +229,14 @@ public class CombateSistema : MonoBehaviour
         float buffTotal = 0;
         ItemCombate itemAtual = atacante.slotsItens[slotIndexItemAtual];
 
+        foreach (var buff in atacante.buffsPermanentes)
+        {
+            if (buff.elemento == tipoDano && itemAtual.PossuiTipo(buff.mascaraAlvo))
+            {
+                buffTotal += buff.valor;
+            }
+        }
+
         for (int i = 0; i < atacante.slotsItens.Length; i++)
         {
             if (i == slotIndexItemAtual) continue;
@@ -221,23 +244,29 @@ public class CombateSistema : MonoBehaviour
             ItemCombate fonteBuff = atacante.slotsItens[i];
             if (fonteBuff == null) continue;
 
+            float ultimoUsoFonte = atacante.ultimoUso.ContainsKey(i) ? atacante.ultimoUso[i] : -9999f;
+
             foreach (var ef in fonteBuff.efeitos)
             {
                 if (ef.tipoEfeito == TipoEfeitoItem.AumentarDano && ef.elementoAlvo == tipoDano)
                 {
-                    if (ef.alvo == AlvoEfeito.Adjacentes)
+                    bool ativo = false;
+
+                    if (ef.modo == ModoEfeito.Passivo) ativo = true;
+                    else if (ef.modo == ModoEfeito.Ativo && ef.duracao > 0) 
                     {
-                        if (Mathf.Abs(i - slotIndexItemAtual) == 1)
-                        {
-                            buffTotal += ef.valor;
-                        }
+                        if (Time.time <= ultimoUsoFonte + ef.duracao) ativo = true;
                     }
-                    else if (ef.alvo == AlvoEfeito.Usuario)
+
+                    if (ativo)
                     {
-                        // USANDO O NOVO HELPER AQUI
-                        if (itemAtual.PossuiTipo(ef.parametroExtra))
+                        if (ef.alvo == AlvoEfeito.Adjacentes)
                         {
-                            buffTotal += ef.valor;
+                            if (Mathf.Abs(i - slotIndexItemAtual) == 1) buffTotal += ef.valor;
+                        }
+                        else if (ef.alvo == AlvoEfeito.Usuario)
+                        {
+                            if (itemAtual.PossuiTipo(ef.parametroExtra)) buffTotal += ef.valor;
                         }
                     }
                 }
@@ -256,6 +285,8 @@ public class CombateSistema : MonoBehaviour
         if (cura > 0) atacante.vidaAtual = Mathf.Min(atacante.vidaMax, atacante.vidaAtual + cura);
         if (armadura > 0) atacante.armaduraAtual += armadura;
 
+        float danoVidaTotalCausado = 0f;
+
         foreach (var comp in item.danos)
         {
             float valorTotal = item.CalcularDanoComponente(comp, atacante.baseHeroi);
@@ -268,12 +299,12 @@ public class CombateSistema : MonoBehaviour
             {
                 case TipoElemento.Fisico:
                 case TipoElemento.Gelo:
-                    AplicarDanoBruto(defensor, valorTotal, false);
+                    danoVidaTotalCausado += AplicarDanoBruto(defensor, valorTotal, false);
                     break;
 
                 case TipoElemento.Eletrico:
                     if (defensor.tempoMolhado > 0) valorTotal *= 2f; 
-                    AplicarDanoBruto(defensor, valorTotal, false);
+                    danoVidaTotalCausado += AplicarDanoBruto(defensor, valorTotal, false);
                     break;
 
                 case TipoElemento.Fogo:
@@ -310,20 +341,87 @@ public class CombateSistema : MonoBehaviour
 
             switch (ef.tipoEfeito)
             {
+                // --- NOVO EFEITO: Aumentar Duração de Debuffs Atuais ---
+                case TipoEfeitoItem.AumentarDuracaoDebuffs:
+                    if (ef.valor > 0)
+                    {
+                        if (alvo.tempoAtordoado > 0) alvo.tempoAtordoado += ef.valor;
+                        if (alvo.tempoMolhado > 0) alvo.tempoMolhado += ef.valor;
+                        if (alvo.tempoVulneravel > 0) alvo.tempoVulneravel += ef.valor;
+                        if (alvo.tempoInflamavel > 0) alvo.tempoInflamavel += ef.valor;
+                        if (alvo.tempoCorrosao > 0) alvo.tempoCorrosao += ef.valor;
+                        
+                        foreach(var v in alvo.venenos)
+                        {
+                            if (v.tempoFim > Time.time) v.tempoFim += ef.valor;
+                        }
+
+                        foreach(var q in alvo.queimaduras)
+                        {
+                            if (q.danoAtual > 0) q.danoAtual += ef.valor;
+                        }
+
+                        Debug.Log($"{alvo.nome} teve seus debuffs estendidos em {ef.valor}s!");
+                    }
+                    break;
+                // -------------------------------------------------------
+
                 case TipoEfeitoItem.Atordoar:
-                    if (ef.alvo == AlvoEfeito.Oponente) defensor.tempoAtordoado += ef.valor;
+                    if (ef.alvo == AlvoEfeito.Oponente) defensor.tempoAtordoado += ef.duracao;
                     break;
 
                 case TipoEfeitoItem.Molhar:
-                    if (ef.alvo == AlvoEfeito.Oponente) defensor.tempoMolhado += ef.valor;
+                    if (ef.alvo == AlvoEfeito.Oponente) defensor.tempoMolhado += ef.duracao;
                     break;
 
                 case TipoEfeitoItem.Vulneravel:
-                    if (ef.alvo == AlvoEfeito.Oponente) defensor.tempoVulneravel += ef.valor;
+                    if (ef.alvo == AlvoEfeito.Oponente) defensor.tempoVulneravel += ef.duracao;
                     break;
 
                 case TipoEfeitoItem.Inflamavel:
-                    if (ef.alvo == AlvoEfeito.Oponente) defensor.tempoInflamavel += ef.valor;
+                    if (ef.alvo == AlvoEfeito.Oponente) defensor.tempoInflamavel += ef.duracao;
+                    break;
+
+                case TipoEfeitoItem.Corrosao:
+                    if (ef.alvo == AlvoEfeito.Oponente) 
+                    {
+                        defensor.tempoCorrosao += ef.duracao;
+                        Debug.Log($"{defensor.nome} sofreu CORROSÃO por {ef.duracao}s!");
+                    }
+                    break;
+
+                case TipoEfeitoItem.Invulneravel:
+                    CombatenteRuntime alvoInvul = (ef.alvo == AlvoEfeito.Usuario) ? atacante : defensor;
+                    alvoInvul.tempoInvulneravel += ef.duracao;
+                    Debug.Log($"{alvoInvul.nome} ficou INVULNERÁVEL por {ef.duracao}s!");
+                    break;
+
+                case TipoEfeitoItem.AumentarDano:
+                    if (ef.duracao <= 0)
+                    {
+                        if (ef.alvo == AlvoEfeito.Usuario)
+                        {
+                            atacante.buffsPermanentes.Add(new BuffRuntime
+                            {
+                                mascaraAlvo = ef.parametroExtra,
+                                elemento = ef.elementoAlvo,
+                                valor = ef.valor
+                            });
+                            Debug.Log($"{atacante.nome} ganhou +{ef.valor} de dano {ef.elementoAlvo} (Acumulado)!");
+                        }
+                    }
+                    break;
+
+                case TipoEfeitoItem.RoubarVida:
+                    if (danoVidaTotalCausado > 0)
+                    {
+                        float curaRoubo = danoVidaTotalCausado * ef.valor; 
+                        if (curaRoubo > 0)
+                        {
+                            atacante.vidaAtual = Mathf.Min(atacante.vidaMax, atacante.vidaAtual + curaRoubo);
+                            Debug.Log($"{atacante.nome} ROUBOU {curaRoubo} de vida!");
+                        }
+                    }
                     break;
 
                 case TipoEfeitoItem.ReduzirCooldownTipo:
@@ -335,23 +433,42 @@ public class CombateSistema : MonoBehaviour
                     break;
 
                 case TipoEfeitoItem.UsarAdjacente:
-                    ForcarAtivacaoVizinho(atacante, slotIndex);
+                    ForcarAtivacaoVizinho(atacante, slotIndex, ef.parametroExtra == 1);
                     break;
             }
         }
     }
 
-    void AplicarDanoBruto(CombatenteRuntime alvo, float dano, bool ignorarArmadura)
+    float AplicarDanoBruto(CombatenteRuntime alvo, float dano, bool ignorarArmadura)
     {
-        if (dano <= 0) return;
+        if (dano <= 0) return 0f;
+
+        if (alvo.tempoInvulneravel > 0)
+        {
+            Debug.Log($"Dano bloqueado! {alvo.nome} está invulnerável.");
+            return 0f;
+        }
+
         float danoRestante = dano;
+
         if (!ignorarArmadura && alvo.armaduraAtual > 0)
         {
-            float absorvido = Mathf.Min(alvo.armaduraAtual, danoRestante);
+            float armaduraEfetiva = alvo.armaduraAtual;
+            if (alvo.tempoCorrosao > 0) armaduraEfetiva /= 2f; 
+
+            float absorvido = Mathf.Min(armaduraEfetiva, danoRestante);
             alvo.armaduraAtual -= absorvido;
             danoRestante -= absorvido;
         }
-        if (danoRestante > 0) alvo.vidaAtual = Mathf.Max(0, alvo.vidaAtual - danoRestante);
+
+        float danoVidaAplicado = 0f;
+        if (danoRestante > 0)
+        {
+            float vidaAnterior = alvo.vidaAtual;
+            alvo.vidaAtual = Mathf.Max(0, alvo.vidaAtual - danoRestante);
+            danoVidaAplicado = vidaAnterior - alvo.vidaAtual;
+        }
+        return danoVidaAplicado;
     }
 
     void ModificarCooldownAtual(CombatenteRuntime c, int tipoItemMask, float deltaTempo)
@@ -360,7 +477,6 @@ public class CombateSistema : MonoBehaviour
         {
             var it = c.slotsItens[i];
             if (it == null) continue;
-            // USANDO O NOVO HELPER AQUI TAMBÉM
             if (it.PossuiTipo(tipoItemMask))
             {
                 if (c.ultimoUso.ContainsKey(i)) c.ultimoUso[i] += deltaTempo; 
@@ -380,10 +496,30 @@ public class CombateSistema : MonoBehaviour
         }
     }
 
-    void ForcarAtivacaoVizinho(CombatenteRuntime c, int indexOrigem)
+    void ForcarAtivacaoVizinho(CombatenteRuntime c, int indexOrigem, bool apenasUm)
     {
-        if (indexOrigem > 0 && c.slotsItens[indexOrigem - 1] != null) c.ultimoUso[indexOrigem - 1] = -9999f; 
-        if (indexOrigem < c.slotsItens.Length - 1 && c.slotsItens[indexOrigem + 1] != null) c.ultimoUso[indexOrigem + 1] = -9999f;
+        List<int> vizinhosValidos = new List<int>();
+
+        if (indexOrigem > 0 && c.slotsItens[indexOrigem - 1] != null)
+            vizinhosValidos.Add(indexOrigem - 1);
+
+        if (indexOrigem < c.slotsItens.Length - 1 && c.slotsItens[indexOrigem + 1] != null)
+            vizinhosValidos.Add(indexOrigem + 1);
+
+        if (vizinhosValidos.Count == 0) return;
+
+        if (apenasUm)
+        {
+            int escolhido = vizinhosValidos[Random.Range(0, vizinhosValidos.Count)];
+            c.ultimoUso[escolhido] = -9999f;
+        }
+        else
+        {
+            foreach (var idx in vizinhosValidos)
+            {
+                c.ultimoUso[idx] = -9999f;
+            }
+        }
     }
 
     bool VerificarMorte()

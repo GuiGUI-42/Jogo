@@ -1,17 +1,18 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Localization; // Necessário para tradução
 
 // --- DEFINIÇÕES DE ESTRUTURAS AUXILIARES ---
 
 [System.Serializable]
 public class PorcentagemAtributos
 {
-    [Range(0, 500)] public float forca;
-    [Range(0, 500)] public float carisma;
-    [Range(0, 500)] public float sabedoria;
-    [Range(0, 500)] public float inteligencia;
-    [Range(0, 500)] public float vitalidade;
-    [Range(0, 500)] public float destreza;
+    [Range(0f, 10f)] public float forca;
+    [Range(0f, 10f)] public float carisma;
+    [Range(0f, 10f)] public float sabedoria;
+    [Range(0f, 10f)] public float inteligencia;
+    [Range(0f, 10f)] public float vitalidade;
+    [Range(0f, 10f)] public float destreza;
 }
 
 public enum TipoElemento
@@ -21,6 +22,15 @@ public enum TipoElemento
     Gelo,      
     Eletrico,  
     Veneno     
+}
+
+public enum RaridadeItem
+{
+    Comum,
+    Incomum,
+    Raro,
+    Epico,     
+    Lendario   
 }
 
 public enum TipoEfeitoItem
@@ -35,7 +45,11 @@ public enum TipoEfeitoItem
     Inflamavel,                 
     UsarAdjacente,              
     ReduzirCooldownAdjacente,
-    AumentarDano 
+    AumentarDano,
+    Corrosao,    
+    RoubarVida,  
+    Invulneravel,
+    AumentarDuracaoDebuffs // NOVO
 }
 
 public enum ModoEfeito { Ativo, Passivo }
@@ -46,6 +60,7 @@ public class ComponenteDano
 {
     public TipoElemento tipo;
     public int danoBase;
+    [Tooltip("Multiplicador do atributo (Ex: 1 = 1x o atributo).")]
     public PorcentagemAtributos escalaAtributos;
 }
 
@@ -55,9 +70,15 @@ public class EfeitoItemConfig
     public TipoEfeitoItem tipoEfeito;
     public ModoEfeito modo;
     public AlvoEfeito alvo;
+    
+    [Tooltip("Duração em segundos. Se for 0 e o modo for Ativo, o efeito acumula permanentemente no combate.")]
+    public float duracao; 
+
+    [Tooltip("Valor da magnitude (Dano extra, Cura, TEMPO ADICIONAL, etc).")]
     public float valor;
+    
     public TipoElemento elementoAlvo; 
-    [Tooltip("Soma dos valores dos Tipos (Arma=1, Utensilio=2, Magia=16...). Ex: Para afetar Arma e Magia, coloque 17.")]
+    [Tooltip("Soma dos valores dos Tipos (Arma=1, Utensilio=2...). Para UsarAdjacente: 0=Todos, 1=Um.")]
     public int parametroExtra; 
 }
 
@@ -66,14 +87,17 @@ public class EfeitoItemConfig
 [CreateAssetMenu(menuName = "Item/ItemCombate")]
 public class ItemCombate : ScriptableObject
 {
-    public string nomeItem;
+    [Header("Identificação")]
+    public LocalizedString nomeItem; // Alterado para tradução
+    public RaridadeItem raridade;
     public Sprite iconeItem;
-    [TextArea] public string descricaoItem;
+    public LocalizedString descricaoItem; // Alterado para tradução
+
+    [Header("Economia")]
+    [Min(0)] public int valorOuro; 
 
     [Header("Características Físicas")]
-    // MUDANÇA AQUI: Agora é uma lista para adicionar múltiplos tipos visualmente
     public List<TipoItem> tipos = new List<TipoItem>(); 
-    
     public TamanhoItem tamanho = TamanhoItem.UmSlot;
 
     [Header("Configuração de Combate")]
@@ -93,13 +117,10 @@ public class ItemCombate : ScriptableObject
     [Header("Efeitos Especiais")]
     public List<EfeitoItemConfig> efeitos = new List<EfeitoItemConfig>();
 
-    // --- Helper para compatibilidade com sistema de máscaras ---
     public bool PossuiTipo(int maskFiltro)
     {
-        if (maskFiltro == 0) return true; // 0 afeta todos
+        if (maskFiltro == 0) return true;
         if (tipos == null) return false;
-
-        // Verifica se ALGUM dos tipos da lista bate com a máscara do filtro
         foreach (var t in tipos)
         {
             if (((int)t & maskFiltro) != 0) return true;
@@ -131,12 +152,12 @@ public class ItemCombate : ScriptableObject
     private int CalcularBonusAtributos(Heroi heroi, PorcentagemAtributos escala)
     {
         return Mathf.RoundToInt(
-            heroi.forca * (escala.forca / 100f) +
-            heroi.carisma * (escala.carisma / 100f) +
-            heroi.sabedoria * (escala.sabedoria / 100f) +
-            heroi.inteligencia * (escala.inteligencia / 100f) +
-            heroi.vitalidade * (escala.vitalidade / 100f) +
-            heroi.destreza * (escala.destreza / 100f)
+            heroi.forca * escala.forca +
+            heroi.carisma * escala.carisma +
+            heroi.sabedoria * escala.sabedoria +
+            heroi.inteligencia * escala.inteligencia +
+            heroi.vitalidade * escala.vitalidade +
+            heroi.destreza * escala.destreza
         );
     }
 
